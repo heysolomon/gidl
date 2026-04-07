@@ -1,0 +1,77 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "gidl",
+  "homepage": "https://gidl.dev",
+  "items": [
+    {
+      "name": "animated-tabs",
+      "type": "registry:block",
+      "title": "Animated Tabs",
+      "description": "Tabs with a shifting background highlight.",
+      "registryDependencies": ["tabs"],
+      "dependencies": ["motion", "next-image-placeholder", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "packages/ui/src/registry/components/animated-tabs.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "collins-carousel",
+      "type": "registry:block",
+      "title": "Collins Carousel",
+      "description": "Smooth swipe drag carousel.",
+      "registryDependencies": [],
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "packages/ui/src/registry/components/collins-carousel.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "apps/web/lib/motion-carousel/Carousel.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "apps/web/lib/motion-carousel/context.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "apps/web/lib/motion-carousel/index.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "apps/web/lib/motion-carousel/types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "apps/web/lib/motion-carousel/useCarousel.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "apps/web/lib/motion-carousel/useTicker.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "apps/web/lib/motion-carousel/useTickerItem.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "flip-cards",
+      "type": "registry:block",
+      "title": "Flip Cards",
+      "description": "Flipping card stack.",
+      "registryDependencies": [],
+      "dependencies": ["motion", "next-image-placeholder", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "packages/ui/src/registry/components/flip-cards.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

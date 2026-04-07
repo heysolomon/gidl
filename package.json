@@ -4,8 +4,9 @@
   "private": true,
   "description": "Design system configuration tool for shadcn/ui projects",
   "scripts": {
+    "registry:build": "npx shadcn@latest build --output apps/web/public/r",
     "dev": "turbo dev",
-    "build": "turbo build",
+    "build": "pnpm registry:build && turbo build",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean && rm -rf node_modules",

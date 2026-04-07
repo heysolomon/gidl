@@ -102,9 +102,6 @@ export default function Home() {
           </a>
         </div>
 
-        <p className="mt-6 text-[11px] text-neutral-400 dark:text-neutral-500">
-          Free updates and new components released regularly.
-        </p>
       </main>
 
       {/* Component Preview */}
