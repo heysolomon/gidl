@@ -1,0 +1,9 @@
+export { EndorsedBy } from "./endorsed-by";
+export { Features } from "./features";
+export { WhyBuiltThis } from "./why-built-this";
+export { JoinPros } from "./join-pros";
+export { Scaffolding } from "./scaffolding";
+export { Governance } from "./governance";
+export { Academy } from "./academy";
+export { CTA } from "./cta";
+export { Footer } from "./footer";

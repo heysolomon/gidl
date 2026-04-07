@@ -1,0 +1,37 @@
+{
+  "name": "@gidl/cli",
+  "version": "0.1.0",
+  "description": "Gidl - Architectural Engine for Next.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "gidl": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cli",
+    "nextjs",
+    "scaffolding",
+    "architecture",
+    "tailwind"
+  ],
+  "author": "Solomon Akuson",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
+    "ts-morph": "^24.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0"
+  }
+}
