@@ -1,6 +1,5 @@
 # gidl
 
-[![Vercel Open Source](https://img.shields.io/badge/Powered_by-Vercel-black?logo=vercel)](https://vercel.com/open-source-program)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Turborepo](https://img.shields.io/badge/built%20with-Turborepo-cc00ff.svg)](https://turbo.build/)
 
