@@ -1,6 +1,12 @@
 # gidl
 
+[![Vercel Open Source](https://img.shields.io/badge/Powered_by-Vercel-black?logo=vercel)](https://vercel.com/open-source-program)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Turborepo](https://img.shields.io/badge/built%20with-Turborepo-cc00ff.svg)](https://turbo.build/)
+
 A design system configuration tool for shadcn/ui projects, built with the comprehensive gidl design system.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fheysolomon%2Fgidl)
 
 ## 🏗️ Project Structure
 
@@ -313,6 +319,8 @@ Add keyframes and reference them:
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+Please review our [Contributing Guidelines](CONTRIBUTING.md) to get started, and ensure that you follow our [Code of Conduct](CODE_OF_CONDUCT.md) in all community interactions.
 
 ## 📄 License
 
