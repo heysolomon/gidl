@@ -7,7 +7,7 @@
       "name": "animated-tabs",
       "type": "registry:block",
       "title": "Animated Tabs",
-      "description": "Tabs with a shifting background highlight.",
+      "description": "Animated tabs component inspired by [Raul](https://x.com/raul_dronca/status/1994085212469248020?s=20).",
       "registryDependencies": ["tabs"],
       "dependencies": ["motion", "next-image-placeholder", "clsx", "tailwind-merge"],
       "files": [
@@ -21,7 +21,7 @@
       "name": "collins-carousel",
       "type": "registry:block",
       "title": "Collins Carousel",
-      "description": "Smooth swipe drag carousel.",
+      "description": "Carousel Interaction from [Collins](https://wearecollins.com/case-studies/bose), heavily inspired by [Dimi's](https://x.com/dimitribouquin/status/1994085212469248020?s=20) implementation.",
       "registryDependencies": [],
       "dependencies": ["motion"],
       "files": [
@@ -63,7 +63,7 @@
       "name": "flip-cards",
       "type": "registry:block",
       "title": "Flip Cards",
-      "description": "Flipping card stack.",
+      "description": "Flip cards of some of my favorite anime characters. Inspired by a [Framer](https://www.framer.com/marketplace/components/flipcard-component/) component",
       "registryDependencies": [],
       "dependencies": ["motion", "next-image-placeholder", "clsx", "tailwind-merge"],
       "files": [
