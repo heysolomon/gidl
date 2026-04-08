@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { GidlLogo } from "@/components/logo";
-import { AnimatedTabs } from "@gidl/ui";
+import { CollinsCarousel } from "@gidl/ui";
 
 function GitHubIcon({ className }: { className?: string }) {
   return (
@@ -41,7 +41,7 @@ export default function Home() {
       <header className="w-full px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
         <div className="flex items-center gap-2">
           <GidlLogo size={16} />
-          <span className="text-[14px] font-semibold tracking-tight">gidl</span>
+          <span className="text-[14px] font-bold tracking-tight">gidl</span>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -74,14 +74,15 @@ export default function Home() {
       {/* Hero */}
       <main className="flex flex-col items-center text-center px-6 pt-20 pb-8 max-w-xl mx-auto">
         <h1 className="text-[28px] md:text-[36px] font-bold leading-tight tracking-tight">
-          Copy-paste motion
+          Handpicked UI components
           <br />
-          primitives for React
+          for your React projects
         </h1>
         <p className="mt-4 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[420px]">
-          A collection of animated UI components built with Motion.
+          A curated collection of UI components — sourced from across the web
+          and built from inspiration — made freely available for your projects.
           <br />
-          Copy. Paste. Customize. Ship faster.
+          Copy, paste, and make them yours.
         </p>
 
         {/* CTAs */}
@@ -107,7 +108,7 @@ export default function Home() {
       {/* Component Preview */}
       <section className="flex justify-center px-6 pb-24 pt-8">
         <div className="w-full max-w-2xl bg-neutral-50 dark:bg-neutral-900 rounded-2xl flex items-center justify-center min-h-[340px]">
-          <AnimatedTabs />
+          <CollinsCarousel />
         </div>
       </section>
     </div>

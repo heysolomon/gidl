@@ -1,9 +1,13 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import { GidlLogo } from "@/components/logo";
+import { DocsThemeSwitch } from "@/components/docs-theme-switch";
 
 import { Icon } from "@iconify/react";
 
 export const baseOptions: BaseLayoutProps = {
+  slots: {
+    themeSwitch: DocsThemeSwitch,
+  },
   nav: {
     title: (
       <div className="flex items-center gap-2">

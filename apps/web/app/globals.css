@@ -149,6 +149,61 @@ svg.lucide-menu {
     -webkit-mask-image: url("https://api.iconify.design/solar:hamburger-menu-linear.svg");
 }
 
+/* Remove focus ring on search input */
+[cmdk-input]:focus,
+input[type="search"]:focus,
+.fd-search input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Dot pattern for component preview backgrounds */
+.bg-dot-pattern {
+    background-color: var(--color-fd-muted);
+    background-image: radial-gradient(circle, var(--color-neutral-300) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.dark .bg-dot-pattern {
+    background-image: radial-gradient(circle, var(--color-neutral-700) 1px, transparent 1px);
+}
+
+/* Footer navigation — shadcn-style */
+.nd-footer-link-card {
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-fd-border);
+    padding: 1rem 1.25rem;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+.nd-footer-link-card:hover {
+    background-color: var(--color-fd-muted);
+    border-color: var(--color-neutral-300);
+}
+
+.dark .nd-footer-link-card:hover {
+    border-color: var(--color-neutral-700);
+}
+
+/* Code block copy button — show on hover */
+.fd-codeblock [data-copy],
+figure[data-rehype-pretty-code-figure] [data-copy] {
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.fd-codeblock:hover [data-copy],
+figure[data-rehype-pretty-code-figure]:hover [data-copy] {
+    opacity: 1;
+}
+
+/* Remove the active indicator bar ("cursor blinker") on sidebar links */
+[data-active="true"]::before,
+[aria-current="page"]::before,
+.fd-sidebar-item[data-active]::before {
+    display: none !important;
+}
+
 /* Prevent double-tap zoom on interactive elements */
 button,
 a,

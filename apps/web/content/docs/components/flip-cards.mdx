@@ -6,12 +6,15 @@ description: "Flip cards of some of my favorite anime characters. Inspired by a 
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { FlipCard } from "@gidl/ui"
+import { ComponentPreview } from "@/components/component-preview"
 
 <Tabs items={['Preview', 'Code']}>
-  <Tab value="Preview" className="flex min-h-[350px] w-full items-center justify-center p-10 bg-dot-pattern rounded-xl border mt-4">
-        <div className="w-full max-w-sm mx-auto h-[400px]">
-          <FlipCard />
-        </div>
+  <Tab value="Preview" className="w-full bg-dot-pattern rounded-xl border mt-4 overflow-hidden p-0">
+    <ComponentPreview className="min-h-[520px]">
+      <div className="w-full max-w-sm mx-auto">
+        <FlipCard />
+      </div>
+    </ComponentPreview>
   </Tab>
   <Tab value="Code">
     ```tsx
@@ -134,7 +137,6 @@ const Card = ({
         bounceDamping: 40,
       }}
       whileHover={isTopCard ? { scale: 1.03 } : undefined}
-      // whileDrag={isTopCard ? { scale: 1.05 } : undefined}
       onDragEnd={isTopCard ? handleDragEnd : undefined}
     >
       <PlaceholderImage
@@ -152,7 +154,6 @@ const Card = ({
     </motion.div>
   );
 };
-
     ```
   </Tab>
 </Tabs>

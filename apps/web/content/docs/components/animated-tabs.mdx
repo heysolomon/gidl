@@ -6,10 +6,13 @@ description: "Animated tabs component inspired by [Raul](https://x.com/raul_dron
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { AnimatedTabs } from "@gidl/ui"
+import { ComponentPreview } from "@/components/component-preview"
 
 <Tabs items={['Preview', 'Code']}>
-  <Tab value="Preview" className="flex min-h-[350px] w-full items-center justify-center p-10 bg-dot-pattern rounded-xl border mt-4">
-        <AnimatedTabs />
+  <Tab value="Preview" className="w-full bg-dot-pattern rounded-xl border mt-4 overflow-hidden p-0">
+    <ComponentPreview>
+      <AnimatedTabs />
+    </ComponentPreview>
   </Tab>
   <Tab value="Code">
     ```tsx
@@ -166,7 +169,6 @@ export default function AnimatedTabs() {
         </div>
     );
 }
-
     ```
   </Tab>
 </Tabs>

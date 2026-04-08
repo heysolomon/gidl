@@ -6,10 +6,13 @@ description: "Carousel Interaction from [Collins](https://wearecollins.com/case-
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { CollinsCarousel } from "@gidl/ui"
+import { ComponentPreview } from "@/components/component-preview"
 
 <Tabs items={['Preview', 'Code']}>
-  <Tab value="Preview" className="flex min-h-[350px] w-full items-center justify-center p-10 bg-dot-pattern rounded-xl border mt-4">
-        <CollinsCarousel />
+  <Tab value="Preview" className="w-full bg-dot-pattern rounded-xl border mt-4 overflow-hidden p-0">
+    <ComponentPreview className="min-h-[560px]">
+      <CollinsCarousel />
+    </ComponentPreview>
   </Tab>
   <Tab value="Code">
     ```tsx
@@ -93,8 +96,6 @@ function CarouselItem({
     return Math.abs(value / itemWidth) * -(itemWidth * 0.55);
   });
 
-
-
   const edgeX = useTransform(renderedOffset, (r) => {
     const { start: beyondStart, end: beyondEnd } = draggingBeyond.current;
     if (beyondStart) return Math.abs((r / 50) * (count + itemIndex * 2));
@@ -126,12 +127,7 @@ function CarouselItem({
 
   return (
     <motion.li {...props} style={{ ...props.style, zIndex }} className="w-full h-full">
-      <motion.div
-        style={{
-          x: edgeX,
-        }}
-        className="size-full"
-      >
+      <motion.div style={{ x: edgeX }} className="size-full">
         <motion.div className="size-full">
           <motion.div
             style={{
@@ -210,7 +206,6 @@ const ITEMS = [
     title: "Vertex Monitor Stand",
   },
 ];
-
     ```
   </Tab>
 </Tabs>
