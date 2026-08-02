@@ -74,15 +74,11 @@ export default function Home() {
       {/* Hero */}
       <main className="flex flex-col items-center text-center px-6 pt-20 pb-8 max-w-xl mx-auto">
         <h1 className="text-[28px] md:text-[36px] font-bold leading-tight tracking-tight">
-          Handpicked UI components
-          <br />
-          for your React projects
+          Animated components
+          <br />I recreate from inspiration
         </h1>
         <p className="mt-4 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[420px]">
-          A curated collection of UI components — sourced from across the web
-          and built from inspiration — made freely available for your projects.
-          <br />
-          Copy, paste, and make them yours.
+          found around the web, rebuilt here for you to explore.
         </p>
 
         {/* CTAs */}
@@ -102,7 +98,6 @@ export default function Home() {
             <GitHubIcon className="w-3 h-3" /> Star on GitHub
           </a>
         </div>
-
       </main>
 
       {/* Component Preview */}
