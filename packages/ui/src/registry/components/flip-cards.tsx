@@ -39,8 +39,9 @@ export const FlipCard = () => {
 
   const handleCardDismiss = () => {
     setCards((prev) => {
-      const [first, ...rest] = prev;
-      return [...rest, first];
+      const first = prev[0];
+      if (!first) return prev;
+      return [...prev.slice(1), first];
     });
   };
 
