@@ -71,6 +71,20 @@ export default async function ComponentPage(props: {
       </p>
 
       <div className="mt-8">
+        <h2 className="text-[14px] font-semibold tracking-tight">
+          Installation
+        </h2>
+        <div className="mt-3">
+          <CopyLine text={`npx use-gidl add ${item.name}`} />
+        </div>
+        <ol className="mt-4 space-y-1.5 text-[12.5px] text-neutral-500 dark:text-neutral-400 list-decimal list-inside">
+          <li>Install the dependencies listed in the code below.</li>
+          <li>Copy and paste the code into your project.</li>
+          <li>Update the import paths to match your project setup.</li>
+        </ol>
+      </div>
+
+      <div className="mt-10">
         <PreviewCodeTabs
           preview={
             <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl overflow-hidden">
@@ -81,20 +95,6 @@ export default async function ComponentPage(props: {
           }
           code={files ? <CodeBlock files={files} /> : null}
         />
-      </div>
-
-      <div className="mt-10">
-        <h2 className="text-[14px] font-semibold tracking-tight">
-          Installation
-        </h2>
-        <div className="mt-3">
-          <CopyLine text={`npx gidl add ${item.name}`} />
-        </div>
-        <ol className="mt-4 space-y-1.5 text-[12.5px] text-neutral-500 dark:text-neutral-400 list-decimal list-inside">
-          <li>Install the dependencies listed in the code above.</li>
-          <li>Copy and paste the code into your project.</li>
-          <li>Update the import paths to match your project setup.</li>
-        </ol>
       </div>
     </main>
   );

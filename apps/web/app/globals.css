@@ -1,6 +1,7 @@
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/preflight" layer(base);
 @import "tailwindcss/utilities" layer(utilities);
+@import "shadcn/tailwind.css";
 
 /* Enable class-based dark mode for next-themes compatibility */
 @custom-variant dark (&:where(.dark, .dark *));

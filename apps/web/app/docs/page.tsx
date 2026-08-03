@@ -15,7 +15,7 @@ export default function DocsOverviewPage() {
         <p className="mt-2 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400">
           Browse by collection, then copy the install command for any component:{" "}
           <code className="font-mono whitespace-nowrap">
-            npx gidl add &lt;name&gt;
+            npx use-gidl add &lt;name&gt;
           </code>
           .
         </p>

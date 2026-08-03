@@ -52,7 +52,7 @@ export function CodeBlockClient({ files }: { files: CodeFile[] }) {
         </button>
       </div>
       <div
-        className="text-[12.5px] leading-relaxed overflow-x-auto [&_pre]:p-4 [&_pre]:!bg-transparent"
+        className="scroll-fade-x text-[12.5px] leading-relaxed overflow-x-auto [&_pre]:p-4 [&_pre]:!bg-transparent"
         dangerouslySetInnerHTML={{ __html: active?.html ?? "" }}
       />
     </div>

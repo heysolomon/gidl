@@ -1,12 +1,23 @@
 {
-  "name": "@gidl/cli",
-  "version": "0.1.0",
-  "description": "Gidl - Architectural Engine for Next.js",
+  "name": "use-gidl",
+  "version": "0.1.1",
+  "description": "CLI for adding gidl's animated UI components to your project.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "gidl": "dist/index.js"
+    "use-gidl": "dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "homepage": "https://gidl.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heysolomon/gidl",
+    "directory": "packages/cli"
+  },
+  "bugs": "https://github.com/heysolomon/gidl/issues",
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
     "dev": "tsup src/index.ts --format esm --watch",
@@ -16,9 +27,11 @@
   "keywords": [
     "cli",
     "nextjs",
-    "scaffolding",
-    "architecture",
-    "tailwind"
+    "react",
+    "shadcn",
+    "ui-components",
+    "registry",
+    "animation"
   ],
   "author": "Solomon Akuson",
   "license": "MIT",

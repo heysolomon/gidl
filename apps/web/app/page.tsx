@@ -27,7 +27,7 @@ export default function Home() {
           Animated components
           <br />I recreate from inspiration
         </h1>
-        <p className="mt-4 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[420px]">
+        <p className="shimmer shimmer-duration-1200 mt-4 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[420px]">
           found around the web, rebuilt here for you to explore.
         </p>
 
