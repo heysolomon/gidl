@@ -12,7 +12,10 @@ import { ComponentPreview } from "@/components/component-preview";
 import { PreviewCodeTabs } from "@/components/preview-code-tabs";
 import { CodeBlock } from "@/components/code-block";
 import { CopyLine } from "@/components/copy-line";
+import { JsonLd } from "@/components/json-ld";
 import { renderDescriptionWithLinks } from "@/lib/render-markdown-links";
+
+const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 
 export function generateStaticParams() {
   return collections.flatMap((c) =>
@@ -23,12 +26,15 @@ export function generateStaticParams() {
 export async function generateMetadata(props: {
   params: Promise<{ collection: string; component: string }>;
 }) {
-  const { component } = await props.params;
+  const { collection, component } = await props.params;
   const item = getRegistryItem(component);
   if (!item) return {};
   return {
     title: item.title,
     description: item.description,
+    alternates: {
+      canonical: `/docs/${collection}/${component}`,
+    },
     openGraph: {
       title: item.title,
       description: item.description,
@@ -56,8 +62,44 @@ export default async function ComponentPage(props: {
   const Live = registryComponents[name];
   const files = await getComponentFiles(name);
 
+  const pageUrl = `${SITE_URL}/docs/${collection.slug}/${name}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareSourceCode",
+        name: item.title,
+        description: item.description.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1"),
+        url: pageUrl,
+        codeRepository: `https://github.com/heysolomon/gidl/blob/main/${item.files[0]?.path ?? ""}`,
+        programmingLanguage: "TypeScript",
+        author: { "@id": `${SITE_URL}/#person` },
+        license: "https://github.com/heysolomon/gidl/blob/main/LICENSE",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Docs",
+            item: `${SITE_URL}/docs`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: collection.title,
+            item: `${SITE_URL}/docs/${collection.slug}`,
+          },
+          { "@type": "ListItem", position: 3, name: item.title, item: pageUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <main className="px-6 pt-12 pb-24 max-w-3xl mx-auto">
+      <JsonLd data={jsonLd} />
       <Link
         href={`/docs/${collection.slug}`}
         className="inline-flex items-center gap-1 text-[12px] text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors mb-4"

@@ -3,6 +3,9 @@ import { Urbanist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Agentation } from "agentation";
+import { JsonLd } from "@/components/json-ld";
+
+const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -33,7 +36,16 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Solomon Akuson", url: "https://www.solomonakuson.com" }],
   creator: "Solomon Akuson",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || "https://gidl.dev"),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    other: process.env.BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION }
+      : undefined,
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -61,6 +73,27 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "Gidl",
+      url: SITE_URL,
+      description:
+        "Beautiful animation primitives for engineers and designers.",
+      author: { "@id": `${SITE_URL}/#person` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Solomon Akuson",
+      url: "https://www.solomonakuson.com",
+      sameAs: ["https://x.com/heysolomon_", "https://github.com/heysolomon"],
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -69,6 +102,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${urbanist.variable} font-sans antialiased`}>
+        <JsonLd data={jsonLd} />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
