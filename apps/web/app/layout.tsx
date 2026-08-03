@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Urbanist } from "next/font/google";
-import { RootProvider } from "fumadocs-ui/provider/next";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Agentation } from "agentation";
 
@@ -23,7 +23,14 @@ export const metadata: Metadata = {
     template: "%s | Gidl",
   },
   description: "Beautiful animation primitives for engineers and designers.",
-  keywords: ["react", "framer motion", "animations", "components", "design engineer", "solomon akuson"],
+  keywords: [
+    "react",
+    "framer motion",
+    "animations",
+    "components",
+    "design engineer",
+    "solomon akuson",
+  ],
   authors: [{ name: "Solomon Akuson", url: "https://www.solomonakuson.com" }],
   creator: "Solomon Akuson",
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || "https://gidl.dev"),
@@ -62,7 +69,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${urbanist.variable} font-sans antialiased`}>
-        <RootProvider>{children}</RootProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
         {process.env.NODE_ENV === "development" && <Agentation />}
       </body>
     </html>

@@ -8,7 +8,10 @@ interface ComponentPreviewProps {
   className?: string;
 }
 
-export function ComponentPreview({ children, className = "" }: ComponentPreviewProps) {
+export function ComponentPreview({
+  children,
+  className = "",
+}: ComponentPreviewProps) {
   const [key, setKey] = useState(0);
   return (
     <div
@@ -16,7 +19,7 @@ export function ComponentPreview({ children, className = "" }: ComponentPreviewP
     >
       <button
         onClick={() => setKey((k) => k + 1)}
-        className="absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
+        className="absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
         aria-label="Reload preview"
         title="Reload preview"
       >

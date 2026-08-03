@@ -7,10 +7,7 @@
 
 /* Tell Tailwind v4 to scan the UI package for utility classes */
 @source "../../../packages/ui/src";
-@source "../node_modules/fumadocs-ui/dist/**/*.js";
 
-@import "fumadocs-ui/css/neutral.css";
-@import "fumadocs-ui/css/preset.css";
 @import "../../../packages/ui/src/styles/design-system.css";
 
 /* Vercel Design Guidelines */
@@ -27,33 +24,6 @@
     --text-base--line-height: 1.6;
     --text-lg: 14px;
     --text-lg--line-height: 1.6;
-}
-
-/* Override Fumadocs default theme to match Gidl landing page neutral palette */
-:root {
-    --color-fd-background: var(--color-white);
-    --color-fd-foreground: var(--color-neutral-900);
-    --color-fd-muted: var(--color-neutral-100);
-    --color-fd-muted-foreground: var(--color-neutral-500);
-    --color-fd-popover: var(--color-white);
-    --color-fd-popover-foreground: var(--color-neutral-900);
-    --color-fd-card: var(--color-white);
-    --color-fd-border: var(--color-neutral-200);
-    --color-fd-primary: var(--color-black);
-    --color-fd-primary-foreground: var(--color-white);
-}
-
-.dark {
-    --color-fd-background: var(--color-neutral-950);
-    --color-fd-foreground: var(--color-neutral-100);
-    --color-fd-muted: var(--color-neutral-900);
-    --color-fd-muted-foreground: var(--color-neutral-400);
-    --color-fd-popover: var(--color-neutral-950);
-    --color-fd-popover-foreground: var(--color-neutral-100);
-    --color-fd-card: var(--color-neutral-950);
-    --color-fd-border: var(--color-neutral-800);
-    --color-fd-primary: var(--color-white);
-    --color-fd-primary-foreground: var(--color-black);
 }
 
 /* Color scheme for proper scrollbar styling in dark mode */
@@ -75,133 +45,16 @@ body {
     box-shadow: 0 0 0 2px hsl(0 0% 50% / 0.3);
 }
 
-/* Fix squished padding and left margin on Fumadocs collapsed sidebar toggle */
-div[data-sidebar-panel] {
-    padding: 6px !important;
-    gap: 4px;
-    padding-left: 12px;
-    margin-left: 12px;
-    /* Pull it slightly more inwards from the left edge for breathing room */
-}
-
-/* Replace Fumadocs Lucide icons globally with Solar Outline (Linear) */
-svg.lucide-panel-left *,
-svg.lucide-sidebar *,
-svg.lucide-search *,
-svg.lucide-chevron-right *,
-svg.lucide-chevron-down *,
-svg.lucide-external-link *,
-svg.lucide-x *,
-svg.lucide-menu * {
-    display: none !important;
-}
-
-svg.lucide-panel-left,
-svg.lucide-sidebar,
-svg.lucide-search,
-svg.lucide-chevron-right,
-svg.lucide-chevron-down,
-svg.lucide-external-link,
-svg.lucide-x,
-svg.lucide-menu {
-    background-color: currentColor;
-    mask-repeat: no-repeat;
-    mask-position: center;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    -webkit-mask-size: contain;
-}
-
-svg.lucide-panel-left,
-svg.lucide-sidebar {
-    mask-image: url("https://api.iconify.design/solar:sidebar-minimalistic-linear.svg");
-    -webkit-mask-image: url("https://api.iconify.design/solar:sidebar-minimalistic-linear.svg");
-}
-
-svg.lucide-search {
-    mask-image: url("https://api.iconify.design/solar:magnifer-linear.svg");
-    -webkit-mask-image: url("https://api.iconify.design/solar:magnifer-linear.svg");
-}
-
-svg.lucide-chevron-right {
-    mask-image: url("https://api.iconify.design/solar:alt-arrow-right-linear.svg");
-    -webkit-mask-image: url("https://api.iconify.design/solar:alt-arrow-right-linear.svg");
-}
-
-svg.lucide-chevron-down {
-    mask-image: url("https://api.iconify.design/solar:alt-arrow-down-linear.svg");
-    -webkit-mask-image: url("https://api.iconify.design/solar:alt-arrow-down-linear.svg");
-}
-
-svg.lucide-external-link {
-    mask-image: url("https://api.iconify.design/solar:arrow-right-up-linear.svg");
-    -webkit-mask-image: url("https://api.iconify.design/solar:arrow-right-up-linear.svg");
-}
-
-svg.lucide-x {
-    mask-image: url("https://api.iconify.design/solar:close-circle-linear.svg");
-    -webkit-mask-image: url("https://api.iconify.design/solar:close-circle-linear.svg");
-}
-
-svg.lucide-menu {
-    mask-image: url("https://api.iconify.design/solar:hamburger-menu-linear.svg");
-    -webkit-mask-image: url("https://api.iconify.design/solar:hamburger-menu-linear.svg");
-}
-
-/* Remove focus ring on search input */
-[cmdk-input]:focus,
-input[type="search"]:focus,
-.fd-search input:focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
 /* Dot pattern for component preview backgrounds */
 .bg-dot-pattern {
-    background-color: var(--color-fd-muted);
+    background-color: var(--color-neutral-100);
     background-image: radial-gradient(circle, var(--color-neutral-300) 1px, transparent 1px);
     background-size: 20px 20px;
 }
 
 .dark .bg-dot-pattern {
+    background-color: var(--color-neutral-900);
     background-image: radial-gradient(circle, var(--color-neutral-700) 1px, transparent 1px);
-}
-
-/* Footer navigation — shadcn-style */
-.nd-footer-link-card {
-    border-radius: 0.75rem;
-    border: 1px solid var(--color-fd-border);
-    padding: 1rem 1.25rem;
-    transition: background-color 0.15s, border-color 0.15s;
-}
-
-.nd-footer-link-card:hover {
-    background-color: var(--color-fd-muted);
-    border-color: var(--color-neutral-300);
-}
-
-.dark .nd-footer-link-card:hover {
-    border-color: var(--color-neutral-700);
-}
-
-/* Code block copy button — show on hover */
-.fd-codeblock [data-copy],
-figure[data-rehype-pretty-code-figure] [data-copy] {
-    opacity: 0;
-    transition: opacity 0.15s;
-}
-
-.fd-codeblock:hover [data-copy],
-figure[data-rehype-pretty-code-figure]:hover [data-copy] {
-    opacity: 1;
-}
-
-/* Remove the active indicator bar ("cursor blinker") on sidebar links */
-[data-active="true"]::before,
-[aria-current="page"]::before,
-.fd-sidebar-item[data-active]::before {
-    display: none !important;
 }
 
 /* Prevent double-tap zoom on interactive elements */

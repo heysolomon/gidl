@@ -1,9 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowRight, Sun, Moon } from "lucide-react";
-import { useTheme } from "next-themes";
-import { GidlLogo } from "@/components/logo";
+import { ArrowRight } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
 import { CollinsCarousel } from "@gidl/ui";
 
 function GitHubIcon({ className }: { className?: string }) {
@@ -19,57 +16,10 @@ function GitHubIcon({ className }: { className?: string }) {
   );
 }
 
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
 export default function Home() {
-  const { theme, setTheme } = useTheme();
-
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
-      {/* Header */}
-      <header className="w-full px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
-        <div className="flex items-center gap-2">
-          <GidlLogo size={16} />
-          <span className="text-[14px] font-bold tracking-tight">gidl</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-            aria-label="Toggle theme"
-          >
-            <Sun className="w-[14px] h-[14px] hidden dark:block" />
-            <Moon className="w-[14px] h-[14px] block dark:hidden" />
-          </button>
-          <a
-            href="https://x.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-          >
-            <XIcon className="w-[14px] h-[14px]" />
-          </a>
-          <a
-            href="https://github.com/heysolomon/gidl"
-            target="_blank"
-            rel="noreferrer"
-            className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-          >
-            <GitHubIcon className="w-[14px] h-[14px]" />
-          </a>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <main className="flex flex-col items-center text-center px-6 pt-20 pb-8 max-w-xl mx-auto">
@@ -85,15 +35,15 @@ export default function Home() {
         <div className="flex items-center gap-3 mt-6">
           <Link
             href="/docs"
-            className="flex items-center gap-1 text-[13px] font-medium text-neutral-900 dark:text-neutral-100 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
+            className="flex items-center gap-1.5 text-[12px] font-medium bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-3.5 py-1.5 rounded-full hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
           >
-            Explore Docs <ArrowRight className="w-3 h-3" />
+            Browse Components <ArrowRight className="w-3 h-3" />
           </Link>
           <a
             href="https://github.com/heysolomon/gidl"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1.5 text-[12px] font-medium bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-3.5 py-1.5 rounded-full hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
+            className="flex items-center gap-1 text-[13px] font-medium text-neutral-900 dark:text-neutral-100 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
           >
             <GitHubIcon className="w-3 h-3" /> Star on GitHub
           </a>
