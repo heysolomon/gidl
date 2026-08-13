@@ -13,13 +13,13 @@ export function CopyLine({ text }: { text: string }) {
   };
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 px-4 py-2.5">
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-neutral-50 dark:bg-neutral-900 px-4 py-2.5">
       <code className="text-[12.5px] font-mono text-neutral-900 dark:text-neutral-100">
         {text}
       </code>
       <button
         onClick={handleCopy}
-        className="shrink-0 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        className="shrink-0 cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
         aria-label="Copy command"
       >
         {copied ? (

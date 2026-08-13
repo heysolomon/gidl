@@ -15,15 +15,20 @@ export function ComponentPreview({
   const [key, setKey] = useState(0);
   return (
     <div
-      className={`relative flex min-h-[350px] w-full items-center justify-center p-10 ${className}`}
+      className={`relative isolate flex min-h-[350px] w-full items-center justify-center p-10 ${className}`}
     >
       <button
         onClick={() => setKey((k) => k + 1)}
-        className="absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+        className="group absolute right-3 top-3 z-10 cursor-pointer text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
         aria-label="Reload preview"
         title="Reload preview"
       >
-        <RotateCcw className="h-3.5 w-3.5" />
+        <RotateCcw
+          key={key}
+          className={`h-3.5 w-3.5 transition-transform duration-200 group-hover:rotate-[15deg] ${
+            key > 0 ? "spin-ccw-once" : ""
+          }`}
+        />
       </button>
       <div key={key} className="flex w-full items-center justify-center">
         {children}

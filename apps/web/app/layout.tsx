@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Urbanist } from "next/font/google";
+import { Caveat, Urbanist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Agentation } from "agentation";
@@ -10,6 +10,12 @@ const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 const urbanist = Urbanist({
   subsets: ["latin"],
   variable: "--font-urbanist",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-caveat",
   display: "swap",
 });
 
@@ -58,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Gidl",
     description: "Beautiful animation primitives for engineers and designers.",
-    creator: "@heysolomon_",
+    creator: "@heysolomon",
   },
   robots: {
     index: true,
@@ -89,7 +95,7 @@ const jsonLd = {
       "@id": `${SITE_URL}/#person`,
       name: "Solomon Akuson",
       url: "https://www.solomonakuson.com",
-      sameAs: ["https://x.com/heysolomon_", "https://github.com/heysolomon"],
+      sameAs: ["https://x.com/heysolomon", "https://github.com/heysolomon"],
     },
   ],
 };
@@ -101,7 +107,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${urbanist.variable} font-sans antialiased`}>
+      <body
+        className={`${urbanist.variable} ${caveat.variable} font-sans antialiased`}
+      >
         <JsonLd data={jsonLd} />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}

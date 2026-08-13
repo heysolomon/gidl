@@ -3,6 +3,8 @@
 import { Carousel, useTicker, useTickerItem } from "@/lib/motion-carousel";
 import { motion, useMotionValueEvent, useTransform } from "motion/react";
 import { useRef } from "react";
+import { PlaceholderImage } from "next-image-placeholder/react";
+import { getPlaceholderAction } from "@/actions/get-location-data";
 
 function CarouselItem({
   item,
@@ -129,12 +131,21 @@ function CarouselItem({
             }}
             className="flex flex-col justify-center will-change-transform"
           >
-            <div className="aspect-[3/4] h-full w-full overflow-hidden rounded-xl md:rounded-2xl">
-              <img
-                draggable={false}
+            <div className="relative aspect-[3/4] h-full w-full overflow-hidden rounded-xl md:rounded-2xl">
+              <PlaceholderImage
                 src={item.src}
+                action={getPlaceholderAction}
                 alt={item.title}
-                className="h-full w-full object-cover"
+                fill
+                fallback={
+                  <div className="absolute inset-0 animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800 md:rounded-2xl" />
+                }
+                className="pointer-events-none object-cover"
+                style={{
+                  userSelect: "none",
+                  // @ts-ignore
+                  WebkitUserDrag: "none",
+                }}
               />
             </div>
             <motion.div
@@ -175,23 +186,23 @@ export default function CollinsCarousel() {
 
 const ITEMS = [
   {
-    src: "https://cdn.midjourney.com/bcf287e4-b28c-4b9a-94cd-18afc3bd408c/0_2.png",
+    src: "/carousel/precision-stylus.png",
     title: "Precision Stylus",
   },
   {
-    src: "https://cdn.midjourney.com/b4d102e1-2a33-4c38-9cfb-3841e698c9cc/0_2.png",
+    src: "/carousel/zenith-kettle.png",
     title: "Zenith Kettle",
   },
   {
-    src: "https://cdn.midjourney.com/a2e325a8-d6c8-4d0c-8864-5883dc0f2100/0_0.png",
+    src: "/carousel/prism-table-lamp.png",
     title: "Prism Table Lamp",
   },
   {
-    src: "https://cdn.midjourney.com/1a172b9e-bef8-46a6-974e-3f3b77fff1a8/0_0.png",
+    src: "/carousel/studio-mic-arm.png",
     title: "Studio Mic Arm",
   },
   {
-    src: "https://cdn.midjourney.com/8ab643f4-b0de-40d7-9355-32272d43a347/0_3.png",
+    src: "/carousel/monitor-stand.png",
     title: "Vertex Monitor Stand",
   },
 ];

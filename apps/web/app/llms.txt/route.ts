@@ -1,5 +1,4 @@
-import { collections } from "@/lib/gallery";
-import { getRegistryItem } from "@/lib/registry";
+import { getAllRegistryItems } from "@/lib/registry";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 
@@ -13,28 +12,25 @@ export async function GET() {
   const lines: string[] = [
     "# Gidl",
     "",
-    "> Animated UI components recreated from inspiration, browsable by collection and installable via CLI.",
+    "> Animated UI components recreated from inspiration, installable via CLI.",
     "",
     `Install any component: \`npx use-gidl add <name>\` or \`npx shadcn@latest add heysolomon/gidl/<name>\`.`,
     "",
     "## Docs",
     "",
-    `- [Collections overview](${SITE_URL}/docs): Browse all component collections.`,
+    `- [Components overview](${SITE_URL}/docs): Browse all components.`,
+    "",
+    "## Components",
     "",
   ];
 
-  for (const collection of collections) {
-    lines.push(`## ${collection.title}`, "");
-    for (const name of collection.components) {
-      const item = getRegistryItem(name);
-      if (!item) continue;
-      const description = stripMarkdownLinks(item.description);
-      lines.push(
-        `- [${item.title}](${SITE_URL}/docs/${collection.slug}/${name}): ${description}`
-      );
-    }
-    lines.push("");
+  for (const item of getAllRegistryItems()) {
+    const description = stripMarkdownLinks(item.description);
+    lines.push(
+      `- [${item.title}](${SITE_URL}/docs/components/${item.name}): ${description}`
+    );
   }
+  lines.push("");
 
   return new Response(lines.join("\n"), {
     headers: {

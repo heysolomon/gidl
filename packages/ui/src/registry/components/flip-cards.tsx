@@ -3,6 +3,8 @@
 import { cn } from "../../lib/utils";
 import { motion, AnimatePresence, useMotionValue, PanInfo } from "motion/react";
 import { useRef, useState } from "react";
+import { PlaceholderImage } from "next-image-placeholder/react";
+import { getPlaceholderAction } from "@/actions/get-location-data";
 
 type ImgItem = { id: number; url: string };
 
@@ -119,16 +121,20 @@ const Card = ({
       // whileDrag={isTopCard ? { scale: 1.05 } : undefined}
       onDragEnd={isTopCard ? handleDragEnd : undefined}
     >
-      <img
+      <PlaceholderImage
         src={card.url}
+        action={getPlaceholderAction}
         alt={`Card ${card.id}`}
-        className="pointer-events-none absolute inset-0 h-full w-full rounded-xl object-cover"
+        fill
+        fallback={
+          <div className="absolute inset-0 animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800" />
+        }
+        className="pointer-events-none rounded-xl object-cover"
         style={{
           userSelect: "none",
           // @ts-ignore
           WebkitUserDrag: "none",
         }}
-        draggable={false}
       />
     </motion.div>
   );

@@ -14,6 +14,10 @@
         {
           "path": "packages/ui/src/registry/components/animated-tabs.tsx",
           "type": "registry:component"
+        },
+        {
+          "path": "apps/web/actions/get-location-data.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -23,11 +27,15 @@
       "title": "Collins Carousel",
       "description": "Carousel Interaction from [Collins](https://wearecollins.com/case-studies/bose), heavily inspired by [Dimi's](https://x.com/dimitribouquin/status/1994085212469248020?s=20) implementation.",
       "registryDependencies": [],
-      "dependencies": ["motion"],
+      "dependencies": ["motion", "next-image-placeholder"],
       "files": [
         {
           "path": "packages/ui/src/registry/components/collins-carousel.tsx",
           "type": "registry:component"
+        },
+        {
+          "path": "apps/web/actions/get-location-data.ts",
+          "type": "registry:lib"
         },
         {
           "path": "apps/web/lib/motion-carousel/Carousel.tsx",
@@ -70,6 +78,10 @@
         {
           "path": "packages/ui/src/registry/components/flip-cards.tsx",
           "type": "registry:component"
+        },
+        {
+          "path": "apps/web/actions/get-location-data.ts",
+          "type": "registry:lib"
         }
       ]
     }

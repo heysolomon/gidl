@@ -22,14 +22,14 @@ export function CodeBlockClient({ files }: { files: CodeFile[] }) {
   };
 
   return (
-    <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
-      <div className="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 px-2">
-        <div className="flex items-center gap-1 overflow-x-auto">
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="flex items-center justify-between border-b border-border bg-muted px-2">
+        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
           {files.map((file, index) => (
             <button
               key={file.path}
               onClick={() => setActiveIndex(index)}
-              className={`px-2.5 py-2 text-[12px] whitespace-nowrap font-mono transition-colors ${
+              className={`px-2.5 py-2 text-[12px] whitespace-nowrap font-mono transition-colors cursor-pointer ${
                 index === activeIndex
                   ? "text-neutral-900 dark:text-neutral-100"
                   : "text-neutral-500 dark:text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
@@ -41,7 +41,7 @@ export function CodeBlockClient({ files }: { files: CodeFile[] }) {
         </div>
         <button
           onClick={handleCopy}
-          className="shrink-0 p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+          className="shrink-0 cursor-pointer p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
           aria-label="Copy code"
         >
           {copied ? (
@@ -51,10 +51,12 @@ export function CodeBlockClient({ files }: { files: CodeFile[] }) {
           )}
         </button>
       </div>
-      <div
-        className="scroll-fade-x text-[12.5px] leading-relaxed overflow-x-auto [&_pre]:p-4 [&_pre]:!bg-transparent"
-        dangerouslySetInnerHTML={{ __html: active?.html ?? "" }}
-      />
+      <div className="max-h-[440px] overflow-y-auto no-scrollbar scroll-fade-y">
+        <div
+          className="scroll-fade-x text-[12.5px] leading-relaxed overflow-x-auto [&_pre]:p-4 [&_pre]:!bg-transparent"
+          dangerouslySetInnerHTML={{ __html: active?.html ?? "" }}
+        />
+      </div>
     </div>
   );
 }

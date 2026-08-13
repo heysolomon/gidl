@@ -2,10 +2,16 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "paths": {
+      // These resolve into apps/web at runtime, via Next.js's
+      // transpilePackages bundling this package's source with apps/web's
+      // own "@/*" -> "./*" alias. This project's own "@/*" below can't
+      // reach them, so they're overridden here for type-checking/IDE
+      // purposes only — this file is never used for bundling.
+      "@/lib/motion-carousel": ["../../apps/web/lib/motion-carousel"],
+      "@/actions/get-location-data": ["../../apps/web/actions/get-location-data"],
+      "@/components/ui/tabs": ["../../apps/web/components/ui/tabs"],
       "@/*": ["./src/*"]
-    },
-    "outDir": "dist",
-    "rootDir": "src"
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]

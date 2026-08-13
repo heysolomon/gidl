@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { Tabs, TabsList } from "@/components/ui/tabs";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "../../lib/utils";
+import { PlaceholderImage } from "next-image-placeholder/react";
+import { getPlaceholderAction } from "@/actions/get-location-data";
 
 
 const locations = [
@@ -134,11 +136,15 @@ export default function AnimatedTabs() {
 
                             <div className="p-2">
                                 <div className="relative aspect-video w-full overflow-hidden rounded-3xl ring-1 ring-black/10">
-                                    <img
+                                    <PlaceholderImage
                                         src={activeLocation.image}
+                                        action={getPlaceholderAction}
                                         alt={activeLocation.title}
-                                        className="absolute inset-0 h-full w-full object-cover"
-                                        draggable={false}
+                                        fill
+                                        fallback={
+                                            <div className="absolute inset-0 animate-pulse rounded-3xl bg-neutral-200 dark:bg-neutral-800" />
+                                        }
+                                        className="object-cover"
                                     />
                                 </div>
                             </div>

@@ -40,10 +40,34 @@ body {
     font-size: 13px;
 }
 
+/* Prevent the macOS/trackpad rubber-band overscroll bounce, which can make
+   position:fixed/sticky elements (header, sidebar) visually shift with the
+   page during the bounce animation */
+html {
+    overscroll-behavior-y: none;
+}
+
 /* Focus visibility - subtle focus rings */
 *:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px hsl(0 0% 50% / 0.3);
+}
+
+/* The command menu's search input already shows focus via its bottom border;
+   the global focus ring above doubles up on it, so opt it out here */
+.command-menu-input:focus-visible {
+    box-shadow: none;
+}
+
+/* Text selection uses the design system's accent color instead of the browser default blue */
+::selection {
+    background-color: var(--color-indigo-200);
+    color: var(--color-indigo-900);
+}
+
+.dark ::selection {
+    background-color: var(--color-accent-primary);
+    color: #ffffff;
 }
 
 /* Prevent double-tap zoom on interactive elements */
@@ -54,6 +78,34 @@ select,
 textarea,
 [role="button"] {
     touch-action: manipulation;
+}
+
+/* Shimmer utility should play once on load, not loop forever */
+.shimmer {
+    animation-iteration-count: 1;
+}
+
+/* Reload button icon: one full counter-clockwise spin on click.
+   Uses the standalone `rotate` property (not `transform`) so it composes
+   cleanly with the `group-hover:rotate-[15deg]` utility on the same element. */
+@keyframes spin-ccw-once {
+    from {
+        rotate: 0deg;
+    }
+    to {
+        rotate: -360deg;
+    }
+}
+
+.spin-ccw-once {
+    animation: spin-ccw-once 500ms ease-in-out;
+}
+
+/* Sticky header: fade its bottom edge so scrolled content dissolves under it
+   instead of being cut off by a hard line */
+.header-fade-mask {
+    mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
 }
 
 /* Reduced motion support */

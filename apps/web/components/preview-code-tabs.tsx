@@ -18,7 +18,7 @@ export function PreviewCodeTabs({
           <button
             key={value}
             onClick={() => setTab(value)}
-            className={`px-3 py-1.5 rounded-full text-[12px] font-medium capitalize transition-colors ${
+            className={`px-3 py-1.5 rounded-full text-[12px] font-medium capitalize transition-colors cursor-pointer ${
               tab === value
                 ? "bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900"
                 : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"

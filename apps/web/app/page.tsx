@@ -27,7 +27,7 @@ export default function Home() {
           Animated components
           <br />I recreate from inspiration
         </h1>
-        <p className="shimmer shimmer-duration-1200 mt-4 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[420px]">
+        <p className="shimmer shimmer-duration-1200 shimmer-color-current/10 mt-4 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[420px]">
           found around the web, rebuilt here for you to explore.
         </p>
 
@@ -39,20 +39,20 @@ export default function Home() {
           >
             Browse Components <ArrowRight className="w-3 h-3" />
           </Link>
-          <a
+          {/* <a
             href="https://github.com/heysolomon/gidl"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1 text-[13px] font-medium text-neutral-900 dark:text-neutral-100 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
           >
             <GitHubIcon className="w-3 h-3" /> Star on GitHub
-          </a>
+          </a> */}
         </div>
       </main>
 
       {/* Component Preview */}
       <section className="flex justify-center px-6 pb-24 pt-8">
-        <div className="w-full max-w-2xl bg-neutral-50 dark:bg-neutral-900 rounded-2xl flex items-center justify-center min-h-[340px]">
+        <div className="w-full max-w-2xl bg-neutral-50 dark:bg-neutral-900 rounded-2xl overflow-hidden flex items-center justify-center min-h-[340px]">
           <CollinsCarousel />
         </div>
       </section>

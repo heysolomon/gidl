@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { collections } from "@/lib/gallery";
+import { getAllRegistryItems } from "@/lib/registry";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 
@@ -17,22 +17,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const collectionRoutes: MetadataRoute.Sitemap = collections.map(
-    (collection) => ({
-      url: `${SITE_URL}/docs/${collection.slug}`,
-      changeFrequency: "weekly",
-      priority: 0.7,
+  const componentRoutes: MetadataRoute.Sitemap = getAllRegistryItems().map(
+    (item) => ({
+      url: `${SITE_URL}/docs/components/${item.name}`,
+      changeFrequency: "monthly",
+      priority: 0.6,
     })
   );
 
-  const componentRoutes: MetadataRoute.Sitemap = collections.flatMap(
-    (collection) =>
-      collection.components.map((name) => ({
-        url: `${SITE_URL}/docs/${collection.slug}/${name}`,
-        changeFrequency: "monthly",
-        priority: 0.6,
-      }))
-  );
-
-  return [...staticRoutes, ...collectionRoutes, ...componentRoutes];
+  return [...staticRoutes, ...componentRoutes];
 }

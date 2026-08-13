@@ -1,8 +1,11 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { GidlLogo } from "@/components/logo";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 function GitHubIcon({ className }: { className?: string }) {
   return (
@@ -30,40 +33,65 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-export function SiteHeader() {
+export function SiteHeader({
+  children,
+  containerClassName = "max-w-5xl mx-auto",
+  showWordmark = true,
+}: {
+  children?: ReactNode;
+  containerClassName?: string;
+  showWordmark?: boolean;
+}) {
   const { theme, setTheme } = useTheme();
 
   return (
-    <header className="w-full px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
-      <a href="/" className="flex items-center gap-2">
-        <GidlLogo size={16} />
-        <span className="text-[14px] font-bold tracking-tight">gidl</span>
-      </a>
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-          aria-label="Toggle theme"
-        >
-          <Sun className="w-[14px] h-[14px] hidden dark:block" />
-          <Moon className="w-[14px] h-[14px] block dark:hidden" />
-        </button>
-        <a
-          href="https://x.com"
-          target="_blank"
-          rel="noreferrer"
-          className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-        >
-          <XIcon className="w-[14px] h-[14px]" />
+    <header className="w-full h-[var(--header-height,4.25rem)]">
+      <div
+        className={cn(
+          "px-6 h-full flex items-center justify-between",
+          containerClassName
+        )}
+      >
+        <a href="/" className="flex items-center gap-2 shrink-0">
+          <GidlLogo size={16} />
+          {showWordmark && (
+            <span className="text-[14px] font-bold tracking-tight">gidl</span>
+          )}
         </a>
-        <a
-          href="https://github.com/heysolomon/gidl"
-          target="_blank"
-          rel="noreferrer"
-          className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-        >
-          <GitHubIcon className="w-[14px] h-[14px]" />
-        </a>
+        <div className="flex items-center gap-3 min-w-0 flex-1 justify-end">
+          {children && (
+            <>
+              <div className="min-w-0 flex-1 flex justify-end sm:flex-none">
+                {children}
+              </div>
+              <Separator orientation="vertical" className="h-4" />
+            </>
+          )}
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="w-7 h-7 flex cursor-pointer items-center justify-center rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            aria-label="Toggle theme"
+          >
+            <Sun className="w-[14px] h-[14px] hidden dark:block" />
+            <Moon className="w-[14px] h-[14px] block dark:hidden" />
+          </button>
+          <a
+            href="https://x.com/heysolomon"
+            target="_blank"
+            rel="noreferrer"
+            className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+          >
+            <XIcon className="w-[14px] h-[14px]" />
+          </a>
+          {/* <a
+            href="https://github.com/heysolomon/gidl"
+            target="_blank"
+            rel="noreferrer"
+            className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+          >
+            <GitHubIcon className="w-[14px] h-[14px]" />
+          </a> */}
+        </div>
       </div>
     </header>
   );
