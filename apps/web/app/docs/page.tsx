@@ -31,7 +31,7 @@ export default function DocsOverviewPage() {
   return (
     <main className="pb-24">
       <JsonLd data={jsonLd} />
-      <div className="max-w-2xl mx-auto mb-10">
+      <div className="max-w-3xl mx-auto mb-10">
         <h1 className="text-[24px] font-bold tracking-tight">
           Glad you found my work
         </h1>
