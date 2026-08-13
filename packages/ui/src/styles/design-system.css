@@ -37,6 +37,17 @@
   --color-indigo-600: #4f46e5;
   --color-indigo-900: #312e81;
 
+  --color-accent-harvest-orange: #ff7b00;
+  --color-accent-dark-orange: #ff8800;
+  --color-accent-deep-saffron: #ff9500;
+  --color-accent-amber-glow: #ffa200;
+  --color-accent-orange: #ffaa00;
+  --color-accent-amber-flame: #ffb700;
+  --color-accent-school-bus-yellow: #ffc300;
+  --color-accent-bright-amber: #ffd000;
+  --color-accent-bright-gold: #ffdd00;
+  --color-accent-sunbeam-yellow: #ffea00;
+
   --color-orange-200: #fed7aa;
   --color-orange-500: #f97316;
   --color-orange-800: #9a3412;
@@ -321,7 +332,7 @@
   --color-border-default: var(--color-neutral-200);
   --color-border-subtle: rgba(115, 115, 115, 0.1);
 
-  --color-accent-primary: var(--color-indigo-500);
+  --color-accent-primary: var(--color-accent-harvest-orange);
 
   /* Shadows for light mode */
   --shadow-material: var(--shadow-fancy);
@@ -341,7 +352,7 @@
   --color-border-default: var(--color-neutral-800);
   --color-border-subtle: var(--color-neutral-900);
 
-  --color-accent-primary: var(--color-indigo-500);
+  --color-accent-primary: var(--color-accent-harvest-orange);
 
   /* Shadows for dark mode */
   --shadow-material: var(--shadow-fancy-dark);

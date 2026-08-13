@@ -11,7 +11,7 @@ const buttonVariants = cva(
         default:
           "bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-100",
         primary:
-          "bg-indigo-500 text-white hover:bg-indigo-600 active:bg-indigo-700",
+          "bg-accent-harvest-orange text-white hover:bg-accent-dark-orange active:bg-accent-deep-saffron",
         outline:
           "border border-neutral-200 bg-transparent text-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800",
         ghost:

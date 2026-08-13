@@ -11,7 +11,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const stateClasses = error
       ? "border-red-500 focus-visible:ring-red-500"
-      : "border-neutral-200 dark:border-neutral-700 focus-visible:ring-indigo-500";
+      : "border-neutral-200 dark:border-neutral-700 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600";
 
     return (
       <input

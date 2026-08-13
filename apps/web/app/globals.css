@@ -59,15 +59,16 @@ html {
     box-shadow: none;
 }
 
-/* Text selection uses the design system's accent color instead of the browser default blue */
+/* Text selection uses a neutral from the design system instead of the browser default blue.
+   The accent (burnt orange) is reserved for drawing attention, e.g. "new" tags on components. */
 ::selection {
-    background-color: var(--color-indigo-200);
-    color: var(--color-indigo-900);
+    background-color: var(--color-neutral-200);
+    color: var(--color-neutral-900);
 }
 
 .dark ::selection {
-    background-color: var(--color-accent-primary);
-    color: #ffffff;
+    background-color: var(--color-neutral-700);
+    color: var(--color-neutral-50);
 }
 
 /* Prevent double-tap zoom on interactive elements */
