@@ -15,6 +15,13 @@ import { DocsToc } from "@/components/docs-toc";
 import { renderDescriptionWithLinks } from "@/lib/render-markdown-links";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
+// "View as Markdown" and "Open in v0" should point at whatever origin is actually
+// serving the page (localhost in dev), not always the production domain.
+const APP_ORIGIN =
+  process.env.NEXT_PUBLIC_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://gidl.dev"
+    : "http://localhost:3000");
 
 export function generateStaticParams() {
   return getAllRegistryItems().map((item) => ({ name: item.name }));
@@ -95,8 +102,8 @@ export default async function ComponentPage(props: {
             <h1 className="text-[22px] font-bold tracking-tight">{item.title}</h1>
             <CopyPageMenu
               markdownPath={`/docs/components/${item.name}/markdown`}
-              markdownUrl={`${pageUrl}/markdown`}
-              registryUrl={`${SITE_URL}/r/${item.name}.json`}
+              markdownUrl={`${APP_ORIGIN}/docs/components/${item.name}/markdown`}
+              registryUrl={`${APP_ORIGIN}/r/${item.name}.json`}
             />
           </div>
           <p className="mt-2 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-xl">

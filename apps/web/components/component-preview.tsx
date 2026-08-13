@@ -25,7 +25,7 @@ export function ComponentPreview({
       >
         <RotateCcw
           key={key}
-          className={`h-3.5 w-3.5 transition-transform duration-200 group-hover:rotate-[15deg] ${
+          className={`h-3.5 w-3.5 transition-transform duration-300 ease-[cubic-bezier(0.215,0.61,0.355,1)] group-hover:rotate-[15deg] ${
             key > 0 ? "spin-ccw-once" : ""
           }`}
         />
