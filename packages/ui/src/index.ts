@@ -2,6 +2,7 @@
 export { default as AnimatedTabs } from "./registry/components/animated-tabs";
 export { default as CollinsCarousel } from "./registry/components/collins-carousel";
 export { FlipCard } from "./registry/components/flip-cards";
+export { AgentationToolbar } from "./registry/components/agentation-toolbar";
 
 // Utilities
 export { cn } from "./lib/utils";

@@ -1,4 +1,5 @@
 import { getComponentFiles, getRegistryItem } from "@/lib/registry";
+import { isRegistryItemVisible } from "@/lib/registry-meta";
 import { buildComponentMarkdown } from "@/lib/docs-markdown";
 
 export async function GET(
@@ -7,7 +8,9 @@ export async function GET(
 ) {
   const { name } = await props.params;
   const item = getRegistryItem(name);
-  if (!item) return new Response("Not found", { status: 404 });
+  if (!item || !isRegistryItemVisible(name)) {
+    return new Response("Not found", { status: 404 });
+  }
 
   const files = await getComponentFiles(name);
   const markdown = buildComponentMarkdown(item, files);

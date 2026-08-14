@@ -8,16 +8,14 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { getAllRegistryItems } from "@/lib/registry";
+import { getDocsNavItems } from "@/lib/registry-meta";
 
 export default function DocsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const items = getAllRegistryItems()
-    .map((item) => ({ name: item.name, title: item.title }))
-    .sort((a, b) => a.title.localeCompare(b.title));
+  const items = getDocsNavItems();
 
   return (
     <div

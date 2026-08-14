@@ -1,4 +1,4 @@
-import { getAllRegistryItems } from "@/lib/registry";
+import { getDocsNavItems } from "@/lib/registry-meta";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 
@@ -24,7 +24,7 @@ export async function GET() {
     "",
   ];
 
-  for (const item of getAllRegistryItems()) {
+  for (const item of getDocsNavItems()) {
     const description = stripMarkdownLinks(item.description);
     lines.push(
       `- [${item.title}](${SITE_URL}/docs/components/${item.name}): ${description}`

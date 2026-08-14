@@ -1,4 +1,4 @@
-import { getAllRegistryItems } from "@/lib/registry";
+import { getDocsNavItems } from "@/lib/registry-meta";
 import { JsonLd } from "@/components/json-ld";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
@@ -12,7 +12,7 @@ export const metadata = {
 };
 
 export default function DocsOverviewPage() {
-  const items = getAllRegistryItems();
+  const items = getDocsNavItems();
 
   const jsonLd = {
     "@context": "https://schema.org",

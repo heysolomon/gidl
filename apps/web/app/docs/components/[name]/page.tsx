@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
+import { getRegistryItem, getComponentFiles } from "@/lib/registry";
 import {
-  getAllRegistryItems,
-  getRegistryItem,
-  getComponentFiles,
-} from "@/lib/registry";
+  getDocsNavItem,
+  getDocsNavItems,
+  isRegistryItemVisible,
+} from "@/lib/registry-meta";
 import { registryComponents } from "@/lib/registry-components";
 import { ComponentPreview } from "@/components/component-preview";
 import { PreviewCodeTabs } from "@/components/preview-code-tabs";
@@ -12,6 +13,7 @@ import { CopyLine } from "@/components/copy-line";
 import { CopyPageMenu } from "@/components/copy-page-menu";
 import { JsonLd } from "@/components/json-ld";
 import { DocsToc } from "@/components/docs-toc";
+import { Pill } from "@/components/pill";
 import { renderDescriptionWithLinks } from "@/lib/render-markdown-links";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
@@ -24,7 +26,7 @@ const APP_ORIGIN =
     : "http://localhost:3000");
 
 export function generateStaticParams() {
-  return getAllRegistryItems().map((item) => ({ name: item.name }));
+  return getDocsNavItems().map((item) => ({ name: item.name }));
 }
 
 export async function generateMetadata(props: {
@@ -32,7 +34,7 @@ export async function generateMetadata(props: {
 }) {
   const { name } = await props.params;
   const item = getRegistryItem(name);
-  if (!item) return {};
+  if (!item || !isRegistryItemVisible(name)) return {};
   return {
     title: item.title,
     description: item.description,
@@ -58,8 +60,9 @@ export default async function ComponentPage(props: {
 }) {
   const { name } = await props.params;
   const item = getRegistryItem(name);
-  if (!item) notFound();
+  if (!item || !isRegistryItemVisible(name)) notFound();
 
+  const navItem = getDocsNavItem(item);
   const Live = registryComponents[name];
   const files = await getComponentFiles(name);
 
@@ -99,7 +102,11 @@ export default async function ComponentPage(props: {
       <div className="relative">
         <div className="min-w-0 max-w-3xl mx-auto w-full">
           <div className="flex items-start justify-between gap-4">
-            <h1 className="text-[22px] font-bold tracking-tight">{item.title}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-[22px] font-bold tracking-tight">{item.title}</h1>
+              {navItem.isNew && <Pill variant="new">New</Pill>}
+              {!navItem.published && <Pill variant="draft">Draft</Pill>}
+            </div>
             <CopyPageMenu
               markdownPath={`/docs/components/${item.name}/markdown`}
               markdownUrl={`${APP_ORIGIN}/docs/components/${item.name}/markdown`}

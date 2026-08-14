@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllRegistryItems } from "@/lib/registry";
+import { getDocsNavItems } from "@/lib/registry-meta";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 
@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const componentRoutes: MetadataRoute.Sitemap = getAllRegistryItems().map(
+  const componentRoutes: MetadataRoute.Sitemap = getDocsNavItems().map(
     (item) => ({
       url: `${SITE_URL}/docs/components/${item.name}`,
       changeFrequency: "monthly",

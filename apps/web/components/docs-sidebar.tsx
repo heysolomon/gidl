@@ -13,10 +13,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Pill } from "@/components/pill";
 
 interface NavItem {
   name: string;
   title: string;
+  isNew?: boolean;
+  published?: boolean;
 }
 
 export function DocsSidebar({ items }: { items: NavItem[] }) {
@@ -45,7 +48,13 @@ export function DocsSidebar({ items }: { items: NavItem[] }) {
                 return (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild isActive={pathname === href}>
-                      <Link href={href}>{item.title}</Link>
+                      <Link href={href} className="flex items-center justify-between gap-2">
+                        <span className="truncate">{item.title}</span>
+                        {item.isNew && <Pill variant="new">New</Pill>}
+                        {item.published === false && (
+                          <Pill variant="draft">Draft</Pill>
+                        )}
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
