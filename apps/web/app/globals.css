@@ -71,6 +71,19 @@ html {
     color: var(--color-neutral-50);
 }
 
+/* Shiki emits per-token colors as --shiki-light/--shiki-dark custom properties
+   (defaultColor: false in lib/highlight.ts) instead of hardcoding one theme —
+   this is what actually applies them per color scheme. */
+.shiki,
+.shiki span {
+    color: var(--shiki-light);
+}
+
+.dark .shiki,
+.dark .shiki span {
+    color: var(--shiki-dark);
+}
+
 /* Prevent double-tap zoom on interactive elements */
 button,
 a,
