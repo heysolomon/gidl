@@ -4,7 +4,7 @@
   "private": true,
   "description": "Design system configuration tool for shadcn/ui projects",
   "scripts": {
-    "registry:build": "npx shadcn@latest build --output apps/web/public/r",
+    "registry:build": "node scripts/build-registry.mjs",
     "dev": "turbo dev",
     "build": "pnpm registry:build && turbo build",
     "lint": "turbo lint",

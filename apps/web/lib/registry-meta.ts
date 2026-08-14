@@ -1,23 +1,22 @@
 import "server-only";
 import { getAllRegistryItems, type RegistryItem } from "@/lib/registry";
+import registryMetaData from "../../../registry-meta.json";
 
 export interface RegistryMeta {
   /** Controls sidebar/search ordering — lower shows first. */
   order: number;
-  /** Unpublished components are only visible outside production. */
+  /** Unpublished components are only visible outside production, and are
+   *  excluded from the public registry JSON (see scripts/build-registry.mjs). */
   published: boolean;
   /** Shows a "New" pill next to the component. */
   isNew?: boolean;
 }
 
 // Not part of registry.json (that file follows shadcn's public registry schema) —
-// this is gidl-only docs metadata layered on top by component name.
-const registryMeta: Record<string, RegistryMeta> = {
-  "animated-tabs": { order: 1, published: true },
-  "collins-carousel": { order: 2, published: true },
-  "flip-cards": { order: 3, published: true },
-  "agentation-toolbar": { order: 4, published: false, isNew: true },
-};
+// this is gidl-only docs metadata layered on top by component name. Kept as a
+// plain JSON file (rather than inline here) so scripts/build-registry.mjs can
+// read the same source of truth without needing a TS/Next.js runtime.
+const registryMeta = registryMetaData as Record<string, RegistryMeta>;
 
 const DEFAULT_META: RegistryMeta = { order: 999, published: true };
 
