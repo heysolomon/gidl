@@ -1,0 +1,891 @@
+/* Circle button that morphs into a wider pill and cross-fades between an
+   icon and a full control row, instead of swapping instantly. */
+
+/* Anchored at a fixed point (the collapsed circle's center) instead of
+   being centered by the preview's flex layout — that would re-center the
+   whole box as it grows, moving both edges outward symmetrically. Here
+   only the width changes; the right edge stays put and it grows leftward. */
+.wrapper {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  /* The drag offset (0,0 until dragged) composes with the fixed anchor
+     translate below, so a drag is applied on top of the resting position
+     rather than replacing it. */
+  --toolbar-drag-x: 0px;
+  --toolbar-drag-y: 0px;
+  transform: translate(calc(22px + var(--toolbar-drag-x)), calc(-22px + var(--toolbar-drag-y)));
+}
+
+.container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  border-radius: 22px;
+  background: #1a1a1a;
+  color: #fff;
+  user-select: none;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.1);
+  /* Only width + transform are transitioned — border-radius and the hover
+     background swap are instant, not faded. */
+  transition:
+    width 0.4s cubic-bezier(0.19, 1, 0.22, 1),
+    transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* No cursor/hover change while actively dragging — stays a plain pointer
+   throughout, never switches to a grab/grabbing cursor. */
+.dragging {
+  transition: none;
+}
+
+.collapsed {
+  width: 44px;
+  cursor: pointer;
+}
+
+.collapsed svg {
+  margin-top: -1px;
+}
+
+/* Hover feedback only exists in the collapsed state — no hover rule once
+   expanded. */
+.collapsed:hover {
+  background: #2a2a2a;
+}
+
+.collapsed:active {
+  transform: scale(0.95);
+}
+
+.expanded {
+  width: 297px;
+  border-radius: 1.5rem;
+  padding: 0.375rem;
+  cursor: default;
+}
+
+.containerLight {
+  background: #fff;
+  color: rgb(0 0 0 / 0.85);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.containerLight.collapsed:hover {
+  background: #f5f5f5;
+}
+
+.containerLight .controlButton {
+  color: rgb(0 0 0 / 0.85);
+}
+
+.containerLight .controlButton:hover {
+  background: rgb(0 0 0 / 0.06);
+  color: #000;
+}
+
+.containerLight .controlButtonMuted {
+  color: rgb(0 0 0 / 0.35);
+}
+
+.containerLight .controlButtonMuted:hover {
+  color: rgb(0 0 0 / 0.85);
+}
+
+.containerLight .divider {
+  background: rgb(0 0 0 / 0.12);
+}
+
+/* Clips the icon/controls layers to the container's current (animated)
+   bounds. Needed because the controls row is always laid out at full width
+   even while collapsed (so its width transition has something to animate
+   from/to) — without this, its buttons would sit outside the 44px circle,
+   invisible but still hit-testable (nested .visible layers set
+   pointer-events: auto !important, which wins over the row's own
+   pointer-events: none while hidden). Kept separate from .container itself
+   so the badge, which intentionally overflows the circle's edge, isn't
+   clipped along with it. */
+.contentClip {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+/* Only clip while collapsed — once expanded the container is already the
+   controls row's natural width, so nothing overflows it, and the button
+   tooltips (which pop up above the 44px-tall box) need to escape this box
+   to be visible. */
+.clipCollapsed {
+  overflow: hidden;
+}
+
+/* Both states live in the DOM at all times, stacked via position: absolute —
+   that's what makes the swap a crossfade instead of a jump-cut. This one
+   (the collapsed icon) is a plain, fast opacity fade: no scale, no blur.
+   That heavier treatment only belongs to .controlsLayer below. */
+.iconLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.iconLayer.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.iconLayer.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The control row uses a heavier "materialize" cross-fade — blur +
+   scale-down + fade, not a plain opacity swap — deliberately slower and
+   more dramatic than the icon fade above. */
+.controlsLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  transition:
+    filter 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+    transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.controlsLayer.visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.controlsLayer.hidden {
+  opacity: 0;
+  filter: blur(10px);
+  transform: scale(0.4);
+  pointer-events: none;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 0.375rem;
+}
+
+/* --- icon-row control buttons --- */
+
+.controlButton {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.controlButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.controlButton:active {
+  transform: scale(0.92);
+}
+
+.controlButtonActive {
+  color: var(--toolbar-accent, #818cf8);
+  background: color-mix(in srgb, var(--toolbar-accent, #6366f1) 25%, transparent);
+}
+
+.controlButtonActive:hover {
+  background: color-mix(in srgb, var(--toolbar-accent, #6366f1) 32%, transparent);
+}
+
+.controlButtonDanger:hover {
+  color: #fb7185;
+  background: color-mix(in srgb, #dc2626 25%, transparent);
+}
+
+/* Resting look for controls that need an active annotation session to do
+   anything — dimmed until hovered, rather than a real disabled state, so
+   the crossfade/pop demo underneath is still explorable on click. */
+.controlButtonMuted {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.controlButtonMuted:hover {
+  color: #fff;
+}
+
+.divider {
+  width: 1px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 0.125rem;
+  flex-shrink: 0;
+}
+
+.iconSuccess {
+  color: #22c55e;
+}
+
+@keyframes iconSending {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.sending {
+  animation: iconSending 0.7s ease-in-out infinite;
+}
+
+/* Small crossfade used inside a control button for the "animated" icons
+   (copy -> check, eye open/closed, play/pause). Visually the same
+   opacity+scale crossfade as .visible/.hidden, but deliberately its own
+   pair WITHOUT touching pointer-events: those two layers sit inside a
+   button that's already the real click target, and while the whole
+   control row is hidden (collapsed toolbar), .visible's pointer-events:
+   auto !important would otherwise win over the row's own pointer-events:
+   none and make these icons clickable through the collapsed pill. */
+.iconCross {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.iconCrossLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.crossVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.crossHidden {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+/* --- per-button tooltip (bottom: calc(100% + 14px), 0.85s hover delay) --- */
+
+.controlButtonWrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.buttonTooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.135s ease,
+    transform 0.135s ease,
+    visibility 0.135s ease;
+  transition-delay: 0.85s;
+}
+
+.buttonTooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #1a1a1a;
+  transform: translateX(-50%) translateY(-50%) rotate(45deg);
+}
+
+.controlButtonWrap:hover .buttonTooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+}
+
+.tooltipsInSession .buttonTooltip {
+  transition-delay: 0s;
+}
+
+/* --- entrance / exit for the whole widget --- */
+
+@keyframes toolbarEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(90deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.entrance {
+  animation: toolbarEnter 0.5s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+}
+
+/* --- settings panel ---
+   Carries its own light/dark toggle, independent of the host page's theme —
+   modeled with custom properties (swapped via a light/dark class) instead
+   of duplicating every rule under two selectors. */
+
+.settingsPanel {
+  --panel-bg: #1a1a1a;
+  --panel-fg: #fff;
+  --panel-muted: rgb(255 255 255 / 0.5);
+  --panel-hover: rgba(255, 255, 255, 0.1);
+  --panel-divider: rgb(255 255 255 / 0.07);
+
+  position: absolute;
+  right: 5px;
+  bottom: calc(100% + 0.5rem);
+  width: 100%;
+  max-width: 253px;
+  min-width: 205px;
+  border-radius: 16px;
+  padding: 12px 0;
+  background: var(--panel-bg);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: var(--panel-fg);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.settingsPanelLight {
+  --panel-bg: #ffffff;
+  --panel-fg: #171717;
+  --panel-muted: rgb(0 0 0 / 0.5);
+  --panel-hover: rgba(0, 0, 0, 0.06);
+  --panel-divider: rgb(0 0 0 / 0.07);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.panelEnter {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.panelExit {
+  opacity: 0;
+  transform: translateY(8px) scale(0.95);
+  filter: blur(5px);
+  pointer-events: none;
+  transition:
+    opacity 0.1s ease,
+    transform 0.1s ease,
+    filter 0.1s ease;
+}
+
+/* --- main/automations page swap ---
+   Both pages are always mounted; the main page nudges left and fades out
+   while the automations page (absolutely positioned over it, starting
+   24px to the right) nudges left into view and fades in — a subtle
+   slide+crossfade, not a full carousel-style slide-off. */
+.settingsPanelContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.settingsPageMain {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.settingsPageMain.slideLeft {
+  transform: translateX(-24px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.settingsPageAutomations {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.settingsPageAutomations.slideIn {
+  transform: translateX(-24px);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settingsNavLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 24px;
+  padding: 0 16px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  line-height: 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgb(255 255 255 / 0.5);
+  transition: color 0.15s ease;
+  cursor: pointer;
+}
+
+.settingsNavLink:hover {
+  color: rgb(255 255 255 / 0.9);
+}
+
+.settingsPanelLight .settingsNavLink {
+  color: rgb(0 0 0 / 0.5);
+}
+
+.settingsPanelLight .settingsNavLink:hover {
+  color: rgb(0 0 0 / 0.8);
+}
+
+.settingsBackButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  margin: 0 16px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  line-height: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.15px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.settingsPanelLight .settingsBackButton {
+  color: rgb(0 0 0 / 0.85);
+}
+
+.automationHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: #fff;
+}
+
+.settingsPanelLight .automationHeader {
+  color: rgb(0 0 0 / 0.85);
+}
+
+.automationDescription {
+  font-size: 0.6875rem;
+  font-weight: 300;
+  color: rgb(255 255 255 / 0.5);
+  margin-top: 2px;
+  line-height: 14px;
+}
+
+.settingsPanelLight .automationDescription {
+  color: rgb(0 0 0 / 0.5);
+}
+
+.learnMoreLink {
+  color: rgb(255 255 255 / 0.8);
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: rgb(255 255 255 / 0.2);
+  text-underline-offset: 2px;
+}
+
+.settingsPanelLight .learnMoreLink {
+  color: rgb(0 0 0 / 0.6);
+  text-decoration-color: rgb(0 0 0 / 0.2);
+}
+
+.autoSendContainer {
+  display: flex;
+  align-items: center;
+}
+
+.autoSendLabel {
+  padding-inline-end: 8px;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.autoSendLabelActive {
+  color: #66b8ff;
+}
+
+.settingsPanelLight .autoSendLabel {
+  color: rgb(0 0 0 / 0.4);
+}
+
+.settingsPanelLight .autoSendLabelActive {
+  color: var(--toolbar-accent, #0088ff);
+}
+
+.webhookUrlInput {
+  display: block;
+  width: 100%;
+  min-height: 60px;
+  box-sizing: border-box;
+  margin-top: 11px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #fff;
+  outline: none;
+  resize: none;
+}
+
+.webhookUrlInput::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.settingsPanelLight .webhookUrlInput {
+  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.03);
+  color: rgb(0 0 0 / 0.85);
+}
+
+.settingsPanelLight .webhookUrlInput::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.settingsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+  padding: 0 16px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.settingsBrand {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.settingsPanelLight .settingsBrand {
+  color: #e5484d;
+}
+
+.themeToggleBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--panel-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.themeToggleBtn:hover {
+  background: var(--panel-hover);
+}
+
+.themeIcon {
+  animation: themeIconIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes themeIconIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) rotate(-30deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.panelDivider {
+  height: 1px;
+  background: var(--panel-divider);
+  margin: 8px 0;
+}
+
+.settingsSection {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settingsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 24px;
+  gap: 12px;
+}
+
+.settingsLabel {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.15px;
+  color: var(--panel-muted);
+}
+
+/* --- switch --- */
+
+.switchTrack {
+  position: relative;
+  width: 24px;
+  height: 16px;
+  border-radius: 8px;
+  background: #52525b;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.switchTrackOn {
+  background: var(--toolbar-accent, #6366f1);
+}
+
+.switchThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.switchThumbOn {
+  transform: translateX(8px);
+}
+
+/* --- cycle button (label swaps with a short slide+fade) --- */
+
+.cycleButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--panel-fg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.0094em;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cycleLabel {
+  animation: cycleTextIn 0.2s ease-out;
+}
+
+@keyframes cycleTextIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cycleDots {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cycleDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.3);
+  transform: scale(0.667);
+  transition:
+    transform 0.25s ease-out,
+    background-color 0.25s ease-out;
+}
+
+.settingsPanelLight .cycleDot {
+  background: rgb(0 0 0 / 0.2);
+}
+
+.cycleDotActive {
+  background: #fff;
+  transform: scale(1);
+}
+
+.settingsPanelLight .cycleDotActive {
+  background: rgb(0 0 0 / 0.7);
+}
+
+/* --- color swatches --- */
+
+.markerColorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  height: 26px;
+}
+
+.swatch {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background-color: #1a1a1a;
+}
+
+.settingsPanelLight .swatch {
+  background-color: #fff;
+}
+
+/* Selected state is two overlapping same-color circles rather than a
+   border ring: the front one (::before) shrinks to reveal the swatch's own
+   background as a thin gap, while a second, larger one (::after) sits
+   behind it at z-index -1 and fades in — together reading as a halo. */
+.swatch::before,
+.swatch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--swatch-color);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.swatch::after {
+  z-index: -1;
+  transform: scale(1.2);
+  opacity: 0;
+}
+
+.swatchSelected::before {
+  transform: scale(0.8);
+}
+
+.swatchSelected::after {
+  opacity: 1;
+}
+
+/* --- checkbox (Clear on copy/send, Block page interactions) --- */
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 24px;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.checkboxBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--panel-divider);
+  color: transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.checkboxBoxChecked {
+  background: var(--toolbar-accent, #6155f5);
+  border-color: var(--toolbar-accent, #6155f5);
+  color: #fff;
+}

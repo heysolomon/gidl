@@ -89,12 +89,16 @@
       "name": "agentation-toolbar",
       "type": "registry:block",
       "title": "Agentation Toolbar",
-      "description": "An expandable floating toolbar trigger that morphs between a sparkle icon and a close icon.",
+      "description": "A floating feedback toolbar that morphs between a collapsed trigger and a full control row, recreating the look and motion of [agentation](https://github.com/benjitaylor/agentation)'s page toolbar.",
       "registryDependencies": [],
-      "dependencies": [],
+      "dependencies": ["lucide-react"],
       "files": [
         {
           "path": "packages/ui/src/registry/components/agentation-toolbar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "packages/ui/src/registry/components/agentation-toolbar.module.css",
           "type": "registry:component"
         }
       ]

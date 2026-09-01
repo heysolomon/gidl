@@ -85,7 +85,10 @@ export default function DocsOverviewPage() {
             </a>{" "}
             means a lot.
           </p>
-          <p>More coming.</p>
+          <p>
+            I&apos;m already working on a couple new components to add in.
+            This is just the start.
+          </p>
         </div>
         <p
           className="mt-6 text-[20px] text-neutral-700 dark:text-neutral-300"
