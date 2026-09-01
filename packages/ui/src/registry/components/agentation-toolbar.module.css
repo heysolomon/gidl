@@ -99,6 +99,18 @@
   color: rgb(0 0 0 / 0.85);
 }
 
+/* Same specificity fight as .controlButtonActive above, but
+   .containerLight .controlButton outranks the base fix too — needs the
+   same specificity (container class + button class) to win in light mode,
+   resting and hovered. */
+.containerLight .controlButtonActive {
+  color: var(--toolbar-accent, #6155f5);
+}
+
+.containerLight .controlButtonActive:hover {
+  color: var(--toolbar-accent, #6155f5);
+}
+
 .containerLight .divider {
   background: rgb(0 0 0 / 0.12);
 }
@@ -224,6 +236,11 @@
 }
 
 .controlButtonActive:hover {
+  /* .controlButton:hover has the same specificity (class + pseudo-class)
+     and sets color: #fff — without redeclaring it here too, that rule wins
+     on source order and the accent color is lost the moment you hover an
+     active button (which you almost always are, right after clicking it). */
+  color: var(--toolbar-accent, #818cf8);
   background: color-mix(in srgb, var(--toolbar-accent, #6366f1) 32%, transparent);
 }
 
