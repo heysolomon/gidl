@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useMotionValue, PanInfo } from "motion/react";
 import { useRef, useState } from "react";
 import { PlaceholderImage } from "next-image-placeholder/react";

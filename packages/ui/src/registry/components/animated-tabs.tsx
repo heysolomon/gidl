@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Tabs, TabsList } from "@/components/ui/tabs";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import { PlaceholderImage } from "next-image-placeholder/react";
 import { getPlaceholderAction } from "@/actions/get-location-data";
 
