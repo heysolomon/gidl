@@ -39,14 +39,14 @@ export default function Home() {
           >
             Browse Components <ArrowRight className="w-3 h-3" />
           </Link>
-          {/* <a
+          <a
             href="https://github.com/heysolomon/gidl"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1 text-[13px] font-medium text-neutral-900 dark:text-neutral-100 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
           >
             <GitHubIcon className="w-3 h-3" /> Star on GitHub
-          </a> */}
+          </a>
         </div>
       </main>
 
