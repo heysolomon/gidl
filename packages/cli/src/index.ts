@@ -44,7 +44,7 @@ program
   )
   .option("--no-install", "Skip installing npm dependencies")
   .action(async (component, options) => {
-    console.log(chalk.bold("\n✨ Gidl - Adding component...\n"));
+    console.log(chalk.bold("\n🌼 Gidl - Adding component...\n"));
 
     try {
       console.log(chalk.gray("Fetching registry..."));
