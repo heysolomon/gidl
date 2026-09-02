@@ -8,7 +8,7 @@
       // reach them, so they're overridden here for type-checking/IDE
       // purposes only — this file is never used for bundling.
       "@/lib/motion-carousel": ["../../apps/web/lib/motion-carousel"],
-      "@/actions/get-location-data": ["../../apps/web/actions/get-location-data"],
+      "@/actions/get-image-placeholder": ["../../apps/web/actions/get-image-placeholder"],
       "@/components/ui/tabs": ["../../apps/web/components/ui/tabs"],
       "@/*": ["./src/*"]
     }

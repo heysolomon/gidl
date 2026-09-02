@@ -4,7 +4,7 @@ import { Carousel, useTicker, useTickerItem } from "@/lib/motion-carousel";
 import { motion, useMotionValueEvent, useTransform } from "motion/react";
 import { useRef } from "react";
 import { PlaceholderImage } from "next-image-placeholder/react";
-import { getPlaceholderAction } from "@/actions/get-location-data";
+import { getPlaceholderAction } from "@/actions/get-image-placeholder";
 
 function CarouselItem({
   item,

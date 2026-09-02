@@ -6,7 +6,7 @@ import { Tabs, TabsList } from "@/components/ui/tabs";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "@/lib/utils";
 import { PlaceholderImage } from "next-image-placeholder/react";
-import { getPlaceholderAction } from "@/actions/get-location-data";
+import { getPlaceholderAction } from "@/actions/get-image-placeholder";
 
 
 const locations = [

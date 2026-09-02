@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useMotionValue, PanInfo } from "motion/react";
 import { useRef, useState } from "react";
 import { PlaceholderImage } from "next-image-placeholder/react";
-import { getPlaceholderAction } from "@/actions/get-location-data";
+import { getPlaceholderAction } from "@/actions/get-image-placeholder";
 
 type ImgItem = { id: number; url: string };
 

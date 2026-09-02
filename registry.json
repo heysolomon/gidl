@@ -16,7 +16,7 @@
           "type": "registry:component"
         },
         {
-          "path": "apps/web/actions/get-location-data.ts",
+          "path": "apps/web/actions/get-image-placeholder.ts",
           "type": "registry:lib"
         }
       ]
@@ -34,7 +34,7 @@
           "type": "registry:component"
         },
         {
-          "path": "apps/web/actions/get-location-data.ts",
+          "path": "apps/web/actions/get-image-placeholder.ts",
           "type": "registry:lib"
         },
         {
@@ -80,7 +80,7 @@
           "type": "registry:component"
         },
         {
-          "path": "apps/web/actions/get-location-data.ts",
+          "path": "apps/web/actions/get-image-placeholder.ts",
           "type": "registry:lib"
         }
       ]
