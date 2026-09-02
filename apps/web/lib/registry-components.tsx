@@ -1,4 +1,10 @@
-import { AgentationToolbar, AnimatedTabs, CollinsCarousel, FlipCard } from "@gidl/ui";
+import {
+  AgentationToolbar,
+  AnimatedTabs,
+  CollinsCarousel,
+  FlipCard,
+  SidebarList,
+} from "@gidl/ui";
 import type { ComponentType } from "react";
 
 export const registryComponents: Record<string, ComponentType> = {
@@ -6,4 +12,5 @@ export const registryComponents: Record<string, ComponentType> = {
   "collins-carousel": CollinsCarousel,
   "flip-cards": FlipCard,
   "agentation-toolbar": AgentationToolbar,
+  "sidebar-list": SidebarList,
 };

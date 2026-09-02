@@ -2,5 +2,6 @@
   "animated-tabs": { "order": 1, "published": true },
   "collins-carousel": { "order": 2, "published": true },
   "flip-cards": { "order": 3, "published": true },
-  "agentation-toolbar": { "order": 4, "published": false, "isNew": true }
+  "agentation-toolbar": { "order": 4, "published": false, "isNew": true },
+  "sidebar-list": { "order": 5, "published": false, "isNew": true }
 }

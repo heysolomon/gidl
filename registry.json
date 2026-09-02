@@ -9,7 +9,13 @@
       "title": "Animated Tabs",
       "description": "Animated tabs component inspired by [Raul](https://x.com/raul_dronca/status/1994085212469248020?s=20).",
       "registryDependencies": ["tabs"],
-      "dependencies": ["motion", "next-image-placeholder", "clsx", "tailwind-merge"],
+      "dependencies": [
+        "motion",
+        "next-image-placeholder",
+        "clsx",
+        "tailwind-merge",
+        "@radix-ui/react-tabs"
+      ],
       "files": [
         {
           "path": "packages/ui/src/registry/components/animated-tabs.tsx",
@@ -82,6 +88,20 @@
         {
           "path": "apps/web/actions/get-image-placeholder.ts",
           "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-list",
+      "type": "registry:block",
+      "title": "Sidebar List",
+      "description": "An animated, selectable sidebar list with a sliding active-state indicator, an add action, and a collapsible panel.",
+      "registryDependencies": [],
+      "dependencies": ["motion", "lucide-react"],
+      "files": [
+        {
+          "path": "packages/ui/src/registry/components/sidebar-list.tsx",
+          "type": "registry:component"
         }
       ]
     },
