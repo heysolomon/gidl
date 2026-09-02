@@ -3,332 +3,113 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Turborepo](https://img.shields.io/badge/built%20with-Turborepo-cc00ff.svg)](https://turbo.build/)
 
-A design system configuration tool for shadcn/ui projects, built with the comprehensive gidl design system.
+Animated UI components, recreated from inspiration found around the web and rebuilt as a [shadcn/ui](https://ui.shadcn.com) registry — copy them into your own project with a single command, no npm dependency to manage.
+
+**[gidl.dev](https://gidl.dev)** · [Browse components](https://gidl.dev/docs)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fheysolomon%2Fgidl)
 
-## 🏗️ Project Structure
+## Install a component
+
+Every component is installed straight into your own codebase via the [shadcn CLI](https://ui.shadcn.com/docs/cli) — you own the code, and its npm dependencies (Motion, Radix primitives, etc.) are installed automatically alongside it.
+
+```bash
+npx shadcn@latest add https://gidl.dev/r/animated-tabs.json
+```
+
+### Available components
+
+| Component                                                             | Install                                                          |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [Animated Tabs](https://gidl.dev/docs/components/animated-tabs)       | `npx shadcn@latest add https://gidl.dev/r/animated-tabs.json`    |
+| [Collins Carousel](https://gidl.dev/docs/components/collins-carousel) | `npx shadcn@latest add https://gidl.dev/r/collins-carousel.json` |
+| [Flip Cards](https://gidl.dev/docs/components/flip-cards)             | `npx shadcn@latest add https://gidl.dev/r/flip-cards.json`       |
+
+More components ship regularly — see [gidl.dev/docs](https://gidl.dev/docs) for the full, current list.
+
+## Project structure
 
 This is a monorepo powered by [Turborepo](https://turbo.build/repo) and [pnpm workspaces](https://pnpm.io/workspaces).
 
 ```
 gidl/
 ├── apps/
-│   └── web/                    # Landing page (Next.js 16 + App Router + Turbopack)
+│   └── web/                        # gidl.dev — docs site + the registry HTTP endpoints
+│       ├── app/docs/                   # Component docs pages
+│       └── public/r/                   # Built registry JSON, served at gidl.dev/r/*.json
 ├── packages/
-│   ├── ui/                     # Shared UI components & design system
+│   ├── ui/
 │   │   └── src/
-│   │       ├── components/     # React components
-│   │       └── styles/         # Design system CSS (Tailwind v4)
-│   └── config/                 # Shared configurations
-│       ├── tailwind.config.ts  # Base Tailwind config
-│       └── tsconfig.json       # Base TypeScript config
-├── package.json                # Root package.json
-├── pnpm-workspace.yaml         # pnpm workspace configuration
-└── turbo.json                  # Turborepo configuration
+│   │       ├── registry/components/    # Source for every installable component
+│   │       ├── components/             # Internal building blocks for the docs site
+│   │       └── styles/                 # gidl's own design system (used by apps/web)
+│   └── config/                     # Shared Tailwind & TypeScript config
+├── registry.json                   # Registry source of truth (shadcn schema)
+├── registry-meta.json              # Docs ordering + published/draft status per item
+├── scripts/build-registry.mjs      # Builds registry.json → apps/web/public/r/*.json
+└── turbo.json
 ```
 
-## 🎨 Design System
-
-The **gidl Design System** is fully implemented using Tailwind CSS v4's new `@theme` inline directive syntax. It includes:
-
-### Core Features
-
-- **Complete Color Palette** - Light & dark mode support with CSS custom properties
-- **Variable Fonts** - OpenType font variation settings ('opsz', 'wght')
-- **Typography Scale** - Carefully crafted font sizes, weights, and line heights
-- **Custom Shadows** - Elevation system with material glass effects
-- **Animations** - Keyframe animations with custom easing functions
-- **Component Styles** - Pre-built styles for badges, buttons, quotes, links, and more
-- **Responsive Design** - Mobile-first approach with breakpoint system
-- **Dark Mode** - Class-based theme switching with runtime CSS custom properties
-
-### Design Tokens
-
-All design tokens are defined in [`packages/ui/src/styles/design-system.css`](./packages/ui/src/styles/design-system.css) using the `@theme` directive:
-
-- **Colors**: Neutrals, grays, silver, indigo, orange, amber, red, rose, and map pins
-- **Typography**: Font families, sizes (xs to 5xl), weights, line heights, letter spacing
-- **Spacing**: 0 to 32rem scale (following 4px base unit)
-- **Shadows**: elevation-sm, elevation-md, fancy, fancyDark, dark, border
-- **Border Radius**: sm, default, md, lg, xl, 2xl, full
-- **Timing Functions**: in-expo, out-expo, spring
-- **Animations**: spin-slow, scale, fadeIn, shake, bannerFadeIn
-- **Container**: Max-width and responsive padding
-
-## 🚀 Getting Started
+## Local development
 
 ### Prerequisites
 
 - **Node.js** >= 20.0.0
 - **pnpm** >= 9.0.0
 
-### Installation
-
-1. **Install dependencies**:
+### Setup
 
 ```bash
 pnpm install
-```
-
-2. **Run the development server**:
-
-```bash
 pnpm dev
 ```
 
-This will start:
+This starts the docs site at [http://localhost:3000](http://localhost:3000) with hot reload across all packages.
 
-- Web app at [http://localhost:3000](http://localhost:3000)
-- Hot reload enabled across all packages
-- Turborepo's TUI for monitoring tasks
-
-3. **Open your browser** and navigate to `http://localhost:3000` to see the design system demo.
-
-### Available Scripts
+### Available scripts
 
 ```bash
-# Development
-pnpm dev          # Start all apps in development mode
-
-# Build
-pnpm build        # Build all apps and packages
-
-# Lint
-pnpm lint         # Run ESLint across all workspaces
-
-# Type Check
-pnpm type-check   # Run TypeScript type checking
-
-# Clean
-pnpm clean        # Remove all node_modules and build artifacts
-
-# Format
-pnpm format       # Format code with Prettier
+pnpm dev            # Start the docs site in development mode
+pnpm build          # Build the registry JSON, then build all apps/packages
+pnpm registry:build  # Build apps/web/public/r/*.json from registry.json
+pnpm lint            # Run ESLint across all workspaces
+pnpm type-check      # Run TypeScript type checking
+pnpm format          # Format code with Prettier
+pnpm clean           # Remove all node_modules and build artifacts
 ```
 
-## 📦 Packages
+## Adding a new component to the registry
 
-### `@gidl/ui`
+1. Add the component's source to `packages/ui/src/registry/components/`.
+2. Register it as an item in `registry.json` (name, title, description, `dependencies` for every npm package it imports, `registryDependencies` for any official shadcn primitives it needs, and its `files`).
+3. Add an entry to `registry-meta.json` — set `published: false` while it's still a draft; drafts render at `/docs/components/<name>` in development only, and are excluded from the public `/r/*.json` output.
+4. Export it from `packages/ui/src/index.ts`, and add it to the preview map in `apps/web/lib/registry-components.tsx`.
+5. Run `pnpm registry:build` to regenerate the public registry JSON.
 
-Shared UI component library with the complete gidl design system.
+Flip `published: true` in `registry-meta.json` once it's ready to ship.
 
-**Exports:**
-
-- `ThemeProvider` - React context provider for theme management
-- `ThemeToggle` - Theme switcher component
-- `Badge`, `LiveBadge` - Badge components with variants
-- `Button`, `IconButton` - Button components
-- `Quote` - Blockquote component
-- Design system CSS via `@gidl/ui/styles`
-
-**Usage:**
-
-```tsx
-import { Badge, Button, ThemeProvider } from "@gidl/ui";
-import "@gidl/ui/styles";
-
-function App() {
-  return (
-    <ThemeProvider>
-      <Badge variant="featured">New</Badge>
-      <Button variant="primary">Click me</Button>
-    </ThemeProvider>
-  );
-}
-```
-
-### `@gidl/config`
-
-Shared configuration files for Tailwind CSS and TypeScript.
-
-**Exports:**
-
-- `tailwind.config.ts` - Base Tailwind configuration
-- `tsconfig.json` - Base TypeScript configuration
-
-## 🎯 Design System Features
-
-### Color System
-
-The design system includes:
-
-- **Light Mode**: Gray-50 background, neutral-800 text, white surfaces
-- **Dark Mode**: Neutral-950 background, silver text, neutral-900 surfaces
-- **Accent Colors**: Indigo (primary), orange, amber, red, rose
-- **Semantic Colors**: Info, success, warning, error
-- **CSS Custom Properties**: Runtime theme switching
-
-### Typography
-
-Variable font implementation with OpenType axes:
-
-```css
-/* Base text */
-font-variation-settings:
-  "opsz" 15,
-  "wght" 450;
-
-/* Headings */
-font-variation-settings:
-  "opsz" 24,
-  "wght" 650;
-
-/* Meta text */
-font-variation-settings:
-  "opsz" 14,
-  "wght" 400;
-```
-
-### Material Glass Effect
-
-Pre-built utility class for glassmorphism:
-
-```tsx
-<div className="material-glass">
-  {/* Content with backdrop blur and translucent background */}
-</div>
-```
-
-### Responsive Breakpoints
-
-```
-sm:  640px   - Tablet portrait
-md:  768px   - Tablet landscape
-lg:  1024px  - Desktop
-xl:  1280px  - Large desktop
-2xl: 1536px  - Extra large desktop
-```
-
-## 🔧 Tech Stack
+## Tech stack
 
 - **Framework**: [Next.js 16](https://nextjs.org/) with App Router & Turbopack
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Animation**: [Framer Motion](https://www.framer.com/motion/)
-- **Monorepo**: [Turborepo](https://turbo.build/repo)
-- **Package Manager**: [pnpm](https://pnpm.io/)
+- **Animation**: [Motion](https://motion.dev/)
+- **Component distribution**: [shadcn](https://ui.shadcn.com) registry format
+- **Monorepo**: [Turborepo](https://turbo.build/repo) + [pnpm](https://pnpm.io/)
 - **React**: React 19
 
-## 📁 Adding New Apps
+## Customizing gidl's own design system
 
-To add a new app to the monorepo:
+The docs site's look (colors, typography, shadows, animations) is defined in [`packages/ui/src/styles/design-system.css`](./packages/ui/src/styles/design-system.css) using Tailwind v4's `@theme` directive. This only affects gidl.dev itself — it isn't shipped as part of any installed component.
 
-1. **Create a new directory** in `apps/`:
+## Contributing
 
-```bash
-mkdir apps/my-new-app
-```
+Contributions are welcome! Please review our [Contributing Guidelines](CONTRIBUTING.md) to get started, and ensure that you follow our [Code of Conduct](CODE_OF_CONDUCT.md) in all community interactions.
 
-2. **Initialize the app** (e.g., with Next.js):
-
-```bash
-cd apps/my-new-app
-pnpm create next-app@latest . --typescript --tailwind --app --no-src-dir
-```
-
-3. **Update `package.json`** to use workspace dependencies:
-
-```json
-{
-  "dependencies": {
-    "@gidl/ui": "workspace:*"
-  },
-  "devDependencies": {
-    "@gidl/config": "workspace:*"
-  }
-}
-```
-
-4. **Import the design system** in your app:
-
-```tsx
-// app/layout.tsx
-import "@gidl/ui/styles";
-import { ThemeProvider } from "@gidl/ui";
-```
-
-5. **Update `tailwind.config.ts`** to include the UI package:
-
-```ts
-const config: Config = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
-  ],
-  darkMode: "class",
-};
-```
-
-6. **Run the development server**:
-
-```bash
-pnpm dev
-```
-
-## 🎨 Customizing the Design System
-
-All design tokens are centralized in [`packages/ui/src/styles/design-system.css`](./packages/ui/src/styles/design-system.css).
-
-### Changing Colors
-
-Edit the `@theme` block:
-
-```css
-@theme {
-  --color-indigo-500: #your-color;
-}
-```
-
-### Adding Custom Shadows
-
-Define new shadow tokens:
-
-```css
-@theme {
-  --shadow-custom: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-```
-
-### Creating New Animations
-
-Add keyframes and reference them:
-
-```css
-@keyframes customAnimation {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@theme {
-  --animate-custom: customAnimation 0.3s ease-out;
-}
-```
-
-## 📚 Documentation
-
-- [Design System Specification](./DESIGN_SYSTEM.md) - Complete design system documentation
-- [Tailwind v4 Documentation](https://tailwindcss.com/docs/v4-beta) - New @theme syntax
-- [Turborepo Handbook](https://turbo.build/repo/docs/handbook) - Monorepo best practices
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-Please review our [Contributing Guidelines](CONTRIBUTING.md) to get started, and ensure that you follow our [Code of Conduct](CODE_OF_CONDUCT.md) in all community interactions.
-
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🙏 Credits
+## Credits
 
-Design system based on the **gidl Design System** by Solomon Akuson.
-
----
-
-Built with ❤️ using Next.js 15, Tailwind CSS v4, and Turborepo.
+Built by [Solomon Akuson](https://www.solomonakuson.com).
