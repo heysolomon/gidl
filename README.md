@@ -7,8 +7,6 @@ Animated UI components, recreated from inspiration found around the web and rebu
 
 **[gidl.dev](https://gidl.dev)** · [Browse components](https://gidl.dev/docs)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fheysolomon%2Fgidl)
-
 ## Install a component
 
 Every component is installed straight into your own codebase via the [shadcn CLI](https://ui.shadcn.com/docs/cli) — you own the code, and its npm dependencies (Motion, Radix primitives, etc.) are installed automatically alongside it.
@@ -97,10 +95,6 @@ Flip `published: true` in `registry-meta.json` once it's ready to ship.
 - **Component distribution**: [shadcn](https://ui.shadcn.com) registry format
 - **Monorepo**: [Turborepo](https://turbo.build/repo) + [pnpm](https://pnpm.io/)
 - **React**: React 19
-
-## Customizing gidl's own design system
-
-The docs site's look (colors, typography, shadows, animations) is defined in [`packages/ui/src/styles/design-system.css`](./packages/ui/src/styles/design-system.css) using Tailwind v4's `@theme` directive. This only affects gidl.dev itself — it isn't shipped as part of any installed component.
 
 ## Contributing
 
