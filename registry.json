@@ -109,7 +109,7 @@
       "name": "agentation-toolbar",
       "type": "registry:block",
       "title": "Agentation Toolbar",
-      "description": "A floating feedback toolbar that morphs between a collapsed trigger and a full control row, recreating the look and motion of [agentation](https://github.com/benjitaylor/agentation)'s page toolbar.",
+      "description": "A recreation of [agentation](https://github.com/benjitaylor/agentation)'s toolbar.",
       "registryDependencies": [],
       "dependencies": ["lucide-react"],
       "files": [

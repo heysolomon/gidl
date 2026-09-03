@@ -482,12 +482,24 @@
   position: absolute;
   top: 0;
   left: 24px;
-  right: 0;
+  right: -24px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
   opacity: 0;
   pointer-events: none;
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;
+}
+
+/* The Webhooks section is the last one on this page — it stretches to
+   absorb whatever height the (fixed, shared with the main page) panel has
+   left over, so the URL field below can grow into it instead of leaving a
+   dead gap at the bottom. */
+.settingsPageAutomations>.settingsSection:last-of-type {
+  flex: 1;
+  min-height: 0;
 }
 
 .settingsPageAutomations.slideIn {
@@ -612,6 +624,7 @@
 .webhookUrlInput {
   display: block;
   width: 100%;
+  flex: 1;
   min-height: 60px;
   box-sizing: border-box;
   margin-top: 11px;
