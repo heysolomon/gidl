@@ -109,7 +109,7 @@
       "name": "agentation-toolbar",
       "type": "registry:block",
       "title": "Agentation Toolbar",
-      "description": "A recreation of [agentation](https://github.com/benjitaylor/agentation)'s toolbar.",
+      "description": "A recreation of [agentation](https://agentation.com)'s toolbar.",
       "registryDependencies": [],
       "dependencies": ["lucide-react"],
       "files": [
