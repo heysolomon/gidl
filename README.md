@@ -17,11 +17,12 @@ npx shadcn@latest add https://gidl.dev/r/animated-tabs.json
 
 ### Available components
 
-| Component                                                             | Install                                                          |
-| --------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| [Animated Tabs](https://gidl.dev/docs/components/animated-tabs)       | `npx shadcn@latest add https://gidl.dev/r/animated-tabs.json`    |
-| [Collins Carousel](https://gidl.dev/docs/components/collins-carousel) | `npx shadcn@latest add https://gidl.dev/r/collins-carousel.json` |
-| [Flip Cards](https://gidl.dev/docs/components/flip-cards)             | `npx shadcn@latest add https://gidl.dev/r/flip-cards.json`       |
+| Component                                                                 | Install                                                            |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [Animated Tabs](https://gidl.dev/docs/components/animated-tabs)           | `npx shadcn@latest add https://gidl.dev/r/animated-tabs.json`      |
+| [Collins Carousel](https://gidl.dev/docs/components/collins-carousel)     | `npx shadcn@latest add https://gidl.dev/r/collins-carousel.json`   |
+| [Flip Cards](https://gidl.dev/docs/components/flip-cards)                 | `npx shadcn@latest add https://gidl.dev/r/flip-cards.json`         |
+| [Agentation Toolbar](https://gidl.dev/docs/components/agentation-toolbar) | `npx shadcn@latest add https://gidl.dev/r/agentation-toolbar.json` |
 
 More components ship regularly — see [gidl.dev/docs](https://gidl.dev/docs) for the full, current list.
 
