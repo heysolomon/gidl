@@ -2,14 +2,11 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-// Not edge — the background photo + font push this route's bundle past
-// Vercel's 1 MB Edge Function size limit. The Node.js serverless runtime
-// (the default) has a much higher limit and works identically here.
-// Note: this also means local assets must be read via fs (below), not
-// fetch(new URL(..., import.meta.url)) — that pattern only works under the
-// edge runtime's fetch polyfill; plain Node fetch has no file:// support.
+// Not edge — the background photo + font push this route past Vercel's
+// 1 MB Edge Function limit. Node's fetch also has no file:// support, so
+// local assets are read via fs below instead of new URL(..., import.meta.url).
 
-export const alt = "Beautiful animation primitives for engineers and designers.";
+export const alt = "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.";
 export const size = {
   width: 1200,
   height: 630,

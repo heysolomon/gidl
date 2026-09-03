@@ -20,12 +20,9 @@ export interface Registry {
 }
 
 const RAW_BASE = "https://raw.githubusercontent.com/heysolomon/gidl/main";
-// The registry *index* is fetched from the live, published endpoint rather
-// than raw.githubusercontent.com/.../registry.json — that file is the full
-// source of truth including unpublished drafts, while gidl.dev/r/registry.json
-// is the build output with drafts already filtered out (see
-// scripts/build-registry.mjs). Individual file contents below still come
-// from GitHub, since only published items' source files are ever referenced.
+// The index comes from the published endpoint, not raw.githubusercontent —
+// registry.json is the full source including drafts; gidl.dev/r/registry.json
+// is the build output with drafts already filtered out.
 const REGISTRY_INDEX_URL = "https://gidl.dev/r/registry.json";
 
 export async function fetchRegistry(): Promise<Registry> {

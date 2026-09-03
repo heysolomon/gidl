@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Gidl",
     short_name: "Gidl",
-    description: "Beautiful animation primitives for engineers and designers.",
+    description: "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
     start_url: "/",
     display: "standalone",
     background_color: "#010101",

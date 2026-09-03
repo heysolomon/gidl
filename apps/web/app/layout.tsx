@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     default: "Gidl | Motion Components",
     template: "%s | Gidl",
   },
-  description: "Beautiful animation primitives for engineers and designers.",
+  description: "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
   keywords: [
     "react",
     "framer motion",
@@ -57,13 +57,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     siteName: "Gidl - Solomon Akuson",
     title: "Gidl",
-    description: "Beautiful animation primitives for engineers and designers.",
+    description: "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
     images: ["/api/og?title=Motion%20Components"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Gidl",
-    description: "Beautiful animation primitives for engineers and designers.",
+    description: "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
     creator: "@heysolomon",
   },
   robots: {
@@ -87,7 +87,7 @@ const jsonLd = {
       name: "Gidl",
       url: SITE_URL,
       description:
-        "Beautiful animation primitives for engineers and designers.",
+        "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
       author: { "@id": `${SITE_URL}/#person` },
     },
     {

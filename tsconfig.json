@@ -15,5 +15,8 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  // Empty on purpose: this is only an `extends` base, never run directly.
+  // A default include would make it silently claim every file in the repo.
+  "include": []
 }
