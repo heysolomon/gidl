@@ -1,6 +1,13 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
-export const runtime = "edge";
+// Not edge — the background photo + font push this route's bundle past
+// Vercel's 1 MB Edge Function size limit. The Node.js serverless runtime
+// (the default) has a much higher limit and works identically here.
+// Note: this also means local assets must be read via fs (below), not
+// fetch(new URL(..., import.meta.url)) — that pattern only works under the
+// edge runtime's fetch polyfill; plain Node fetch has no file:// support.
 
 export const alt = "Beautiful animation primitives for engineers and designers.";
 export const size = {
@@ -19,13 +26,10 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const title = searchParams.get("title") || "Motion Components";
 
+  const ogDir = path.join(process.cwd(), "public", "og");
   const [urbanistMedium, background] = await Promise.all([
-    fetch(new URL("./Urbanist-Medium.woff", import.meta.url)).then((res) =>
-      res.arrayBuffer()
-    ),
-    fetch(new URL("./background.jpg", import.meta.url)).then((res) =>
-      res.arrayBuffer()
-    ),
+    readFile(path.join(ogDir, "Urbanist-Medium.woff")),
+    readFile(path.join(ogDir, "background.jpg")),
   ]);
 
   const backgroundSrc = `data:image/jpeg;base64,${Buffer.from(background).toString("base64")}`;
