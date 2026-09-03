@@ -3,8 +3,6 @@ import { getAllRegistryItems, type RegistryItem } from "@/lib/registry";
 import registryMetaData from "../../../registry-meta.json";
 
 export interface RegistryMeta {
-  /** Controls sidebar/search ordering — lower shows first. */
-  order: number;
   /** Unpublished components are only visible outside production, and are
    *  excluded from the public registry JSON (see scripts/build-registry.mjs). */
   published: boolean;
@@ -18,10 +16,9 @@ export interface RegistryMeta {
 // read the same source of truth without needing a TS/Next.js runtime.
 const registryMeta = registryMetaData as Record<string, RegistryMeta>;
 
-const DEFAULT_META: RegistryMeta = { order: 999, published: true };
+const DEFAULT_META: RegistryMeta = { published: true };
 
 export interface DocsNavItem extends RegistryItem {
-  order: number;
   published: boolean;
   isNew: boolean;
 }
@@ -30,7 +27,6 @@ function withMeta(item: RegistryItem): DocsNavItem {
   const meta = registryMeta[item.name] ?? DEFAULT_META;
   return {
     ...item,
-    order: meta.order,
     published: meta.published,
     // "New" only makes sense once something has actually shipped — a draft
     // still in development shows the "Draft" pill instead.
@@ -41,14 +37,14 @@ function withMeta(item: RegistryItem): DocsNavItem {
 const isProduction = process.env.NODE_ENV === "production";
 
 /**
- * Registry items meant for the current environment, sorted by their configured order.
+ * Registry items meant for the current environment, sorted alphabetically by title.
  * Unpublished (draft) components are excluded outside development.
  */
 export function getDocsNavItems(): DocsNavItem[] {
   return getAllRegistryItems()
     .map(withMeta)
     .filter((item) => item.published || !isProduction)
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => a.title.localeCompare(b.title));
 }
 
 export function isRegistryItemVisible(name: string): boolean {
