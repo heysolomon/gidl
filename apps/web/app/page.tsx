@@ -52,7 +52,7 @@ export default function Home() {
 
       {/* Component Preview */}
       <section className="flex justify-center px-6 pb-24 pt-8">
-        <div className="w-full max-w-2xl bg-neutral-50 dark:bg-neutral-900 rounded-2xl overflow-hidden flex items-center justify-center min-h-[340px]">
+        <div className="w-full max-w-2xl sm:bg-neutral-50 sm:dark:bg-neutral-900 rounded-2xl overflow-hidden flex items-center justify-center min-h-[340px]">
           <CollinsCarousel />
         </div>
       </section>
