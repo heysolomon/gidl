@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "types": ["node", "react", "react-dom"],
     "paths": {
       // These resolve into apps/web at runtime, via Next.js's
       // transpilePackages bundling this package's source with apps/web's
