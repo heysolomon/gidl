@@ -69,13 +69,13 @@ export default function Home() {
           <img
             src="https://peerlist.io/api/v1/projects/embed/PRJHJKNO6EKEPB66MCMELA7AGJ7DN7?showUpvote=true&theme=light"
             alt="Gidl on Peerlist"
-            className="h-[72px] w-auto block dark:hidden"
+            className="h-18 w-auto block dark:hidden"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://peerlist.io/api/v1/projects/embed/PRJHJKNO6EKEPB66MCMELA7AGJ7DN7?showUpvote=true&theme=dark"
             alt="Gidl on Peerlist"
-            className="h-[72px] w-auto hidden dark:block"
+            className="h-18 w-auto hidden dark:block"
           />
         </a>
       </section>
