@@ -48,12 +48,22 @@ export default function Home() {
             <GitHubIcon className="w-3 h-3" /> Star on GitHub
           </a>
         </div>
+      </main>
 
+      {/* Component Preview */}
+      <section className="flex justify-center px-6 pb-24 pt-8">
+        <div className="w-full max-w-2xl sm:bg-neutral-50 sm:dark:bg-neutral-900 rounded-2xl overflow-hidden flex items-center justify-center min-h-[340px]">
+          <CollinsCarousel />
+        </div>
+      </section>
+
+      {/* Peerlist badge */}
+      <section className="flex justify-center px-6 pb-16">
         <a
           href="https://peerlist.io/heysolomon/project/gidl"
           target="_blank"
           rel="noreferrer"
-          className="mt-8 inline-block"
+          className="inline-block"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -68,13 +78,6 @@ export default function Home() {
             className="h-[72px] w-auto hidden dark:block"
           />
         </a>
-      </main>
-
-      {/* Component Preview */}
-      <section className="flex justify-center px-6 pb-24 pt-8">
-        <div className="w-full max-w-2xl sm:bg-neutral-50 sm:dark:bg-neutral-900 rounded-2xl overflow-hidden flex items-center justify-center min-h-[340px]">
-          <CollinsCarousel />
-        </div>
       </section>
     </div>
   );
