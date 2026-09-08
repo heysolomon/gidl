@@ -48,6 +48,26 @@ export default function Home() {
             <GitHubIcon className="w-3 h-3" /> Star on GitHub
           </a>
         </div>
+
+        <a
+          href="https://peerlist.io/heysolomon/project/gidl"
+          target="_blank"
+          rel="noreferrer"
+          className="mt-8 inline-block"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://peerlist.io/api/v1/projects/embed/PRJHJKNO6EKEPB66MCMELA7AGJ7DN7?showUpvote=true&theme=light"
+            alt="Gidl on Peerlist"
+            className="h-[72px] w-auto block dark:hidden"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://peerlist.io/api/v1/projects/embed/PRJHJKNO6EKEPB66MCMELA7AGJ7DN7?showUpvote=true&theme=dark"
+            alt="Gidl on Peerlist"
+            className="h-[72px] w-auto hidden dark:block"
+          />
+        </a>
       </main>
 
       {/* Component Preview */}
