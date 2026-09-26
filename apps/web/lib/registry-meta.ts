@@ -8,6 +8,8 @@ export interface RegistryMeta {
   published: boolean;
   /** Shows a "New" pill next to the component. */
   isNew?: boolean;
+  /** Extra classes for the docs preview box, e.g. "p-0" to sit flush. */
+  previewClassName?: string;
 }
 
 // Not part of registry.json (that file follows shadcn's public registry schema) —
@@ -21,6 +23,7 @@ const DEFAULT_META: RegistryMeta = { published: true };
 export interface DocsNavItem extends RegistryItem {
   published: boolean;
   isNew: boolean;
+  previewClassName?: string;
 }
 
 function withMeta(item: RegistryItem): DocsNavItem {
@@ -31,6 +34,7 @@ function withMeta(item: RegistryItem): DocsNavItem {
     // "New" only makes sense once something has actually shipped — a draft
     // still in development shows the "Draft" pill instead.
     isNew: meta.published && (meta.isNew ?? false),
+    previewClassName: meta.previewClassName,
   };
 }
 
