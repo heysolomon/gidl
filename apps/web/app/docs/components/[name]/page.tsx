@@ -15,6 +15,7 @@ import { JsonLd } from "@/components/json-ld";
 import { DocsToc } from "@/components/docs-toc";
 import { Pill } from "@/components/pill";
 import { renderDescriptionWithLinks } from "@/lib/render-markdown-links";
+import { cn } from "@/lib/utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 // "View as Markdown" and "Open in v0" should point at whatever origin is actually
@@ -103,7 +104,9 @@ export default async function ComponentPage(props: {
         <div className="min-w-0 max-w-3xl mx-auto w-full">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-2">
-              <h1 className="text-[22px] font-bold tracking-tight">{item.title}</h1>
+              <h1 className="text-[22px] font-bold tracking-tight">
+                {item.title}
+              </h1>
               {navItem.isNew && <Pill variant="new">New</Pill>}
               {!navItem.published && <Pill variant="draft">Draft</Pill>}
             </div>
@@ -118,7 +121,10 @@ export default async function ComponentPage(props: {
           </p>
 
           <div className="mt-8">
-            <h2 id="installation" className="text-[14px] font-semibold tracking-tight scroll-mt-24">
+            <h2
+              id="installation"
+              className="text-[14px] font-semibold tracking-tight scroll-mt-24"
+            >
               Installation
             </h2>
             <div className="mt-3">
@@ -130,7 +136,9 @@ export default async function ComponentPage(props: {
             <PreviewCodeTabs
               preview={
                 <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl overflow-hidden border border-border">
-                  <ComponentPreview className="min-h-[440px]">
+                  <ComponentPreview
+                    className={cn("min-h-110", navItem.previewClassName)}
+                  >
                     {Live ? <Live /> : null}
                   </ComponentPreview>
                 </div>

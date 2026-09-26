@@ -22,6 +22,7 @@ type Clip = { top: number; bottom: number };
 export function SidebarList() {
   const [activeId, setActiveId] = useState<string | null>(ITEMS[0]?.id ?? null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [collapsed, setCollapsed] = useState(false);
   // Insets (px) from the indicator track's own top/bottom edges to a row's
   // rect — measured from the DOM, not a hardcoded row height/gap, so this
   // can't drift out of sync with the actual layout the way pixel constants
@@ -91,30 +92,50 @@ export function SidebarList() {
       : { clipPath: "inset(100%)" };
 
   return (
-    <div className="mr-auto w-90 overflow-hidden rounded-3xl border border-border bg-card">
+    <div
+      className={cn(
+        "mr-auto overflow-hidden rounded-3xl border border-border bg-card transition-[width] duration-300 ease-in-out",
+        collapsed ? "w-16" : "w-65"
+      )}
+    >
       <div className="flex items-center justify-end gap-1 p-3 pb-1">
         <button
           type="button"
-          className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className={cn(
+            "inline-flex h-7 shrink-0 items-center justify-center overflow-hidden rounded-md text-muted-foreground transition-[width,opacity,background-color,color] duration-300 ease-in-out hover:bg-accent hover:text-foreground",
+            collapsed ? "w-0 opacity-0 pointer-events-none" : "w-7 opacity-100"
+          )}
           aria-label="Add canvas"
         >
-          <Plus className="size-4" />
+          <Plus className="size-4 shrink-0" />
         </button>
         <button
           type="button"
-          className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-expanded={!collapsed}
+          aria-controls="sidebar-list-nav"
+          className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           aria-label="Toggle sidebar"
         >
           <PanelLeft className="size-4" />
         </button>
       </div>
 
-      <nav className="relative flex flex-col gap-px px-3 pb-3">
+      <nav
+        id="sidebar-list-nav"
+        className={cn(
+          "relative flex w-65 flex-col gap-px px-3 pb-3 transition-[filter] duration-300 ease-in-out",
+          collapsed ? "pointer-events-none blur-md" : "blur-none"
+        )}
+      >
         <span
           ref={trackRef}
           aria-hidden
-          className="absolute top-0 bottom-3 left-3 right-3 rounded-xl bg-foreground/10 transition-[clip-path] duration-200 ease-out"
-          style={clipStyle(activeClip)}
+          className="absolute top-0 bottom-3 left-3 right-3 rounded-xl bg-foreground/10"
+          style={{
+            ...clipStyle(activeClip),
+            transition: "clip-path 200ms cubic-bezier(0.215, 0.61, 0.355, 1)",
+          }}
         />
         <span
           aria-hidden
@@ -125,8 +146,8 @@ export function SidebarList() {
           style={{
             ...clipStyle(hoverClip),
             transition: hoverAnimationEnabled
-              ? "clip-path 200ms ease-out, opacity 200ms ease-out"
-              : "opacity 200ms ease-out",
+              ? "clip-path 200ms cubic-bezier(0.215, 0.61, 0.355, 1), opacity 200ms cubic-bezier(0.215, 0.61, 0.355, 1)"
+              : "opacity 200ms cubic-bezier(0.215, 0.61, 0.355, 1)",
           }}
         />
 

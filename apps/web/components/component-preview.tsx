@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode, type ComponentProps } from "react";
 import { RotateCcw } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ComponentPreviewProps {
   children: ReactNode;
@@ -15,7 +16,10 @@ export function ComponentPreview({
   const [key, setKey] = useState(0);
   return (
     <div
-      className={`relative isolate flex min-h-[350px] w-full items-center justify-center p-10 ${className}`}
+      className={cn(
+        "relative isolate flex min-h-[350px] w-full items-center justify-center p-10",
+        className
+      )}
     >
       <button
         onClick={() => setKey((k) => k + 1)}

@@ -3,5 +3,9 @@
   "collins-carousel": { "published": true },
   "flip-cards": { "published": true },
   "agentation-toolbar": { "published": true, "isNew": true },
-  "sidebar-list": { "published": false, "isNew": true }
+  "sidebar-list": {
+    "published": false,
+    "isNew": true,
+    "previewClassName": "p-0"
+  }
 }
