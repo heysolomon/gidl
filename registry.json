@@ -100,9 +100,9 @@
       "name": "sidebar-list",
       "type": "registry:block",
       "title": "Sidebar List",
-      "description": "A collapsible sidebar list",
+      "description": "A collapsible sidebar list that springs in and out of its frame.",
       "registryDependencies": [],
-      "dependencies": ["lucide-react"],
+      "dependencies": ["lucide-react", "motion", "clsx", "tailwind-merge"],
       "files": [
         {
           "path": "packages/ui/src/registry/components/sidebar-list.tsx",

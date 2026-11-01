@@ -1,7 +1,14 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PanelLeft, Plus } from "lucide-react";
+import {
+  motion,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
 import { cn } from "@/lib/utils";
 
 type SidebarItem = {
@@ -17,182 +24,200 @@ const ITEMS: SidebarItem[] = [
   { id: "5", label: "Canvas 5" },
 ];
 
-type Clip = { top: number; bottom: number };
+const ROW_HEIGHT = 39;
+const ROW_PITCH = 44;
+// Distance the toggle stops short of the panel's width, keeping it 24px from
+// the panel's right edge when open and 28px from the frame when collapsed.
+const TOGGLE_TRAVEL_INSET = 44;
+
+// The slide has a little overshoot, the pills have none.
+const SLIDE_SPRING = { stiffness: 180, damping: 19 };
+const PILL_SPRING = { stiffness: 380, damping: 39 };
+// How long the second of the panel and toggle waits behind the first.
+const STAGGER_CLOSE_MS = 40;
+const STAGGER_OPEN_MS = 30;
+
+const PANEL_WIDTH_CLASS = "w-[297px] max-w-[calc(100%-1rem)]";
 
 export function SidebarList() {
-  const [activeId, setActiveId] = useState<string | null>(ITEMS[0]?.id ?? null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [collapsed, setCollapsed] = useState(false);
-  // Insets (px) from the indicator track's own top/bottom edges to a row's
-  // rect — measured from the DOM, not a hardcoded row height/gap, so this
-  // can't drift out of sync with the actual layout the way pixel constants
-  // silently did before.
-  const [activeClip, setActiveClip] = useState<Clip | null>(null);
-  const [hoverClip, setHoverClip] = useState<Clip | null>(null);
-  // A hover session that's just starting has no previous position to slide
-  // from — sliding it in from clip-path's default (a zero-size point at the
-  // track's center) would look like it's flying in from the middle. This
-  // stays false until that first position is painted, and resets every time
-  // hover fully stops, so re-entering later snaps again too, not just the
-  // very first hover ever.
-  const [hoverAnimationEnabled, setHoverAnimationEnabled] = useState(false);
+  const reduceMotion = useReducedMotion();
 
-  const rowRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-  // Both indicators share the exact same box (left-3 right-3 top-0 bottom-3),
-  // so either one works as the reference for measuring that box — this one
-  // is always mounted, giving a stable ref to measure against.
-  const trackRef = useRef<HTMLSpanElement>(null);
+  // 1 is open and 0 is collapsed. They run past 1 on the way back, which is
+  // the overshoot. Two values rather than one because the toggle and panel
+  // trade places: the toggle leaves first, and the panel arrives first.
+  const panelProgress = useSpring(1, SLIDE_SPRING);
+  const toggleProgress = useSpring(1, SLIDE_SPRING);
+  const staggerTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const measure = (id: string | null): Clip | null => {
-    const rowEl = id ? rowRefs.current.get(id) : null;
-    const trackEl = trackRef.current;
-    if (!rowEl || !trackEl) return null;
+  useEffect(() => () => clearTimeout(staggerTimer.current), []);
 
-    const trackRect = trackEl.getBoundingClientRect();
-    const rowRect = rowEl.getBoundingClientRect();
+  // Percentages, so the slide follows the panel if the frame squeezes it.
+  const panelX = useTransform(
+    panelProgress,
+    (v) => `calc(${v - 1} * (100% + 0.5rem))`
+  );
+  const toggleX = useTransform(
+    toggleProgress,
+    (v) => `calc(${v} * (100% - ${TOGGLE_TRAVEL_INSET}px))`
+  );
 
-    return {
-      top: rowRect.top - trackRect.top,
-      bottom: trackRect.bottom - rowRect.bottom,
-    };
+  const activeY = useSpring(0, PILL_SPRING);
+  const hoverY = useSpring(0, PILL_SPRING);
+  const showHover = hoveredIndex !== null && hoveredIndex !== activeIndex;
+
+  const moveTo = (value: MotionValue<number>, index: number) => {
+    if (reduceMotion) value.jump(index * ROW_PITCH);
+    else value.set(index * ROW_PITCH);
   };
 
-  const showHover = hoveredId !== null && hoveredId !== activeId;
+  const handleHover = (index: number) => {
+    // A hover that's just starting has nowhere to slide from.
+    if (showHover) moveTo(hoverY, index);
+    else hoverY.jump(index * ROW_PITCH);
+    setHoveredIndex(index);
+  };
 
-  useLayoutEffect(() => {
-    setActiveClip(measure(activeId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeId]);
+  const handleSelect = (index: number) => {
+    moveTo(activeY, index);
+    setActiveIndex(index);
+  };
 
-  useLayoutEffect(() => {
-    if (hoveredId && hoveredId !== activeId) {
-      setHoverClip(measure(hoveredId));
+  const handleToggle = () => {
+    const next = !collapsed;
+    const target = next ? 0 : 1;
+    setCollapsed(next);
 
-      if (!hoverAnimationEnabled) {
-        // Let this position paint with no transition first — this fires both
-        // on the very first hover and every time hover resumes after fully
-        // stopping — then enable it on the next frame so hover-to-hover
-        // moves within the same session animate.
-        const raf = requestAnimationFrame(() => setHoverAnimationEnabled(true));
-        return () => cancelAnimationFrame(raf);
-      }
+    clearTimeout(staggerTimer.current);
+    if (reduceMotion) {
+      panelProgress.jump(target);
+      toggleProgress.jump(target);
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hoveredId, activeId]);
 
-  useLayoutEffect(() => {
-    if (!showHover) {
-      setHoverAnimationEnabled(false);
-    }
-  }, [showHover]);
-
-  const clipStyle = (clip: Clip | null) =>
-    clip
-      ? { clipPath: `inset(${clip.top}px 0 ${clip.bottom}px 0 round 0.75rem)` }
-      : { clipPath: "inset(100%)" };
+    // A timer because useSpring has no delay. Setting a spring mid-slide keeps
+    // its velocity, so toggling again turns it around rather than restarting.
+    const [first, second] = next
+      ? [toggleProgress, panelProgress]
+      : [panelProgress, toggleProgress];
+    first.set(target);
+    staggerTimer.current = setTimeout(
+      () => second.set(target),
+      next ? STAGGER_CLOSE_MS : STAGGER_OPEN_MS
+    );
+  };
 
   return (
-    <div
-      className={cn(
-        // Positioned against ComponentPreview's own outer box (the nearest
-        // `relative` ancestor) rather than relying on self-stretch, which
-        // only reaches its immediate flex parent — an inner wrapper with no
-        // height of its own, not the outer box that actually carries the
-        // min-h-[440px] constraint. inset-y-0 skips that broken chain.
-        //
-        // Collapse is width-driven, not a translate slide: the header row
-        // (Plus + Toggle) stays put — justify-end keeps it pinned to this
-        // box's own right edge, so as the box narrows the icons visually
-        // "follow" the motion and settle at a small inset once collapsed,
-        // rather than leaving the viewport with the rest of the panel.
-        "absolute inset-y-0 left-0 overflow-hidden border-r transition-[width,background-color,border-color] duration-300 ease-in-out",
-        collapsed
-          ? "w-16 border-transparent bg-transparent"
-          : "w-65 border-border bg-card"
-      )}
-    >
-      <div className="flex items-center justify-end gap-1 p-3 pb-1">
-        <button
-          type="button"
-          className={cn(
-            "inline-flex h-7 shrink-0 items-center justify-center overflow-hidden rounded-md text-muted-foreground transition-[width,opacity,background-color,color] duration-300 ease-in-out hover:bg-accent hover:text-foreground",
-            collapsed ? "w-0 opacity-0 pointer-events-none" : "w-7 opacity-100"
-          )}
-          aria-label="Add canvas"
-        >
-          <Plus className="size-4 shrink-0" />
-        </button>
-        <button
-          type="button"
-          onClick={() => setCollapsed((c) => !c)}
-          aria-expanded={!collapsed}
-          aria-controls="sidebar-list-nav"
-          className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          aria-label="Toggle sidebar"
-        >
-          <PanelLeft className="size-4" />
-        </button>
-      </div>
-
-      <nav
-        id="sidebar-list-nav"
+    <div className="absolute inset-0 overflow-hidden rounded-2xl bg-muted">
+      <motion.div
+        initial={false}
+        style={{ x: panelX }}
+        animate={{
+          opacity: collapsed ? 0 : 1,
+          filter: collapsed ? "blur(6px)" : "blur(0px)",
+        }}
+        transition={
+          reduceMotion
+            ? { duration: 0 }
+            : { duration: 0.24, ease: "easeOut", delay: collapsed ? 0 : 0.05 }
+        }
         className={cn(
-          "relative flex w-65 flex-col gap-px px-3 pb-3 transition-[filter,opacity] duration-300 ease-in-out",
-          collapsed
-            ? "pointer-events-none opacity-0 blur-md"
-            : "opacity-100 blur-none"
+          "absolute inset-y-2 left-2 rounded-3xl bg-background",
+          PANEL_WIDTH_CLASS,
+          collapsed && "pointer-events-none"
         )}
       >
-        <span
-          ref={trackRef}
-          aria-hidden
-          className="absolute top-0 bottom-3 left-3 right-3 rounded-xl bg-foreground/10"
-          style={{
-            ...clipStyle(activeClip),
-            transition: "clip-path 200ms cubic-bezier(0.215, 0.61, 0.355, 1)",
+        <motion.button
+          type="button"
+          initial={false}
+          animate={{
+            opacity: collapsed ? 0 : 1,
+            filter: collapsed ? "blur(4px)" : "blur(0px)",
           }}
-        />
-        <span
-          aria-hidden
-          className={cn(
-            "absolute top-0 bottom-3 left-3 right-3 rounded-xl bg-foreground/5",
-            showHover ? "opacity-100" : "opacity-0"
-          )}
-          style={{
-            ...clipStyle(hoverClip),
-            transition: hoverAnimationEnabled
-              ? "clip-path 200ms cubic-bezier(0.215, 0.61, 0.355, 1), opacity 200ms cubic-bezier(0.215, 0.61, 0.355, 1)"
-              : "opacity 200ms cubic-bezier(0.215, 0.61, 0.355, 1)",
-          }}
-        />
+          transition={
+            reduceMotion
+              ? { duration: 0 }
+              : collapsed
+                ? { duration: 0.1, ease: "easeOut" }
+                : { duration: 0.2, ease: "easeOut", delay: 0.2 }
+          }
+          tabIndex={collapsed ? -1 : undefined}
+          aria-hidden={collapsed}
+          aria-label="Add canvas"
+          className="absolute right-[35px] top-2.5 inline-flex size-7 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+        >
+          <Plus className="size-4" />
+        </motion.button>
 
-        {ITEMS.map((item) => {
-          const isActive = item.id === activeId;
+        <nav
+          id="sidebar-list-nav"
+          aria-hidden={collapsed}
+          onMouseLeave={() => setHoveredIndex(null)}
+          style={{ rowGap: ROW_PITCH - ROW_HEIGHT }}
+          className="absolute inset-x-2 top-12 flex flex-col"
+        >
+          <motion.span
+            aria-hidden
+            style={{ y: activeY, height: ROW_HEIGHT }}
+            className="absolute inset-x-0 top-0 rounded-2xl bg-foreground/[0.03] dark:bg-foreground/[0.06]"
+          />
+          <motion.span
+            aria-hidden
+            initial={false}
+            style={{ y: hoverY, height: ROW_HEIGHT }}
+            animate={{ opacity: showHover ? 1 : 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.12, ease: "easeOut" }}
+            className="absolute inset-x-0 top-0 rounded-2xl bg-foreground/[0.03] dark:bg-foreground/[0.06]"
+          />
 
-          return (
+          {ITEMS.map((item, index) => (
             <button
               key={item.id}
-              ref={(el) => {
-                if (el) rowRefs.current.set(item.id, el);
-              }}
               type="button"
-              onClick={() => setActiveId(item.id)}
-              onMouseEnter={() => setHoveredId(item.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              className="relative z-10 flex h-10 items-center rounded-xl px-4 text-left text-sm"
+              tabIndex={collapsed ? -1 : undefined}
+              onClick={() => handleSelect(index)}
+              onMouseEnter={() => handleHover(index)}
+              style={{ height: ROW_HEIGHT }}
+              className="relative z-10 flex cursor-pointer items-center rounded-2xl px-4 text-left text-base"
             >
               <span
                 className={cn(
-                  "font-normal",
-                  isActive ? "text-foreground" : "text-muted-foreground"
+                  "font-normal transition-colors duration-150",
+                  index === activeIndex
+                    ? "text-foreground"
+                    : "text-muted-foreground"
                 )}
               >
                 {item.label}
               </span>
             </button>
-          );
-        })}
-      </nav>
+          ))}
+        </nav>
+      </motion.div>
+
+      {/* Outside the panel so its blur and fade don't touch the toggle, which
+          stays sharp the whole way across. Same box as the panel, because the
+          toggle's travel is defined by the panel's width. */}
+      <motion.div
+        style={{ x: toggleX }}
+        className={cn(
+          "pointer-events-none absolute left-2 top-2",
+          PANEL_WIDTH_CLASS
+        )}
+      >
+        <button
+          type="button"
+          onClick={handleToggle}
+          aria-expanded={!collapsed}
+          aria-controls="sidebar-list-nav"
+          aria-label="Toggle sidebar"
+          className="pointer-events-auto ml-1.5 mt-2.5 inline-flex size-7 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+        >
+          <PanelLeft className="size-4" />
+        </button>
+      </motion.div>
     </div>
   );
 }

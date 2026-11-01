@@ -509,67 +509,70 @@ export function FlipCardsSkeleton() {
 // --- Sidebar List ---
 
 const SIDEBAR_ROWS = 5;
-const SIDEBAR_ROW_HEIGHT = 24;
-const SIDEBAR_ROW_GAP = 1;
-const SIDEBAR_TRACK_HEIGHT =
-  SIDEBAR_ROWS * SIDEBAR_ROW_HEIGHT + (SIDEBAR_ROWS - 1) * SIDEBAR_ROW_GAP;
-const SIDEBAR_EASE = "cubic-bezier(0.215,0.61,0.355,1)";
+const SIDEBAR_ROW_HEIGHT = 20;
+const SIDEBAR_ROW_PITCH = 22;
+const SIDEBAR_PILL_SPRING = { stiffness: 380, damping: 39 };
+const SIDEBAR_PILL_FADE = { duration: 0.12, ease: "easeOut" } as const;
 
-const rowClip = (row: number) => {
-  const top = row * (SIDEBAR_ROW_HEIGHT + SIDEBAR_ROW_GAP);
-  const bottom = SIDEBAR_TRACK_HEIGHT - top - SIDEBAR_ROW_HEIGHT;
-  return `inset(${top}px 0 ${bottom}px 0 round 8px)`;
-};
-
-// Hover: the hover indicator fades in on a row and glides to the next while the
-// active one stays put, with the real sidebar's 200ms clip-path glide.
 export function SidebarListSkeleton() {
   const { ref, step } = useCardWalk(2, 650);
-  const hoverRow = step === 2 ? 2 : 1;
+  const hoverY = useSpring(SIDEBAR_ROW_PITCH, SIDEBAR_PILL_SPRING);
 
-  const clipTransition =
-    step === 2
-      ? `clip-path 200ms ${SIDEBAR_EASE}`
-      : // Holds its row until the fade-out below has finished.
-        `clip-path 0s linear 200ms`;
+  useEffect(() => {
+    if (step === 2) {
+      hoverY.set(SIDEBAR_ROW_PITCH * 2);
+      return;
+    }
+    if (step === 1) return;
+    // Holds its row until the fade-out has finished, so it never slides while
+    // disappearing.
+    const timer = setTimeout(
+      () => hoverY.jump(SIDEBAR_ROW_PITCH),
+      SIDEBAR_PILL_FADE.duration * 1000 + 40
+    );
+    return () => clearTimeout(timer);
+  }, [step, hoverY]);
 
   return (
     <div
       ref={ref}
-      className="h-[168px] w-44 overflow-hidden rounded-2xl border border-border bg-(--sk-fill)"
+      className="relative h-[168px] w-56 shrink-0 overflow-hidden rounded-2xl border border-border bg-(--sk-soft)"
     >
-      <div className="flex items-center justify-end gap-1 p-2 pb-1 text-(--sk-active)">
-        <span className="flex size-6 shrink-0 items-center justify-center">
-          <Plus className="size-3.5" />
-        </span>
-        <span className="flex size-6 shrink-0 items-center justify-center">
-          <PanelLeft className="size-3.5" />
-        </span>
-      </div>
-      <div className="relative mx-2 flex flex-col gap-px">
-        <span
-          style={{ clipPath: rowClip(0) }}
-          className="absolute inset-0 rounded-lg bg-(--sk-soft)"
-        />
-        <span
-          style={{
-            clipPath: rowClip(hoverRow),
-            transition: `${clipTransition}, opacity 200ms ${SIDEBAR_EASE}`,
-          }}
-          className={cn(
-            "absolute inset-0 rounded-lg bg-(--sk-soft)/50",
-            step > 0 ? "opacity-100" : "opacity-0"
-          )}
-        />
-        {Array.from({ length: SIDEBAR_ROWS }, (_, row) => (
-          <div
-            key={row}
+      <div className="absolute inset-y-1 left-1 w-[148px] rounded-xl bg-(--sk-fill)">
+        <div className="flex items-center justify-end gap-1 p-1.5 text-(--sk-active)">
+          <span className="flex size-5 shrink-0 items-center justify-center">
+            <Plus className="size-3" />
+          </span>
+          <span className="flex size-5 shrink-0 items-center justify-center">
+            <PanelLeft className="size-3" />
+          </span>
+        </div>
+        <div className="relative mx-1">
+          <span
             style={{ height: SIDEBAR_ROW_HEIGHT }}
-            className="relative flex items-center px-2.5"
-          >
-            <Bar tone={row === 0 ? "strong" : "soft"} className="w-[46%]" />
-          </div>
-        ))}
+            className="absolute inset-x-0 top-0 rounded-lg bg-(--sk-soft)"
+          />
+          <motion.span
+            initial={false}
+            style={{ y: hoverY, height: SIDEBAR_ROW_HEIGHT }}
+            animate={{ opacity: step > 0 ? 1 : 0 }}
+            transition={SIDEBAR_PILL_FADE}
+            className="absolute inset-x-0 top-0 rounded-lg bg-(--sk-soft)"
+          />
+          {Array.from({ length: SIDEBAR_ROWS }, (_, row) => (
+            <div
+              key={row}
+              style={{
+                height: SIDEBAR_ROW_HEIGHT,
+                marginTop:
+                  row === 0 ? 0 : SIDEBAR_ROW_PITCH - SIDEBAR_ROW_HEIGHT,
+              }}
+              className="relative flex items-center px-2"
+            >
+              <Bar className={cn("w-[46%]", row === 0 && "bg-(--sk-active)")} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
