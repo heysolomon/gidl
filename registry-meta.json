@@ -15,7 +15,7 @@
   "sidebar-list": {
     "published": false,
     "isNew": true,
-    "previewClassName": "p-10"
+    "previewClassName": "p-0"
   },
   "expanding-gallery": {
     "published": false,

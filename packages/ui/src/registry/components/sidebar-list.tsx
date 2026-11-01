@@ -110,7 +110,7 @@ export function SidebarList() {
   };
 
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-2xl bg-muted">
+    <div className="absolute inset-0 overflow-hidden bg-muted">
       <motion.div
         initial={false}
         style={{ x: panelX }}
