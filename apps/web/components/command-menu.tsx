@@ -35,11 +35,12 @@ export function CommandMenu({ items }: { items: NavItem[] }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex cursor-pointer items-center gap-2 text-[12.5px] text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 rounded-full pl-3 pr-2 py-1.5 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors"
+        aria-label="Search components"
+        className="flex size-7 cursor-pointer items-center justify-center gap-2 rounded-full text-[12.5px] text-neutral-500 transition-colors hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800 sm:size-auto sm:border sm:border-neutral-200 sm:py-1.5 sm:pl-3 sm:pr-2 sm:hover:border-neutral-300 sm:hover:bg-transparent dark:sm:border-neutral-800 dark:sm:hover:border-neutral-700 dark:sm:hover:bg-transparent"
       >
         <Search className="w-3.5 h-3.5" />
         <span className="hidden sm:inline">Search components…</span>
-        <kbd className="ml-1 text-[10px] font-mono text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 rounded px-1.5 py-0.5">
+        <kbd className="ml-1 hidden text-[10px] font-mono sm:inline text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 rounded px-1.5 py-0.5">
           ⌘K
         </kbd>
       </button>

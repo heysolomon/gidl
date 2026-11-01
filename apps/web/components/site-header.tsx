@@ -35,10 +35,12 @@ function XIcon({ className }: { className?: string }) {
 
 export function SiteHeader({
   children,
+  leading,
   containerClassName = "max-w-5xl mx-auto",
   showWordmark = true,
 }: {
   children?: ReactNode;
+  leading?: ReactNode;
   containerClassName?: string;
   showWordmark?: boolean;
 }) {
@@ -52,19 +54,23 @@ export function SiteHeader({
           containerClassName
         )}
       >
-        <a href="/" className="flex items-center gap-2 shrink-0">
-          <GidlLogo size={16} />
-          {showWordmark && (
-            <span className="text-[14px] font-bold tracking-tight">gidl</span>
-          )}
-        </a>
+        <div className="flex items-center gap-2 shrink-0">
+          {leading}
+          <a href="/" className="flex items-center gap-2">
+            <GidlLogo size={16} />
+            {showWordmark && (
+              <span className="text-[14px] font-bold tracking-tight">gidl</span>
+            )}
+          </a>
+        </div>
         <div className="flex items-center gap-3 min-w-0 flex-1 justify-end">
           {children && (
             <>
-              <div className="min-w-0 flex-1 flex justify-end sm:flex-none">
-                {children}
-              </div>
-              <Separator orientation="vertical" className="h-4" />
+              {children}
+              <Separator
+                orientation="vertical"
+                className="hidden h-4 sm:block"
+              />
             </>
           )}
           <button

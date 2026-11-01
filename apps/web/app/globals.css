@@ -122,6 +122,65 @@ textarea,
     -webkit-mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
 }
 
+/* Sheet motion. The panel and backdrop share a duration so they read as one
+   move, leaving is quicker than arriving, and Radix keeps the sheet mounted
+   until the closing animation ends. */
+.sheet-panel[data-side="left"] {
+    --sheet-x: -100%;
+}
+
+.sheet-panel[data-side="right"] {
+    --sheet-x: 100%;
+}
+
+.sheet-panel[data-side="top"] {
+    --sheet-y: -100%;
+}
+
+.sheet-panel[data-side="bottom"] {
+    --sheet-y: 100%;
+}
+
+@keyframes sheet-slide-in {
+    from {
+        transform: translate(var(--sheet-x, 0), var(--sheet-y, 0));
+    }
+}
+
+@keyframes sheet-slide-out {
+    to {
+        transform: translate(var(--sheet-x, 0), var(--sheet-y, 0));
+    }
+}
+
+@keyframes sheet-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes sheet-fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+.sheet-panel[data-state="open"] {
+    animation: sheet-slide-in 280ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.sheet-panel[data-state="closed"] {
+    animation: sheet-slide-out 200ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.sheet-overlay[data-state="open"] {
+    animation: sheet-fade-in 280ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.sheet-overlay[data-state="closed"] {
+    animation: sheet-fade-out 200ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
 

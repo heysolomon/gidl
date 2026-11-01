@@ -12,6 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Pill } from "@/components/pill";
 
@@ -24,6 +25,8 @@ interface NavItem {
 
 export function DocsSidebar({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+  const closeMenu = () => setOpenMobile(false);
 
   return (
     <Sidebar>
@@ -33,7 +36,9 @@ export function DocsSidebar({ items }: { items: NavItem[] }) {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={pathname === "/docs"}>
-                  <Link href="/docs">Welcome</Link>
+                  <Link href="/docs" onClick={closeMenu}>
+                    Welcome
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -48,7 +53,11 @@ export function DocsSidebar({ items }: { items: NavItem[] }) {
                 return (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild isActive={pathname === href}>
-                      <Link href={href} className="flex items-center justify-between gap-2">
+                      <Link
+                        href={href}
+                        onClick={closeMenu}
+                        className="flex items-center justify-between gap-2"
+                      >
                         <span className="truncate">{item.title}</span>
                         {item.isNew && <Pill variant="new">New</Pill>}
                         {item.published === false && (
