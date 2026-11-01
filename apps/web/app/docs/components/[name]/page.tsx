@@ -5,6 +5,7 @@ import {
   getDocsNavItems,
   isRegistryItemVisible,
 } from "@/lib/registry-meta";
+import { artworkCredits } from "@/lib/artwork-credits";
 import { registryComponents } from "@/lib/registry-components";
 import { ComponentPreview } from "@/components/component-preview";
 import { PreviewCodeTabs } from "@/components/preview-code-tabs";
@@ -13,6 +14,7 @@ import { CopyLine } from "@/components/copy-line";
 import { CopyPageMenu } from "@/components/copy-page-menu";
 import { JsonLd } from "@/components/json-ld";
 import { DocsToc } from "@/components/docs-toc";
+import { ArtworkCredits } from "@/components/artwork-credits";
 import { Pill } from "@/components/pill";
 import { renderDescriptionWithLinks } from "@/lib/render-markdown-links";
 import { cn } from "@/lib/utils";
@@ -66,6 +68,7 @@ export default async function ComponentPage(props: {
   const navItem = getDocsNavItem(item);
   const Live = registryComponents[name];
   const files = await getComponentFiles(name);
+  const credits = artworkCredits[name];
 
   const pageUrl = `${SITE_URL}/docs/components/${name}`;
   const jsonLd = {
@@ -146,6 +149,8 @@ export default async function ComponentPage(props: {
               code={files ? <CodeBlock files={files} /> : null}
             />
           </div>
+
+          {credits && <ArtworkCredits credits={credits} />}
         </div>
 
         <div className="hidden xl:block absolute right-0 top-0 w-[200px]">

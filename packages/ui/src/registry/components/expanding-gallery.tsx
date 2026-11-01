@@ -16,11 +16,17 @@ type GalleryItem = {
 };
 
 const ITEMS: GalleryItem[] = [
-  { src: "/carousel/prism-table-lamp.png", alt: "Prism table lamp" },
-  { src: "/carousel/zenith-kettle.png", alt: "Zenith kettle" },
-  { src: "/carousel/studio-mic-arm.png", alt: "Studio mic arm" },
-  { src: "/carousel/monitor-stand.png", alt: "Vertex monitor stand" },
-  { src: "/carousel/precision-stylus.png", alt: "Precision stylus" },
+  { src: "/art/low-tide-at-pourville.jpg", alt: "Low Tide at Pourville" },
+  {
+    src: "/art/gardeners-house-at-antibes.jpg",
+    alt: "Gardener's House at Antibes",
+  },
+  { src: "/art/the-old-mill.jpg", alt: "The Old Mill" },
+  {
+    src: "/art/seacoast-near-wargemont.jpg",
+    alt: "View of the Seacoast near Wargemont",
+  },
+  { src: "/art/cowherd-at-valhermeil.jpg", alt: "A Cowherd at Valhermeil" },
 ];
 
 // Cards keep these sizes in any wider container, which just shows more of the

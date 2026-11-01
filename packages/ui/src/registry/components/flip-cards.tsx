@@ -6,32 +6,38 @@ import { useRef, useState } from "react";
 import { PlaceholderImage } from "next-image-placeholder/react";
 import { getPlaceholderAction } from "@/actions/get-image-placeholder";
 
-type ImgItem = { id: number; url: string };
+type ImgItem = { id: number; url: string; alt: string };
 
 const CARD_IMAGES: ImgItem[] = [
   {
     id: 1,
-    url: "https://i.pinimg.com/736x/57/41/48/574148dab4a394849534eae05fe5628b.jpg",
+    url: "/art/saz-leaf-tile.jpg",
+    alt: "Tile with saz leaves, tulips and hyacinth flowers",
   },
   {
     id: 2,
-    url: "https://i.pinimg.com/736x/85/f3/61/85f361f859cd06b55e5d14fe09e4b9f8.jpg",
+    url: "/art/blue-and-white-vase.jpg",
+    alt: "Blue-and-white vase",
   },
   {
     id: 3,
-    url: "https://i.pinimg.com/736x/4f/62/d2/4f62d2bc39cb6092fe4dedb978c285c5.jpg",
+    url: "/art/iznik-wall-tile.jpg",
+    alt: "Wall tile",
   },
   {
     id: 4,
-    url: "https://i.pinimg.com/1200x/54/9e/0e/549e0e7ad7e492ba4766f0bbdfe5e0c8.jpg",
+    url: "/art/beaker-vase.jpg",
+    alt: "Blue-and-white beaker vase",
   },
   {
     id: 5,
-    url: "https://i.pinimg.com/736x/5b/6d/ee/5b6dee0124a9ccb6e890357521648104.jpg",
+    url: "/art/iznik-tile-panel.jpg",
+    alt: "Tile panel",
   },
   {
     id: 6,
-    url: "https://i.pinimg.com/736x/fd/ab/cb/fdabcb91d2df70207bb8740029cb8a18.jpg",
+    url: "/art/bottle-vase.jpg",
+    alt: "Blue-and-white bottle vase",
   },
 ];
 
@@ -124,7 +130,7 @@ const Card = ({
       <PlaceholderImage
         src={card.url}
         action={getPlaceholderAction}
-        alt={`Card ${card.id}`}
+        alt={card.alt}
         fill
         fallback={
           <div className="absolute inset-0 animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800" />

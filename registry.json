@@ -77,7 +77,7 @@
       "name": "flip-cards",
       "type": "registry:block",
       "title": "Flip Cards",
-      "description": "Flip cards of some of my favorite anime characters. Inspired by a [Framer](https://www.framer.com/marketplace/components/flipcard-component/) component",
+      "description": "A draggable stack of flip cards. Inspired by a [Framer](https://www.framer.com/marketplace/components/flipcard-component/) component",
       "registryDependencies": [],
       "dependencies": [
         "motion",

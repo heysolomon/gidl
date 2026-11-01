@@ -80,8 +80,6 @@ function CarouselItem({
     return Math.abs(value / itemWidth) * -(itemWidth * 0.55);
   });
 
-
-
   const edgeX = useTransform(renderedOffset, (r) => {
     const { start: beyondStart, end: beyondEnd } = draggingBeyond.current;
     if (beyondStart) return Math.abs((r / 50) * (count + itemIndex * 2));
@@ -112,7 +110,11 @@ function CarouselItem({
   });
 
   return (
-    <motion.li {...props} style={{ ...props.style, zIndex }} className="w-full h-full">
+    <motion.li
+      {...props}
+      style={{ ...props.style, zIndex }}
+      className="w-full h-full"
+    >
       <motion.div
         style={{
           x: edgeX,
@@ -186,23 +188,23 @@ export default function CollinsCarousel() {
 
 const ITEMS = [
   {
-    src: "/carousel/precision-stylus.png",
-    title: "Precision Stylus",
+    src: "/art/flowers-in-a-glass.jpg",
+    title: "Flowers in a Glass",
   },
   {
-    src: "/carousel/zenith-kettle.png",
-    title: "Zenith Kettle",
+    src: "/art/vase-of-flowers.jpg",
+    title: "Vase of Flowers",
   },
   {
-    src: "/carousel/prism-table-lamp.png",
-    title: "Prism Table Lamp",
+    src: "/art/apple-blossoms.jpg",
+    title: "Apple Blossoms",
   },
   {
-    src: "/carousel/studio-mic-arm.png",
-    title: "Studio Mic Arm",
+    src: "/art/flowers-in-a-vase.jpg",
+    title: "Flowers in a Vase",
   },
   {
-    src: "/carousel/monitor-stand.png",
-    title: "Vertex Monitor Stand",
+    src: "/art/frankfort-rose.jpg",
+    title: "Frankfort Rose",
   },
 ];
