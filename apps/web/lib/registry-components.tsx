@@ -2,6 +2,7 @@ import {
   AgentationToolbar,
   AnimatedTabs,
   CollinsCarousel,
+  ExpandingGallery,
   FlipCard,
   SidebarList,
 } from "@gidl/ui";
@@ -13,4 +14,5 @@ export const registryComponents: Record<string, ComponentType> = {
   "flip-cards": FlipCard,
   "agentation-toolbar": AgentationToolbar,
   "sidebar-list": SidebarList,
+  "expanding-gallery": ExpandingGallery,
 };

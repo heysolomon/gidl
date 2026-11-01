@@ -1,11 +1,24 @@
 {
-  "animated-tabs": { "published": true },
-  "collins-carousel": { "published": true },
-  "flip-cards": { "published": true },
-  "agentation-toolbar": { "published": true, "isNew": true },
+  "animated-tabs": {
+    "published": true
+  },
+  "collins-carousel": {
+    "published": true
+  },
+  "flip-cards": {
+    "published": true
+  },
+  "agentation-toolbar": {
+    "published": true,
+    "isNew": true
+  },
   "sidebar-list": {
     "published": false,
     "isNew": true,
-    "previewClassName": "p-0"
+    "previewClassName": "p-10"
+  },
+  "expanding-gallery": {
+    "published": false,
+    "isNew": true
   }
 }

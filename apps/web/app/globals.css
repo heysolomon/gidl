@@ -133,3 +133,20 @@ textarea,
         transition-duration: 0.01ms !important;
     }
 }
+
+/* Homepage skeletons — a single ramp of design-system neutrals, solid so a
+   shade looks the same on every surface. Every skeleton draws from these four
+   steps and nothing else. */
+.component-grid {
+    --sk-fill: var(--muted);
+    --sk-soft: var(--color-neutral-200);
+    --sk-strong: var(--color-neutral-300);
+    --sk-active: var(--color-neutral-400);
+}
+
+.dark .component-grid {
+    --sk-fill: var(--muted);
+    --sk-soft: var(--color-neutral-800);
+    --sk-strong: var(--color-neutral-700);
+    --sk-active: var(--color-neutral-600);
+}

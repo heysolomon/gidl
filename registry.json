@@ -8,9 +8,7 @@
       "type": "registry:block",
       "title": "Animated Tabs",
       "description": "Animated tabs component inspired by [Raul](https://x.com/raul_dronca/status/1994085212469248020?s=20).",
-      "registryDependencies": [
-        "tabs"
-      ],
+      "registryDependencies": ["tabs"],
       "dependencies": [
         "motion",
         "next-image-placeholder",
@@ -35,10 +33,7 @@
       "title": "Collins Carousel",
       "description": "Carousel Interaction from [Collins](https://wearecollins.com/case-studies/bose), heavily inspired by [Dimi's](https://x.com/dimitribouquin/status/1994085212469248020?s=20) implementation.",
       "registryDependencies": [],
-      "dependencies": [
-        "motion",
-        "next-image-placeholder"
-      ],
+      "dependencies": ["motion", "next-image-placeholder"],
       "files": [
         {
           "path": "packages/ui/src/registry/components/collins-carousel.tsx",
@@ -107,9 +102,7 @@
       "title": "Sidebar List",
       "description": "A collapsible sidebar list",
       "registryDependencies": [],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "files": [
         {
           "path": "packages/ui/src/registry/components/sidebar-list.tsx",
@@ -123,9 +116,7 @@
       "title": "Agentation Toolbar",
       "description": "A recreation of [agentation](https://agentation.com)'s toolbar.",
       "registryDependencies": [],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "files": [
         {
           "path": "packages/ui/src/registry/components/agentation-toolbar.tsx",
@@ -133,6 +124,20 @@
         },
         {
           "path": "packages/ui/src/registry/components/agentation-toolbar.module.css",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "expanding-gallery",
+      "type": "registry:block",
+      "title": "Expanding Gallery",
+      "description": "A clipped image strip where the hovered card expands while the strip glides to keep it in view.",
+      "registryDependencies": [],
+      "dependencies": ["motion", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "packages/ui/src/registry/components/expanding-gallery.tsx",
           "type": "registry:component"
         }
       ]

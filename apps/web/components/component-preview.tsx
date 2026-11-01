@@ -17,7 +17,7 @@ export function ComponentPreview({
   return (
     <div
       className={cn(
-        "relative isolate flex min-h-[350px] w-full items-center justify-center p-10",
+        "relative isolate flex min-h-[350px] w-full items-stretch justify-center p-10",
         className
       )}
     >
@@ -34,7 +34,14 @@ export function ComponentPreview({
           }`}
         />
       </button>
-      <div key={key} className="flex w-full items-center justify-center">
+      {/* relative + stretch: absolutely-positioned preview content (e.g.
+          sidebar-list's collapsible panel) anchors to this box instead of
+          the outer padded box, so it stays inset by the outer's padding
+          rather than sitting flush against its padding-box edge. */}
+      <div
+        key={key}
+        className="relative flex w-full items-center justify-center"
+      >
         {children}
       </div>
     </div>

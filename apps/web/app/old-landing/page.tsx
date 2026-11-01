@@ -2,6 +2,14 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { CollinsCarousel } from "@gidl/ui";
+import type { Metadata } from "next";
+
+// The original landing page, kept around for reference after the homepage
+// moved to the component-grid layout. Not meant to be indexed.
+export const metadata: Metadata = {
+  title: "Old landing",
+  robots: { index: false, follow: false },
+};
 
 function GitHubIcon({ className }: { className?: string }) {
   return (
@@ -16,7 +24,7 @@ function GitHubIcon({ className }: { className?: string }) {
   );
 }
 
-export default function Home() {
+export default function OldLanding() {
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
       <SiteHeader />

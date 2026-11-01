@@ -4,6 +4,7 @@ export { default as CollinsCarousel } from "./registry/components/collins-carous
 export { FlipCard } from "./registry/components/flip-cards";
 export { AgentationToolbar } from "./registry/components/agentation-toolbar";
 export { SidebarList } from "./registry/components/sidebar-list";
+export { ExpandingGallery } from "./registry/components/expanding-gallery";
 
 // Utilities
 export { cn } from "./lib/utils";

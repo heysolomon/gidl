@@ -94,8 +94,21 @@ export function SidebarList() {
   return (
     <div
       className={cn(
-        "mr-auto overflow-hidden rounded-3xl border border-border bg-card transition-[width] duration-300 ease-in-out",
-        collapsed ? "w-16" : "w-65"
+        // Positioned against ComponentPreview's own outer box (the nearest
+        // `relative` ancestor) rather than relying on self-stretch, which
+        // only reaches its immediate flex parent — an inner wrapper with no
+        // height of its own, not the outer box that actually carries the
+        // min-h-[440px] constraint. inset-y-0 skips that broken chain.
+        //
+        // Collapse is width-driven, not a translate slide: the header row
+        // (Plus + Toggle) stays put — justify-end keeps it pinned to this
+        // box's own right edge, so as the box narrows the icons visually
+        // "follow" the motion and settle at a small inset once collapsed,
+        // rather than leaving the viewport with the rest of the panel.
+        "absolute inset-y-0 left-0 overflow-hidden border-r transition-[width,background-color,border-color] duration-300 ease-in-out",
+        collapsed
+          ? "w-16 border-transparent bg-transparent"
+          : "w-65 border-border bg-card"
       )}
     >
       <div className="flex items-center justify-end gap-1 p-3 pb-1">
@@ -124,8 +137,10 @@ export function SidebarList() {
       <nav
         id="sidebar-list-nav"
         className={cn(
-          "relative flex w-65 flex-col gap-px px-3 pb-3 transition-[filter] duration-300 ease-in-out",
-          collapsed ? "pointer-events-none blur-md" : "blur-none"
+          "relative flex w-65 flex-col gap-px px-3 pb-3 transition-[filter,opacity] duration-300 ease-in-out",
+          collapsed
+            ? "pointer-events-none opacity-0 blur-md"
+            : "opacity-100 blur-none"
         )}
       >
         <span
