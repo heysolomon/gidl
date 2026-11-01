@@ -20,10 +20,11 @@ const ITEMS: GalleryItem[] = [
   { src: "/carousel/zenith-kettle.png", alt: "Zenith kettle" },
   { src: "/carousel/studio-mic-arm.png", alt: "Studio mic arm" },
   { src: "/carousel/monitor-stand.png", alt: "Vertex monitor stand" },
+  { src: "/carousel/precision-stylus.png", alt: "Precision stylus" },
 ];
 
-// Layout is authored at this size, then expressed in cqw so the whole gallery
-// scales with its container without measuring anything in JS.
+// Cards keep these sizes in any wider container, which just shows more of the
+// strip. Below VIEW_WIDTH everything shrinks together, with no JS measuring.
 const VIEW_WIDTH = 540;
 const VIEW_HEIGHT = 235;
 const EXPANDED_WIDTH = 283;
@@ -34,7 +35,7 @@ const RADIUS = 30;
 
 const SPRING = { stiffness: 70, damping: 17 };
 
-const cqw = (px: number) => `${(px / VIEW_WIDTH) * 100}cqw`;
+const size = (px: number) => `min(${px}px, ${(px / VIEW_WIDTH) * 100}cqw)`;
 
 function GalleryCard({
   item,
@@ -55,7 +56,7 @@ function GalleryCard({
   // neighbor gives up — the strip's total width never changes mid-transition.
   const width = useTransform(position, (p) => {
     const expansion = Math.max(0, 1 - Math.abs(p - index));
-    return cqw(
+    return size(
       COLLAPSED_WIDTH + (EXPANDED_WIDTH - COLLAPSED_WIDTH) * expansion
     );
   });
@@ -69,7 +70,7 @@ function GalleryCard({
         onPointerMove={onPointerMove}
         onFocus={onActivate}
         onClick={onActivate}
-        style={{ borderRadius: cqw(RADIUS) }}
+        style={{ borderRadius: size(RADIUS) }}
         className="relative block size-full cursor-pointer overflow-hidden bg-neutral-200 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neutral-900 dark:bg-neutral-800 dark:focus-visible:ring-neutral-100"
       >
         {/* Sized to the expanded card, not this one, so resizing the card
@@ -78,7 +79,7 @@ function GalleryCard({
           src={item.src}
           alt=""
           draggable={false}
-          style={{ width: cqw(EXPANDED_WIDTH) }}
+          style={{ width: size(EXPANDED_WIDTH) }}
           className="absolute left-1/2 top-0 h-full max-w-none -translate-x-1/2 select-none object-cover"
         />
       </button>
@@ -101,13 +102,13 @@ export function ExpandingGallery({
   const lastIndex = items.length - 1;
   const contentWidth =
     INSET * 2 + EXPANDED_WIDTH + lastIndex * (COLLAPSED_WIDTH + GAP);
-  const overflow = Math.max(0, contentWidth - VIEW_WIDTH);
 
   // The first card rests at the start of the strip, the last at the end, and
   // everything between is spaced evenly across that travel.
-  const x = useTransform(position, (p) =>
-    lastIndex > 0 ? cqw(-(p / lastIndex) * overflow) : "0cqw"
-  );
+  const x = useTransform(position, (p) => {
+    const progress = lastIndex > 0 ? p / lastIndex : 0;
+    return `calc(${-progress} * max(0px, ${size(contentWidth)} - 100cqw))`;
+  });
 
   const activate = (index: number) => {
     setActiveIndex(index);
@@ -128,15 +129,17 @@ export function ExpandingGallery({
 
   return (
     <div
-      style={{
-        containerType: "inline-size",
-        aspectRatio: `${VIEW_WIDTH} / ${VIEW_HEIGHT}`,
-      }}
-      className={cn("w-full max-w-135 overflow-hidden", className)}
+      style={{ containerType: "inline-size" }}
+      className={cn("w-full overflow-hidden", className)}
     >
       <motion.ul
-        style={{ x, gap: cqw(GAP), paddingInline: cqw(INSET) }}
-        className="flex h-full w-max"
+        style={{
+          x,
+          height: size(VIEW_HEIGHT),
+          gap: size(GAP),
+          paddingInline: size(INSET),
+        }}
+        className="flex w-max"
       >
         {items.map((item, index) => (
           <GalleryCard

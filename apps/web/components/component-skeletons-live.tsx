@@ -231,9 +231,11 @@ export function AgentationToolbarSkeleton() {
 
 // --- Expanding Gallery ---
 
-// Same authored layout as the real gallery, so the proportions and the strip's
-// travel match it exactly as the card scales.
+// Same authored layout as the real gallery, scaled to the card. The strip's
+// travel is worked out from the docs preview's width, where the gallery shows
+// more of the strip than this card has room for.
 const VIEW_WIDTH = 540;
+const PREVIEW_WIDTH = 766;
 const VIEW_HEIGHT = 235;
 const EXPANDED_WIDTH = 283;
 const COLLAPSED_WIDTH = 152;
@@ -244,11 +246,11 @@ const GALLERY_SPRING = { stiffness: 70, damping: 17 };
 
 const cqw = (px: number) => `${(px / VIEW_WIDTH) * 100}cqw`;
 
-const CARD_COUNT = 4;
+const CARD_COUNT = 5;
 const LAST_INDEX = CARD_COUNT - 1;
 const CONTENT_WIDTH =
   INSET * 2 + EXPANDED_WIDTH + LAST_INDEX * (COLLAPSED_WIDTH + GAP);
-const OVERFLOW = Math.max(0, CONTENT_WIDTH - VIEW_WIDTH);
+const OVERFLOW = Math.max(0, CONTENT_WIDTH - PREVIEW_WIDTH);
 
 function GalleryCard({
   index,

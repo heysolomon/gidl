@@ -19,6 +19,7 @@
   },
   "expanding-gallery": {
     "published": false,
-    "isNew": true
+    "isNew": true,
+    "previewClassName": "p-0"
   }
 }
