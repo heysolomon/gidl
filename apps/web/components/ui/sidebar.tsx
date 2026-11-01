@@ -9,13 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Drawer } from "vaul";
 import {
   Tooltip,
   TooltipContent,
@@ -152,26 +146,35 @@ function Sidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
-          data-sidebar="sidebar"
-          data-slot="sidebar"
-          data-mobile="true"
-          className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
-          style={
-            {
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-            } as React.CSSProperties
-          }
-          side={side}
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+      <Drawer.Root
+        open={openMobile}
+        onOpenChange={setOpenMobile}
+        direction={side}
+      >
+        <Drawer.Portal>
+          <Drawer.Overlay className="fixed inset-0 z-50 bg-black/50" />
+          <Drawer.Content
+            data-sidebar="sidebar"
+            data-slot="sidebar"
+            data-mobile="true"
+            aria-describedby={undefined}
+            className={cn(
+              "fixed inset-y-0 z-50 flex w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground outline-none",
+              side === "left"
+                ? "left-0 border-r border-border"
+                : "right-0 border-l border-border"
+            )}
+            style={
+              {
+                "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+              } as React.CSSProperties
+            }
+          >
+            <Drawer.Title className="sr-only">Sidebar</Drawer.Title>
+            <div className="flex h-full w-full flex-col">{children}</div>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
     );
   }
 
@@ -251,7 +254,10 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
   return (
     <main
       data-slot="sidebar-inset"
-      className={cn("relative flex w-full flex-1 flex-col bg-background", className)}
+      className={cn(
+        "relative flex w-full flex-1 flex-col bg-background",
+        className
+      )}
       {...props}
     />
   );
@@ -287,7 +293,10 @@ function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-content"
       data-sidebar="content"
-      className={cn("flex min-h-0 flex-1 flex-col gap-2 overflow-auto", className)}
+      className={cn(
+        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto",
+        className
+      )}
       {...props}
     />
   );
@@ -412,7 +421,12 @@ function SidebarMenuButton({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent side="right" align="center" hidden={isMobile} {...tooltip} />
+      <TooltipContent
+        side="right"
+        align="center"
+        hidden={isMobile}
+        {...tooltip}
+      />
     </Tooltip>
   );
 }
