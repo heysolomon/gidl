@@ -1,0 +1,336 @@
+/* The welcome note. It's a physical object, so its colors stay the same in both
+   themes, the way a sheet of paper doesn't change when the lights go down.
+
+   Every height in the writing column is a multiple of --line, so handwriting
+   stays on the ruled lines however long the note gets. */
+.note {
+  --line: 28px;
+  --ink: #1f2a44;
+  --paper: #fdfcf7;
+  --rule: rgb(70 100 150 / 0.2);
+  --margin-line: rgb(205 90 80 / 0.32);
+  --tape: rgb(233 210 120 / 0.72);
+  --pencil: #b4483a;
+  --holes: calc(var(--line) * 1.5);
+  --gutter: 60px;
+
+  position: relative;
+  max-width: 620px;
+  margin-inline: auto;
+  font-family: var(--font-caveat), cursive;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: var(--line);
+  color: var(--ink);
+  rotate: -0.3deg;
+}
+
+/* Two pieces so only the top band is punched. The holes show the page through. */
+.band,
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: var(--paper);
+}
+
+.band {
+  top: 0;
+  height: var(--holes);
+  background-image: linear-gradient(
+    to right,
+    transparent calc(var(--gutter) - 22px),
+    var(--margin-line) calc(var(--gutter) - 22px),
+    var(--margin-line) calc(var(--gutter) - 21px),
+    transparent calc(var(--gutter) - 21px)
+  );
+  mask-image: radial-gradient(circle at 12px 20px, transparent 6px, black 6.5px);
+  mask-size: 24px 100%;
+  -webkit-mask-image: radial-gradient(
+    circle at 12px 20px,
+    transparent 6px,
+    black 6.5px
+  );
+  -webkit-mask-size: 24px 100%;
+}
+
+.sheet {
+  top: var(--holes);
+  bottom: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      transparent calc(var(--gutter) - 22px),
+      var(--margin-line) calc(var(--gutter) - 22px),
+      var(--margin-line) calc(var(--gutter) - 21px),
+      transparent calc(var(--gutter) - 21px)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--line) - 1px),
+      var(--rule) calc(var(--line) - 1px),
+      var(--rule) var(--line)
+    );
+}
+
+.writing {
+  position: relative;
+  padding: var(--holes) 32px var(--line) var(--gutter);
+}
+
+.writing::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.title {
+  position: relative;
+  width: fit-content;
+  margin: 0 0 var(--line);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: calc(var(--line) * 2);
+}
+
+.titleLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  width: 100%;
+  height: 10px;
+  color: var(--pencil);
+}
+
+.writing p {
+  margin: 0 0 var(--line);
+}
+
+.writing a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.writing a:hover {
+  color: var(--pencil);
+}
+
+.circled {
+  position: relative;
+  white-space: nowrap;
+}
+
+.circle {
+  position: absolute;
+  inset: -3px -6px -4px;
+  width: calc(100% + 14px);
+  height: calc(100% + 7px);
+  color: var(--pencil);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.signature {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Things stuck to the page. Floats leave the lines of writing where they are. */
+.stuck {
+  position: relative;
+  float: right;
+  clear: right;
+  rotate: var(--tilt, 0deg);
+  animation: settle 460ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
+  animation-delay: calc(var(--order, 0) * 90ms + 120ms);
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+    rotate: calc(var(--tilt, 0deg) + 3deg);
+    scale: 1.03;
+  }
+}
+
+.print {
+  margin: 0 -40px var(--line) 24px;
+  padding: 8px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.05),
+    0 6px 14px rgb(0 0 0 / 0.14);
+}
+
+.print img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wide {
+  --tilt: 2.4deg;
+  --order: 0;
+  width: 216px;
+}
+
+.tall {
+  --tilt: -1.8deg;
+  --order: 1;
+  width: 140px;
+}
+
+.caption {
+  display: block;
+  padding-top: 4px;
+  font-size: 16px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.tape {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 76px;
+  height: 22px;
+  translate: -50% 0;
+  rotate: -3deg;
+  background: var(--tape);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.clip {
+  position: absolute;
+  top: -24px;
+  right: 22px;
+  width: 22px;
+  height: 62px;
+  color: #8e949c;
+  overflow: visible;
+}
+
+.arrow {
+  position: absolute;
+  top: 44px;
+  left: -60px;
+  width: 56px;
+  height: 36px;
+  color: var(--pencil);
+  overflow: visible;
+}
+
+.sticky {
+  --tilt: -2deg;
+  --order: 2;
+  width: 180px;
+  height: calc(var(--line) * 4);
+  /* Laid over the print's corner, the way papers pile up on a desk. */
+  margin: calc(var(--line) * -1) -30px 0 24px;
+  padding: 13px;
+  font-size: 18px;
+  line-height: 22px;
+  background: linear-gradient(170deg, #fbe98c, #f5dd72);
+  box-shadow: 0 8px 14px -6px rgb(0 0 0 / 0.26);
+}
+
+.sticky p {
+  margin: 0;
+}
+
+.vellumStack {
+  --tilt: 1.4deg;
+  --order: 3;
+  width: 226px;
+  height: calc(var(--line) * 6);
+  margin: 0 -40px 0 24px;
+}
+
+.vellumPrint {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 124px;
+  padding: 5px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.05),
+    0 6px 14px rgb(0 0 0 / 0.14);
+}
+
+.vellumPrint img {
+  display: block;
+}
+
+/* Tracing paper: the print and the rules show through it. */
+.vellum {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  width: 164px;
+  padding: 10px 12px;
+  rotate: -3deg;
+  font-size: 19px;
+  line-height: 23px;
+  background: rgb(250 250 246 / 0.62);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.04),
+    0 4px 10px rgb(0 0 0 / 0.08);
+}
+
+.vellum p {
+  margin: 0;
+}
+
+/* On phones nothing can hang off the sheet, so everything sits in the column. */
+@media (max-width: 640px) {
+  .note {
+    --gutter: 42px;
+    font-size: 20px;
+  }
+
+  .writing {
+    padding-right: 18px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .stuck {
+    float: none;
+    margin: 0 auto var(--line);
+  }
+
+  .wide {
+    width: 216px;
+    height: calc(var(--line) * 6);
+  }
+
+  .tall {
+    width: 140px;
+    height: calc(var(--line) * 7);
+  }
+
+  .vellumStack {
+    width: min(100%, 226px);
+    margin-bottom: 0;
+  }
+
+  .sticky {
+    width: min(100%, 200px);
+    margin: calc(var(--line) * -1) auto var(--line);
+  }
+
+  .arrow {
+    display: none;
+  }
+}
