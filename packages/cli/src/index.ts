@@ -29,6 +29,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 `;
 
+// `@/` points at src/ in projects created with a src directory, and imports only
+// resolve if the files land where that alias does.
+function projectRoot(cwd: string): string {
+  const tsconfig = path.join(cwd, "tsconfig.json");
+  if (fs.existsSync(tsconfig)) {
+    const alias = /"@\/\*"\s*:\s*\[\s*"(?:\.\/)?src\/\*"/;
+    return alias.test(fs.readFileSync(tsconfig, "utf-8")) ? "src" : ".";
+  }
+  return fs.existsSync(path.join(cwd, "src")) ? "src" : ".";
+}
+
 function detectPackageManager(cwd: string): "pnpm" | "yarn" | "npm" {
   if (fs.existsSync(path.join(cwd, "pnpm-lock.yaml"))) return "pnpm";
   if (fs.existsSync(path.join(cwd, "yarn.lock"))) return "yarn";
@@ -72,23 +83,24 @@ program
         chalk.gray(`Fetching ${item.files.length} file(s) for ${item.title}...`)
       );
 
+      const root = projectRoot(process.cwd());
       let needsUtils = false;
 
       for (const file of item.files) {
         const content = await fetchFileContent(file.path);
         needsUtils ||= content.includes("@/lib/utils");
         const targetPath = resolveTargetPath(file.path, options.path);
-        const fullPath = path.resolve(process.cwd(), targetPath);
+        const fullPath = path.resolve(process.cwd(), root, targetPath);
 
         await fs.ensureDir(path.dirname(fullPath));
         await fs.writeFile(fullPath, content, "utf-8");
-        console.log(chalk.gray(`  wrote ${targetPath}`));
+        console.log(chalk.gray(`  wrote ${path.join(root, targetPath)}`));
       }
 
-      const utilsPath = path.resolve(process.cwd(), "lib/utils.ts");
+      const utilsPath = path.resolve(process.cwd(), root, "lib/utils.ts");
       if (needsUtils && !(await fs.pathExists(utilsPath))) {
         await fs.outputFile(utilsPath, UTILS_SOURCE, "utf-8");
-        console.log(chalk.gray("  wrote lib/utils.ts"));
+        console.log(chalk.gray(`  wrote ${path.join(root, "lib/utils.ts")}`));
       }
 
       console.log(chalk.green(`\n✓ Added ${chalk.bold(item.title)}\n`));

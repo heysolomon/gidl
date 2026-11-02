@@ -133,7 +133,7 @@ function CarouselItem({
             }}
             className="flex flex-col justify-center will-change-transform"
           >
-            <div className="relative aspect-[3/4] h-full w-full overflow-hidden rounded-xl md:rounded-2xl">
+            <div className="relative aspect-[3/4] h-full w-full overflow-hidden rounded-xl bg-neutral-200 md:rounded-2xl dark:bg-neutral-800">
               <PlaceholderImage
                 src={item.src}
                 action={getPlaceholderAction}
@@ -141,7 +141,7 @@ function CarouselItem({
                 fill
                 unoptimized
                 fallback={
-                  <div className="absolute inset-0 animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800 md:rounded-2xl" />
+                  <div className="absolute inset-0 animate-pulse bg-neutral-100 dark:bg-neutral-700" />
                 }
                 className="pointer-events-none object-cover"
                 style={{

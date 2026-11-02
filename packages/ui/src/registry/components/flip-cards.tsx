@@ -98,7 +98,7 @@ const Card = ({
   return (
     <motion.div
       className={cn(
-        "absolute top-1/2 left-1/2 -translate-1/2 w-[150px] h-[250px] md:w-[300px] md:h-[400px]",
+        "absolute top-1/2 left-1/2 -translate-1/2 w-[150px] h-[250px] overflow-hidden rounded-xl bg-neutral-200 md:w-[300px] md:h-[400px] dark:bg-neutral-800",
         isTopCard ? "cursor-grab active:cursor-grabbing" : "cursor-default"
       )}
       initial={false}
@@ -134,7 +134,7 @@ const Card = ({
         fill
         unoptimized
         fallback={
-          <div className="absolute inset-0 animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800" />
+          <div className="absolute inset-0 animate-pulse bg-neutral-100 dark:bg-neutral-700" />
         }
         className="pointer-events-none rounded-xl object-cover"
         style={{
