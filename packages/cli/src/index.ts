@@ -19,6 +19,16 @@ program
   .description("Gidl - Minimalist Animation Components")
   .version("0.1.0");
 
+// Components import `cn` from here. shadcn projects already have it; anything
+// else would otherwise fail to compile straight after installing.
+const UTILS_SOURCE = `import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+`;
+
 function detectPackageManager(cwd: string): "pnpm" | "yarn" | "npm" {
   if (fs.existsSync(path.join(cwd, "pnpm-lock.yaml"))) return "pnpm";
   if (fs.existsSync(path.join(cwd, "yarn.lock"))) return "yarn";
@@ -62,14 +72,23 @@ program
         chalk.gray(`Fetching ${item.files.length} file(s) for ${item.title}...`)
       );
 
+      let needsUtils = false;
+
       for (const file of item.files) {
         const content = await fetchFileContent(file.path);
+        needsUtils ||= content.includes("@/lib/utils");
         const targetPath = resolveTargetPath(file.path, options.path);
         const fullPath = path.resolve(process.cwd(), targetPath);
 
         await fs.ensureDir(path.dirname(fullPath));
         await fs.writeFile(fullPath, content, "utf-8");
         console.log(chalk.gray(`  wrote ${targetPath}`));
+      }
+
+      const utilsPath = path.resolve(process.cwd(), "lib/utils.ts");
+      if (needsUtils && !(await fs.pathExists(utilsPath))) {
+        await fs.outputFile(utilsPath, UTILS_SOURCE, "utf-8");
+        console.log(chalk.gray("  wrote lib/utils.ts"));
       }
 
       console.log(chalk.green(`\n✓ Added ${chalk.bold(item.title)}\n`));

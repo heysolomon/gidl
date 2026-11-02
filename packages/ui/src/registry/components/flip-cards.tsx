@@ -11,32 +11,32 @@ type ImgItem = { id: number; url: string; alt: string };
 const CARD_IMAGES: ImgItem[] = [
   {
     id: 1,
-    url: "/art/saz-leaf-tile.jpg",
+    url: "https://www.gidl.dev/art/saz-leaf-tile.jpg",
     alt: "Tile with saz leaves, tulips and hyacinth flowers",
   },
   {
     id: 2,
-    url: "/art/blue-and-white-vase.jpg",
+    url: "https://www.gidl.dev/art/blue-and-white-vase.jpg",
     alt: "Blue-and-white vase",
   },
   {
     id: 3,
-    url: "/art/iznik-wall-tile.jpg",
+    url: "https://www.gidl.dev/art/iznik-wall-tile.jpg",
     alt: "Wall tile",
   },
   {
     id: 4,
-    url: "/art/beaker-vase.jpg",
+    url: "https://www.gidl.dev/art/beaker-vase.jpg",
     alt: "Blue-and-white beaker vase",
   },
   {
     id: 5,
-    url: "/art/iznik-tile-panel.jpg",
+    url: "https://www.gidl.dev/art/iznik-tile-panel.jpg",
     alt: "Tile panel",
   },
   {
     id: 6,
-    url: "/art/bottle-vase.jpg",
+    url: "https://www.gidl.dev/art/bottle-vase.jpg",
     alt: "Blue-and-white bottle vase",
   },
 ];
@@ -132,6 +132,7 @@ const Card = ({
         action={getPlaceholderAction}
         alt={card.alt}
         fill
+        unoptimized
         fallback={
           <div className="absolute inset-0 animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800" />
         }

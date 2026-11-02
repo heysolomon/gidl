@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Tabs, TabsList } from "@/components/ui/tabs";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "@/lib/utils";
 import { PlaceholderImage } from "next-image-placeholder/react";
@@ -16,7 +15,7 @@ const locations = [
     title: "Serene Waters",
     description:
       "Drift along tranquil coastal waters where wooden boats rest peacefully.",
-    image: "/art/yokkaichi-mie-river.jpg",
+    image: "https://www.gidl.dev/art/yokkaichi-mie-river.jpg",
     imageAlt: "Yokkaichi: View of the Mie River",
   },
   {
@@ -26,7 +25,7 @@ const locations = [
     title: "Mountain Majesty",
     description:
       "Towering peaks pierce the clouds in dramatic alpine landscapes.",
-    image: "/art/kiso-mountains-in-snow.jpg",
+    image: "https://www.gidl.dev/art/kiso-mountains-in-snow.jpg",
     imageAlt: "The Kiso Mountains in Snow",
   },
   {
@@ -35,7 +34,7 @@ const locations = [
     rank: "03",
     title: "Hidden Valleys",
     description: "Discover lush valleys nestled between ancient mountains.",
-    image: "/art/fujikawa.jpg",
+    image: "https://www.gidl.dev/art/fujikawa.jpg",
     imageAlt: "Fujikawa, Scene at the Border",
   },
 ];
@@ -83,15 +82,18 @@ export default function AnimatedTabs() {
 
   return (
     <div className="flex w-full max-w-sm md:max-w-md lg:max-w-lg flex-col items-center gap-6 p-4 md:p-10">
-      <Tabs
+      <TabsPrimitive.Root
         value={activeTab}
         onValueChange={handleTabChange}
         className="flex flex-col items-center gap-5 w-full"
       >
-        <TabsList ref={listRef} className="relative">
+        <TabsPrimitive.List
+          ref={listRef}
+          className="relative mx-auto inline-flex w-min items-center justify-center rounded-full border border-black/5 bg-muted p-1.5 text-muted-foreground dark:border-white/10 dark:bg-muted/80"
+        >
           {indicatorStyle.width > 0 && (
             <motion.span
-              className="absolute top-1.5 bottom-1.5 z-0 bg-white dark:bg-neutral-700 rounded-full shadow-skeuo-pill bg-gloss-gradient border border-white/50 dark:border-black/5"
+              className="absolute top-1.5 bottom-1.5 z-0 rounded-full border border-white/50 bg-white shadow-sm dark:border-black/5 dark:bg-neutral-700"
               style={{ borderRadius: 9999 }}
               initial={false}
               animate={{
@@ -119,7 +121,7 @@ export default function AnimatedTabs() {
               {loc.label}
             </TabsPrimitive.Trigger>
           ))}
-        </TabsList>
+        </TabsPrimitive.List>
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           {activeLocation && (
             <motion.div
@@ -130,7 +132,7 @@ export default function AnimatedTabs() {
               animate="active"
               exit="exit"
               transition={{ duration: 0.38, type: "spring", bounce: 0.2 }}
-              className="relative overflow-hidden w-full bg-plate-gradient shadow-skeuo-card ring-1 ring-black/5 rounded-4xl"
+              className="relative overflow-hidden w-full bg-muted/60 shadow-lg ring-1 ring-black/5 rounded-4xl"
             >
               <div className="p-8 pb-4">
                 <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
@@ -151,6 +153,7 @@ export default function AnimatedTabs() {
                     action={getPlaceholderAction}
                     alt={activeLocation.imageAlt}
                     fill
+                    unoptimized
                     fallback={
                       <div className="absolute inset-0 animate-pulse rounded-3xl bg-neutral-200 dark:bg-neutral-800" />
                     }
@@ -161,7 +164,7 @@ export default function AnimatedTabs() {
             </motion.div>
           )}
         </AnimatePresence>
-      </Tabs>
+      </TabsPrimitive.Root>
     </div>
   );
 }

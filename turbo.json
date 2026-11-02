@@ -1,6 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalDependencies": [
+    "registry.json",
+    "registry-meta.json",
+    "scripts/build-registry.mjs"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

@@ -16,17 +16,23 @@ type GalleryItem = {
 };
 
 const ITEMS: GalleryItem[] = [
-  { src: "/art/low-tide-at-pourville.jpg", alt: "Low Tide at Pourville" },
   {
-    src: "/art/gardeners-house-at-antibes.jpg",
+    src: "https://www.gidl.dev/art/low-tide-at-pourville.jpg",
+    alt: "Low Tide at Pourville",
+  },
+  {
+    src: "https://www.gidl.dev/art/gardeners-house-at-antibes.jpg",
     alt: "Gardener's House at Antibes",
   },
-  { src: "/art/the-old-mill.jpg", alt: "The Old Mill" },
+  { src: "https://www.gidl.dev/art/the-old-mill.jpg", alt: "The Old Mill" },
   {
-    src: "/art/seacoast-near-wargemont.jpg",
+    src: "https://www.gidl.dev/art/seacoast-near-wargemont.jpg",
     alt: "View of the Seacoast near Wargemont",
   },
-  { src: "/art/cowherd-at-valhermeil.jpg", alt: "A Cowherd at Valhermeil" },
+  {
+    src: "https://www.gidl.dev/art/cowherd-at-valhermeil.jpg",
+    alt: "A Cowherd at Valhermeil",
+  },
 ];
 
 // Cards keep these sizes in any wider container, which just shows more of the

@@ -8,7 +8,7 @@
       "type": "registry:block",
       "title": "Animated Tabs",
       "description": "Animated tabs component inspired by [Raul](https://x.com/raul_dronca/status/1994085212469248020?s=20).",
-      "registryDependencies": ["tabs"],
+      "registryDependencies": [],
       "dependencies": [
         "motion",
         "next-image-placeholder",
@@ -123,7 +123,7 @@
           "type": "registry:component"
         },
         {
-          "path": "packages/ui/src/registry/components/agentation-toolbar.module.css",
+          "path": "packages/ui/src/registry/components/agentation-toolbar.css",
           "type": "registry:component"
         }
       ]

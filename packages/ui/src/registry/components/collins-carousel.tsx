@@ -139,6 +139,7 @@ function CarouselItem({
                 action={getPlaceholderAction}
                 alt={item.title}
                 fill
+                unoptimized
                 fallback={
                   <div className="absolute inset-0 animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800 md:rounded-2xl" />
                 }
@@ -188,23 +189,23 @@ export default function CollinsCarousel() {
 
 const ITEMS = [
   {
-    src: "/art/flowers-in-a-glass.jpg",
+    src: "https://www.gidl.dev/art/flowers-in-a-glass.jpg",
     title: "Flowers in a Glass",
   },
   {
-    src: "/art/vase-of-flowers.jpg",
+    src: "https://www.gidl.dev/art/vase-of-flowers.jpg",
     title: "Vase of Flowers",
   },
   {
-    src: "/art/apple-blossoms.jpg",
+    src: "https://www.gidl.dev/art/apple-blossoms.jpg",
     title: "Apple Blossoms",
   },
   {
-    src: "/art/flowers-in-a-vase.jpg",
+    src: "https://www.gidl.dev/art/flowers-in-a-vase.jpg",
     title: "Flowers in a Vase",
   },
   {
-    src: "/art/frankfort-rose.jpg",
+    src: "https://www.gidl.dev/art/frankfort-rose.jpg",
     title: "Frankfort Rose",
   },
 ];
