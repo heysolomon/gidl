@@ -485,7 +485,7 @@
   pointer-events: none;
 }
 
-/* Tracing paper: the print and the rules show through it. */
+/* A slip of paper over the tile's corner. */
 .vellum {
   position: absolute;
   top: 16px;
@@ -495,9 +495,7 @@
   padding: 10px 12px;
   font-size: 19px;
   line-height: 23px;
-  background: rgb(250 250 246 / 0.62);
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
+  background: #fafaf6;
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.04),
     0 4px 10px rgb(0 0 0 / 0.08);
@@ -568,11 +566,6 @@
   .note[data-surface="plain"] {
     max-width: calc(100vw - 112px);
   }
-}
-
-/* Dark surfaces show through tracing paper too much for the words on it. */
-:global(.dark) .note:not([data-surface="paper"]) .vellum {
-  background: rgb(250 250 246 / 0.88);
 }
 
 /* On phones nothing can hang off the edge, so everything sits in the column. */
