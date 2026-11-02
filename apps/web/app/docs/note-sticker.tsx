@@ -21,10 +21,12 @@ type Bounds = { top: number; right: number; bottom: number; left: number };
 let topLayer = 10;
 
 export function Sticker({
+  movable = true,
   className,
   style,
   children,
 }: {
+  movable?: boolean;
   className: string;
   style?: CSSProperties;
   children: ReactNode;
@@ -35,19 +37,21 @@ export function Sticker({
   const dragged = useRef(false);
   const [layer, setLayer] = useState<number>();
   const [bounds, setBounds] = useState<Bounds>();
+  const lift = movable && !reduceMotion ? LIFT : undefined;
 
   return (
     <motion.div
-      drag
+      drag={movable}
       dragConstraints={bounds}
       dragElastic={0.12}
       dragMomentum={!reduceMotion}
       dragTransition={SLIDE}
-      whileTap={reduceMotion ? undefined : LIFT}
-      whileDrag={reduceMotion ? undefined : LIFT}
+      whileTap={lift}
+      whileDrag={lift}
       transition={SETTLE}
       // Bounds come from the page's size now, not when the note first loaded.
       onPointerDown={(event) => {
+        if (!movable) return;
         const box = event.currentTarget.getBoundingClientRect();
         const page = document.documentElement;
         const left = box.left + window.scrollX;
@@ -71,7 +75,7 @@ export function Sticker({
         event.stopPropagation();
       }}
       style={{ ...style, x, y, zIndex: layer }}
-      className={`${styles.sticker} ${className}`}
+      className={`${movable ? styles.sticker : ""} ${className}`}
     >
       {children}
     </motion.div>

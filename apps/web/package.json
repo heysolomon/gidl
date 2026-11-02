@@ -26,6 +26,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "shadcn": "^4.21.0",
+    "sharp": "^0.35.4",
     "shiki": "^1.29.2",
     "tailwind-merge": "^3.6.0",
     "vaul": "^1.1.2"
@@ -37,6 +38,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "agentation": "^3.0.2",
+    "dialkit": "^2.1.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.4",
     "tailwindcss": "^4.3.3",

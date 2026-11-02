@@ -31,7 +31,8 @@ export const metadata: Metadata = {
     default: "Gidl | Motion Components",
     template: "%s | Gidl",
   },
-  description: "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
+  description:
+    "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
   keywords: [
     "react",
     "framer motion",
@@ -57,13 +58,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     siteName: "Gidl - Solomon Akuson",
     title: "Gidl",
-    description: "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
-    images: ["/api/og?title=Motion%20Components"],
+    description:
+      "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
+    images: ["/api/og"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Gidl",
-    description: "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
+    description:
+      "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.",
     creator: "@heysolomon",
   },
   robots: {

@@ -1,18 +1,23 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import sharp from "sharp";
+import { getOgArt } from "@/lib/og-art";
 
-// Not edge — the background photo + font push this route past Vercel's
-// 1 MB Edge Function limit. Node's fetch also has no file:// support, so
-// local assets are read via fs below instead of new URL(..., import.meta.url).
+// Not edge — the artwork and font push this route past Vercel's 1 MB Edge
+// Function limit. Node's fetch also has no file:// support, so local assets are
+// read via fs below instead of new URL(..., import.meta.url).
 
-export const alt = "Animated UI components, recreated from inspiration and rebuilt for you to copy into your own project.";
+export const alt =
+  "Animated components, recreated from inspiration and rebuilt for you to copy into your own project.";
 export const size = {
   width: 1200,
   height: 630,
 };
 
-export const contentType = "image/png";
+export const contentType = "image/jpeg";
+
+const DEFAULT_TITLE = "Animated components I recreate from inspiration";
 
 // Flower mark — same path used for the site favicon/logo (see
 // app/icon.tsx and components/logo.tsx), just at this asset's own viewBox.
@@ -21,86 +26,95 @@ const FLOWER_PATH =
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const title = searchParams.get("title") || "Motion Components";
+  const title = searchParams.get("title") || DEFAULT_TITLE;
+  const art = getOgArt(searchParams.get("name"));
 
-  const ogDir = path.join(process.cwd(), "public", "og");
-  const [urbanistMedium, background] = await Promise.all([
-    readFile(path.join(ogDir, "Urbanist-Medium.woff")),
-    readFile(path.join(ogDir, "background.jpg")),
+  const publicDir = path.join(process.cwd(), "public");
+  const [urbanistMedium, image] = await Promise.all([
+    readFile(path.join(publicDir, "og", "Urbanist-Medium.woff")),
+    readFile(path.join(publicDir, "art", art.file)),
   ]);
 
-  const backgroundSrc = `data:image/jpeg;base64,${Buffer.from(background).toString("base64")}`;
+  const imageSrc = `data:image/jpeg;base64,${image.toString("base64")}`;
 
-  return new ImageResponse(
-    (
+  const card = new ImageResponse(
+    <div
+      style={{
+        position: "relative",
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        color: "white",
+        fontFamily: "Urbanist",
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={imageSrc}
+        alt=""
+        width={size.width}
+        height={size.height}
+        style={{ position: "absolute", left: 0, top: 0, objectFit: "cover" }}
+      />
+
+      {/* Keeps the logo and title legible on the lightest artwork. Needs
+            explicit dimensions: the renderer ignores inset here. */}
       <div
         style={{
-          position: "relative",
-          height: "100%",
-          width: "100%",
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: size.width,
+          height: size.height,
+          backgroundImage:
+            "linear-gradient(to top, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.55) 30%, rgba(0,0,0,0.12) 62%, rgba(0,0,0,0.5) 100%)",
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          left: 56,
+          top: 44,
           display: "flex",
+          alignItems: "center",
+          gap: 12,
+          fontSize: 32,
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={backgroundSrc}
-          alt=""
-          width={1200}
-          height={630}
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        />
+        <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
+          <path d={FLOWER_PATH} fill="white" />
+        </svg>
+        gidl
+      </div>
 
-        {/* Bottom scrim so the title stays legible regardless of title
-            length or where it lands over the photo. */}
+      <div
+        style={{
+          position: "absolute",
+          left: 56,
+          right: 56,
+          bottom: 44,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          gap: 40,
+        }}
+      >
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 78%)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            left: 58,
-            top: 45,
-            width: 41,
-            height: 41,
             display: "flex",
-          }}
-        >
-          <svg width="41" height="41" viewBox="0 0 38 38" fill="none">
-            <path d={FLOWER_PATH} fill="white" />
-          </svg>
-        </div>
-
-        <div
-          style={{
-            position: "absolute",
-            left: 79,
-            right: 80,
-            bottom: 42,
-            display: "flex",
-            color: "white",
-            fontSize: 62,
-            fontFamily: "Urbanist",
-            fontWeight: 500,
-            lineHeight: 1.15,
-            letterSpacing: "-0.01em",
+            flex: 1,
+            fontSize: title.length > 24 ? 60 : 84,
+            lineHeight: 1.08,
           }}
         >
           {title}
         </div>
+        <div style={{ display: "flex", fontSize: 24, opacity: 0.8 }}>
+          {art.caption}
+        </div>
       </div>
-    ),
+    </div>,
     {
       ...size,
       fonts: [
@@ -113,4 +127,16 @@ export async function GET(request: Request) {
       ],
     }
   );
+
+  // The renderer only outputs PNG, which is heavy for a painting, and some apps
+  // skip large preview images.
+  const png = Buffer.from(await card.arrayBuffer());
+  const jpeg = await sharp(png).jpeg({ quality: 84, mozjpeg: true }).toBuffer();
+
+  return new Response(new Uint8Array(jpeg), {
+    headers: {
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=86400, s-maxage=86400",
+    },
+  });
 }

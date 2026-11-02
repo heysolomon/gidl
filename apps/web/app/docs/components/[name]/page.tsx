@@ -47,13 +47,13 @@ export async function generateMetadata(props: {
     openGraph: {
       title: item.title,
       description: item.description,
-      images: [`/api/og?title=${encodeURIComponent(item.title)}`],
+      images: [`/api/og?title=${encodeURIComponent(item.title)}&name=${name}`],
     },
     twitter: {
       card: "summary_large_image",
       title: item.title,
       description: item.description,
-      images: [`/api/og?title=${encodeURIComponent(item.title)}`],
+      images: [`/api/og?title=${encodeURIComponent(item.title)}&name=${name}`],
     },
   };
 }
