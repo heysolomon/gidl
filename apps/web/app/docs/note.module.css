@@ -23,6 +23,9 @@
   line-height: var(--line);
   color: var(--ink);
   rotate: -0.3deg;
+  /* Above the sidebar, so a sticker can be left on top of it. */
+  z-index: 20;
+  animation: land 480ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
 }
 
 /* Two pieces so only the top band is punched. The holes show the page through. */
@@ -119,9 +122,12 @@
   color: var(--pencil);
 }
 
+.together {
+  white-space: nowrap;
+}
+
 .circled {
   position: relative;
-  white-space: nowrap;
 }
 
 .circle {
@@ -141,13 +147,16 @@
 }
 
 /* Things stuck to the page. Floats leave the lines of writing where they are. */
-.stuck {
+.float {
   position: relative;
   float: right;
   clear: right;
+}
+
+.placed {
   rotate: var(--tilt, 0deg);
   animation: settle 460ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
-  animation-delay: calc(var(--order, 0) * 90ms + 120ms);
+  animation-delay: var(--t, 0ms);
 }
 
 @keyframes settle {
@@ -156,6 +165,98 @@
     translate: 0 10px;
     rotate: calc(var(--tilt, 0deg) + 3deg);
     scale: 1.03;
+  }
+}
+
+/* Loose paper. Taped and clipped pieces aren't stickers, so they stay put. */
+.sticker {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  transition: box-shadow 150ms ease;
+}
+
+.sticker:active {
+  cursor: grabbing;
+  box-shadow: 0 18px 28px -10px rgb(0 0 0 / 0.32);
+}
+
+/* Words soak in. Nothing moves, because ink doesn't slide across paper once it's
+   down. The blur stays small: it's there to soften the fade, and each word only
+   holds it for a moment. */
+.word {
+  display: inline-block;
+  animation: ink 420ms ease-out backwards;
+  animation-delay: var(--t);
+}
+
+@keyframes ink {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+
+/* A soft-edged mask crosses the line once, like one stroke of a pen. The mask is
+   double width so the fade can start and finish fully off the text. */
+.signed {
+  display: inline-block;
+  padding-right: 0.4em;
+  mask-image: linear-gradient(to right, black 45%, transparent 55%);
+  mask-size: 220% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to right, black 45%, transparent 55%);
+  -webkit-mask-size: 220% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: 0% 0;
+  -webkit-mask-position: 0% 0;
+  animation: sign var(--d) cubic-bezier(0.645, 0.045, 0.355, 1) backwards;
+  animation-delay: var(--t);
+}
+
+@keyframes sign {
+  from {
+    mask-position: 100% 0;
+    -webkit-mask-position: 100% 0;
+  }
+}
+
+/* Pen strokes. pathLength="1" makes the dash the length of the whole path. */
+.drawn {
+  stroke-dasharray: 1 2;
+  animation: draw 420ms cubic-bezier(0.645, 0.045, 0.355, 1) backwards;
+  animation-delay: var(--t);
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1.02;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* The sheet lands before anything is written on it. */
+@keyframes land {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+    rotate: -1.1deg;
+  }
+}
+
+:global(html[data-note-seen]) .note,
+:global(html[data-note-seen]) .note * {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .note,
+  .note * {
+    animation: none;
   }
 }
 
@@ -176,13 +277,11 @@
 
 .wide {
   --tilt: 2.4deg;
-  --order: 0;
   width: 216px;
 }
 
 .tall {
   --tilt: -1.8deg;
-  --order: 1;
   width: 140px;
 }
 
@@ -228,7 +327,6 @@
 
 .sticky {
   --tilt: -2deg;
-  --order: 2;
   width: 180px;
   height: calc(var(--line) * 4);
   /* Laid over the print's corner, the way papers pile up on a desk. */
@@ -245,14 +343,13 @@
 }
 
 .vellumStack {
-  --tilt: 1.4deg;
-  --order: 3;
   width: 226px;
   height: calc(var(--line) * 6);
   margin: 0 -40px 0 24px;
 }
 
 .vellumPrint {
+  --tilt: 1.4deg;
   position: absolute;
   top: 0;
   right: 0;
@@ -266,6 +363,7 @@
 
 .vellumPrint img {
   display: block;
+  pointer-events: none;
 }
 
 /* Tracing paper: the print and the rules show through it. */
@@ -273,9 +371,9 @@
   position: absolute;
   top: 16px;
   left: 0;
+  --tilt: -2deg;
   width: 164px;
   padding: 10px 12px;
-  rotate: -3deg;
   font-size: 19px;
   line-height: 23px;
   background: rgb(250 250 246 / 0.62);
@@ -305,7 +403,7 @@
     font-size: 30px;
   }
 
-  .stuck {
+  .float {
     float: none;
     margin: 0 auto var(--line);
   }

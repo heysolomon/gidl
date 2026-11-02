@@ -22,10 +22,13 @@ export default function DocsLayout({
       className="min-h-screen flex-col bg-background text-foreground"
     >
       <div className="sticky top-0 z-40">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-background/90 backdrop-blur header-fade-mask"
-        />
+        <div aria-hidden className="header-blur">
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
         <SiteHeader
           containerClassName=""
           showWordmark={false}

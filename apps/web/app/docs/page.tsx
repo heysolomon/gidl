@@ -2,6 +2,8 @@ import Image from "next/image";
 import { getDocsNavItems } from "@/lib/registry-meta";
 import { artworkCredits } from "@/lib/artwork-credits";
 import { JsonLd } from "@/components/json-ld";
+import { createInk } from "./note-ink";
+import { NoteIntro, Sticker } from "./note-sticker";
 import styles from "./note.module.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
@@ -14,6 +16,10 @@ export const metadata = {
   },
 };
 
+// The sheet lands first, and the words start soaking in before it has fully
+// settled, so the two read as one arrival rather than a queue.
+const INK_STARTS_AT = 180;
+
 const NOTE_ART = [
   artworkCredits["animated-tabs"]?.[0],
   artworkCredits["collins-carousel"]?.[0],
@@ -22,6 +28,7 @@ const NOTE_ART = [
 
 export default function DocsOverviewPage() {
   const items = getDocsNavItems();
+  const ink = createInk(INK_STARTS_AT);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -41,12 +48,13 @@ export default function DocsOverviewPage() {
     <main className="pb-24">
       <JsonLd data={jsonLd} />
       <div className="max-w-3xl mx-auto mb-10">
+        <NoteIntro />
         <article className={styles.note}>
           <div className={styles.band} aria-hidden />
           <div className={styles.sheet} aria-hidden />
           <div className={styles.writing}>
             <h1 className={styles.title}>
-              Glad you found my work
+              {ink.write("Glad you found my work")}
               <svg
                 className={styles.titleLine}
                 viewBox="0 0 400 10"
@@ -54,18 +62,22 @@ export default function DocsOverviewPage() {
                 aria-hidden
               >
                 <path
+                  className={styles.drawn}
+                  style={ink.at()}
+                  pathLength={1}
                   d="M2 6c58-4 118-5 176-3 66 2 132 1 220-1"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  vectorEffect="non-scaling-stroke"
                 />
               </svg>
             </h1>
+            {ink.rest()}
 
             <figure
-              className={`${styles.stuck} ${styles.print} ${styles.wide}`}
+              className={`${styles.float} ${styles.placed} ${styles.print} ${styles.wide}`}
+              style={ink.at(120)}
             >
               <span className={styles.tape} aria-hidden />
               <Image
@@ -76,27 +88,26 @@ export default function DocsOverviewPage() {
               />
             </figure>
 
-            <p>Not gonna lie, I didn&apos;t plan to build a library.</p>
             <p>
-              I just wanted a{" "}
-              <a
-                href="https://playground.solomonakuson.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                playground
-              </a>
-              . Somewhere to recreate animations I kept seeing on X, poke at
-              products I loved, and rebuild little pieces of them just to see if
-              I could.
+              {ink.write("Not gonna lie, I didn't plan to build a library.")}
             </p>
+            {ink.rest()}
             <p>
-              So I built one. Dropped the pieces in. Figured a few people might
-              poke around and tell me what sucked.
+              {ink.write(
+                "I just wanted a playground. Somewhere to recreate animations I kept seeing on X, poke at products I loved, and rebuild little pieces of them just to see if I could."
+              )}
             </p>
+            {ink.rest()}
+            <p>
+              {ink.write(
+                "So I built one. Dropped the pieces in. Figured a few people might poke around and tell me what sucked."
+              )}
+            </p>
+            {ink.rest()}
 
             <figure
-              className={`${styles.stuck} ${styles.print} ${styles.tall}`}
+              className={`${styles.float} ${styles.placed} ${styles.print} ${styles.tall}`}
+              style={ink.at()}
             >
               <svg
                 className={styles.clip}
@@ -118,6 +129,9 @@ export default function DocsOverviewPage() {
                 aria-hidden
               >
                 <path
+                  className={styles.drawn}
+                  style={ink.at(420)}
+                  pathLength={1}
                   d="M66 6C44 2 22 12 8 36M8 36l-3-11M8 36l11-5"
                   stroke="currentColor"
                   strokeWidth="1.8"
@@ -137,75 +151,102 @@ export default function DocsOverviewPage() {
             </figure>
 
             <p>
-              Then I posted a couple of components on X. One of them, the{" "}
-              <span className={styles.circled}>
-                Collins Carousel
-                <svg
-                  className={styles.circle}
-                  viewBox="0 0 200 40"
-                  preserveAspectRatio="none"
-                  aria-hidden
-                >
-                  <path
-                    d="M30 8C70 1 150 1 186 12c18 8 6 20-30 24-48 5-118 4-144-8C-6 18 18 5 62 3"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </svg>
-              </span>
-              , had lots of impressions.
+              {ink.write(
+                "Then I posted a couple of components on X. One of them, the "
+              )}
+              <span className={styles.together}>
+                <span className={styles.circled}>
+                  {ink.write("Collins Carousel")}
+                  <svg
+                    className={styles.circle}
+                    viewBox="0 0 200 40"
+                    preserveAspectRatio="none"
+                    aria-hidden
+                  >
+                    <path
+                      className={styles.drawn}
+                      style={ink.at(60)}
+                      pathLength={1}
+                      d="M30 8C70 1 150 1 186 12c18 8 6 20-30 24-48 5-118 4-144-8C-6 18 18 5 62 3"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+                {ink.write(",")}
+              </span>{" "}
+              {ink.write("had lots of impressions.")}
             </p>
+            {ink.rest()}
             <p>
-              Someone even asked where to grab it. I wasn&apos;t even expecting
-              that.
+              {ink.write(
+                "Someone even asked where to grab it. I wasn't even expecting that."
+              )}
             </p>
+            {ink.rest()}
             <p>
-              It&apos;s sitting in the showcase on the home page now. That made
-              this feel less like my thing and more like something worth
-              actually building out, something other people could use.
+              {ink.write(
+                "That made this feel less like my thing and more like something worth actually building out, something other people could use."
+              )}
             </p>
+            {ink.rest()}
+            <p>
+              {ink.write(
+                "So here we are. What started as a playground for myself is turning into a component library you can use in your own projects."
+              )}
+            </p>
+            {ink.rest()}
 
-            <p>
-              So here we are. What started as a playground for myself is turning
-              into a component library you can use in your own projects.
-            </p>
-
-            <div className={`${styles.stuck} ${styles.vellumStack}`}>
-              <div className={styles.vellumPrint}>
+            <div className={`${styles.float} ${styles.vellumStack}`}>
+              <Sticker
+                className={`${styles.placed} ${styles.vellumPrint}`}
+                style={ink.at()}
+              >
                 <Image
                   src="/art/iznik-wall-tile.jpg"
                   alt="An Iznik wall tile with blue tulips and carnations"
                   width={114}
                   height={152}
+                  draggable={false}
                 />
-              </div>
-              <div className={styles.vellum}>
+              </Sticker>
+              <Sticker
+                className={`${styles.placed} ${styles.vellum}`}
+                style={ink.at(160)}
+              >
                 <p>Not just poke around in it. Actually ship with it.</p>
-              </div>
+              </Sticker>
             </div>
 
-            <aside className={`${styles.stuck} ${styles.sticky}`}>
+            <Sticker
+              className={`${styles.float} ${styles.placed} ${styles.sticky}`}
+              style={ink.at(320)}
+            >
               <p>
                 If you&apos;ve been rocking with this, a follow on{" "}
                 <a
                   href="https://x.com/heysolomon"
                   target="_blank"
                   rel="noreferrer"
+                  draggable={false}
                 >
                   X
                 </a>{" "}
                 means a lot.
               </p>
-            </aside>
+            </Sticker>
 
             <p>
-              I&apos;m already working on a couple new components to add in.
-              This is just the start.
+              {ink.write(
+                "I'm already working on a couple new components to add in. This is just the start."
+              )}
             </p>
-            <p className={styles.signature}>with love, Solomon :)</p>
+            {ink.rest()}
+            <p className={styles.signature}>
+              {ink.sign("with love, Solomon :)")}
+            </p>
           </div>
         </article>
 
