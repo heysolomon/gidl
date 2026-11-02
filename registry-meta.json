@@ -13,7 +13,7 @@
     "isNew": true
   },
   "sidebar-list": {
-    "published": false,
+    "published": true,
     "isNew": true,
     "previewClassName": "p-0"
   },
