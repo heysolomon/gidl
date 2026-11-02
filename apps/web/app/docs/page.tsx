@@ -4,8 +4,7 @@ import { artworkCredits } from "@/lib/artwork-credits";
 import { JsonLd } from "@/components/json-ld";
 import { NoteIntro } from "./note-sticker";
 import { NOTE_DEFAULTS, WelcomeNote } from "./welcome-note";
-
-const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Welcome",

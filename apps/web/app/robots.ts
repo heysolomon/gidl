@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
+import { SITE_URL } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
+      // Link previews are images from /api/og, and X won't fetch an image
+      // that robots.txt blocks.
+      allow: ["/", "/api/og"],
       disallow: "/api/",
     },
     sitemap: `${SITE_URL}/sitemap.xml`,

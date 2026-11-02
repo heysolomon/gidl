@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getDocsNavItems } from "@/lib/registry-meta";
-
-const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
+import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [

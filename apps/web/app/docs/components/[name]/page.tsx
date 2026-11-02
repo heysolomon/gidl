@@ -18,15 +18,13 @@ import { ArtworkCredits } from "@/components/artwork-credits";
 import { Pill } from "@/components/pill";
 import { renderDescriptionWithLinks } from "@/lib/render-markdown-links";
 import { cn } from "@/lib/utils";
+import { SITE_URL } from "@/lib/site";
 
-const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
 // "View as Markdown" and "Open in v0" should point at whatever origin is actually
 // serving the page (localhost in dev), not always the production domain.
 const APP_ORIGIN =
   process.env.NEXT_PUBLIC_URL ||
-  (process.env.NODE_ENV === "production"
-    ? "https://gidl.dev"
-    : "http://localhost:3000");
+  (process.env.NODE_ENV === "production" ? SITE_URL : "http://localhost:3000");
 
 export function generateStaticParams() {
   return getDocsNavItems().map((item) => ({ name: item.name }));
@@ -38,21 +36,22 @@ export async function generateMetadata(props: {
   const { name } = await props.params;
   const item = getRegistryItem(name);
   if (!item || !isRegistryItemVisible(name)) return {};
+  const description = item.description.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
   return {
     title: item.title,
-    description: item.description,
+    description,
     alternates: {
       canonical: `/docs/components/${name}`,
     },
     openGraph: {
       title: item.title,
-      description: item.description,
+      description,
       images: [`/api/og?title=${encodeURIComponent(item.title)}&name=${name}`],
     },
     twitter: {
       card: "summary_large_image",
       title: item.title,
-      description: item.description,
+      description,
       images: [`/api/og?title=${encodeURIComponent(item.title)}&name=${name}`],
     },
   };

@@ -4,8 +4,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Agentation } from "agentation";
 import { JsonLd } from "@/components/json-ld";
-
-const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://gidl.dev";
+import { SITE_URL } from "@/lib/site";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
