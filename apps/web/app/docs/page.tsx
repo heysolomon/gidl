@@ -52,7 +52,7 @@ export default function DocsOverviewPage() {
           <WelcomeNote options={NOTE_DEFAULTS} />
         )}
 
-        <p className="mx-auto mt-8 max-w-155 text-[12px] leading-relaxed text-neutral-500 dark:text-neutral-400">
+        <p className="mx-auto mt-20 max-w-155 text-[12px] leading-relaxed text-neutral-500 dark:text-neutral-400">
           Art on this note:{" "}
           {NOTE_ART.map((credit, index) => (
             <span key={credit.url}>

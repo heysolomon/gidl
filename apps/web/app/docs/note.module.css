@@ -6,7 +6,7 @@
   --gap: 14px;
   --ink: var(--foreground);
   --body: var(--color-text-primary);
-  --pencil: #b4483a;
+  --pencil: var(--color-accent-primary);
   --paper: #fdfcf7;
   --rule: rgb(70 100 150 / 0.2);
   --margin-line: rgb(205 90 80 / 0.32);
@@ -24,10 +24,6 @@
   /* Above the sidebar, so a sticker can be left on top of it. */
   z-index: 20;
   animation: land 480ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
-}
-
-:global(.dark) .note:not([data-surface="paper"]) {
-  --pencil: #e58a7b;
 }
 
 .note[data-type="hand"] {
@@ -534,6 +530,44 @@
 .row .clip,
 .row .arrow {
   display: none;
+}
+
+/* The default layout's last pieces, placed by hand: the tracing paper sits over
+   the tile's corner, and the sticky note sits beside the signature. The note is
+   anchored to the bottom of the text so it follows the signature. */
+@media (min-width: 641px) {
+  .note[data-surface="plain"][data-type="sans"] .body {
+    position: relative;
+  }
+
+  .note[data-surface="plain"][data-type="sans"] .body > .vellumStack {
+    width: 190px;
+    height: 194px;
+    margin: -28px -40px 0 60px;
+  }
+
+  .note[data-surface="plain"][data-type="sans"] .vellum {
+    top: 0;
+  }
+
+  .note[data-surface="plain"][data-type="sans"] .vellumPrint {
+    top: 28px;
+  }
+
+  .note[data-surface="plain"][data-type="sans"] .body > .sticky {
+    position: absolute;
+    left: 242px;
+    bottom: 48px;
+    float: none;
+    margin: 0;
+  }
+}
+
+/* Images hang past the text, so leave room for them while the page is narrow. */
+@media (min-width: 641px) and (max-width: 760px) {
+  .note[data-surface="plain"] {
+    max-width: calc(100vw - 112px);
+  }
 }
 
 /* Dark surfaces show through tracing paper too much for the words on it. */

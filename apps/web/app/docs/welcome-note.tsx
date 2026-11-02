@@ -258,12 +258,6 @@ export function WelcomeNote({ options }: { options: NoteOptions }) {
               {ink.write("Not just poke around in it. Actually ship with it.")}
             </p>
           )}
-          <p>
-            {ink.write(
-              "I'm already working on a couple new components to add in. This is just the start."
-            )}
-          </p>
-          {ink.rest()}
           {images === "none" && (
             <p>
               {ink.write("If you've been rocking with this, a follow on ")}
