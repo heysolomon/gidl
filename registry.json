@@ -162,6 +162,20 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "icon-picker",
+      "type": "registry:block",
+      "title": "Icon Picker",
+      "description": "An icon and colour picker where a new colour flows down the icon grid.",
+      "registryDependencies": [],
+      "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "packages/ui/src/registry/components/icon-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

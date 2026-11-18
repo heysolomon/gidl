@@ -866,3 +866,68 @@ export function NoResultsSkeleton() {
     </div>
   );
 }
+
+// --- Icon Picker ---
+
+const IP_COLUMNS = 12;
+const IP_ROWS = 6;
+const IP_SWATCHES = 10;
+// The real picker's timing: a 280ms ease-in-out fade, 16ms later a row and 4ms a column.
+const IP_FADE_MS = 280;
+const IP_ROW_MS = 16;
+const IP_COLUMN_MS = 4;
+const IP_EASE = "cubic-bezier(0.45, 0, 0.25, 1)";
+
+// Hover: the selection moves to another swatch and the new shade wipes down
+// the icon grid, as the real one's colour does. It's
+// the one skeleton that changes shade across many elements, because that sweep
+// is the whole component; it stays inside the gray ramp.
+export function IconPickerSkeleton() {
+  const { ref, step } = useCardWalk(1);
+  const active = step === 0 ? 0 : 6;
+
+  return (
+    <div ref={ref} className="w-48 shrink-0 rounded-xl bg-(--sk-fill) p-2.5">
+      <div className="flex items-center gap-1.5">
+        <span className="size-3.5 rounded-[4px] bg-(--sk-soft)" />
+        <Bar className="w-14" />
+      </div>
+      <div className="isolate mt-2.5 flex items-center justify-between">
+        {Array.from({ length: IP_SWATCHES }, (_, index) => (
+          // The real swatch's selection: the front circle shrinks to open a
+          // gap and a larger one behind it fades in as a halo, over 0.2s.
+          <span
+            key={index}
+            className={cn(
+              "relative size-3 rounded-full bg-(--sk-fill)",
+              "before:absolute before:inset-0 before:rounded-full before:bg-(--sk-soft) before:transition-[scale,opacity] before:duration-200",
+              "after:absolute after:inset-0 after:-z-1 after:scale-125 after:rounded-full after:bg-(--sk-soft) after:opacity-0 after:transition-[scale,opacity] after:duration-200",
+              index === active && "before:scale-75 after:opacity-100"
+            )}
+          />
+        ))}
+      </div>
+      <div className="mt-2.5 h-px bg-background" />
+      <div className="mt-2.5 grid grid-cols-12 gap-y-1.5">
+        {Array.from({ length: IP_COLUMNS * IP_ROWS }, (_, index) => {
+          const row = Math.floor(index / IP_COLUMNS);
+          const column = index % IP_COLUMNS;
+          return (
+            <span
+              key={index}
+              style={{
+                transitionDuration: `${IP_FADE_MS}ms`,
+                transitionTimingFunction: IP_EASE,
+                transitionDelay: `${row * IP_ROW_MS + column * IP_COLUMN_MS}ms`,
+              }}
+              className={cn(
+                "mx-auto size-[7px] rounded-[2px] transition-colors",
+                step === 0 ? "bg-(--sk-soft)" : "bg-(--sk-active)"
+              )}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}

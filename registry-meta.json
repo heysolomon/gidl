@@ -25,5 +25,9 @@
     "published": true,
     "isNew": true,
     "previewClassName": "p-0"
+  },
+  "icon-picker": {
+    "published": false,
+    "isNew": true
   }
 }

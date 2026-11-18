@@ -10,6 +10,7 @@ export {
   NO_RESULTS_PHYSICS,
 } from "./registry/components/no-results";
 export type { NoResultsPhysics } from "./registry/components/no-results";
+export { IconPicker } from "./registry/components/icon-picker";
 
 // Utilities
 export { cn } from "./lib/utils";

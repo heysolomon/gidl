@@ -4,6 +4,7 @@ import {
   CollinsCarousel,
   ExpandingGallery,
   FlipCard,
+  IconPicker,
   NoResults,
   SidebarList,
 } from "@gidl/ui";
@@ -17,4 +18,5 @@ export const registryComponents: Record<string, ComponentType> = {
   "sidebar-list": SidebarList,
   "expanding-gallery": ExpandingGallery,
   "no-results": NoResults,
+  "icon-picker": IconPicker,
 };
