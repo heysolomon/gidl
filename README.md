@@ -25,6 +25,7 @@ npx shadcn@latest add https://gidl.dev/r/animated-tabs.json
 | [Agentation Toolbar](https://gidl.dev/docs/components/agentation-toolbar) | `npx shadcn@latest add https://gidl.dev/r/agentation-toolbar.json` |
 | [Sidebar List](https://gidl.dev/docs/components/sidebar-list)             | `npx shadcn@latest add https://gidl.dev/r/sidebar-list.json`       |
 | [Expanding Gallery](https://gidl.dev/docs/components/expanding-gallery)   | `npx shadcn@latest add https://gidl.dev/r/expanding-gallery.json`  |
+| [No Results](https://gidl.dev/docs/components/no-results)                 | `npx shadcn@latest add https://gidl.dev/r/no-results.json`         |
 
 More components ship regularly — see [gidl.dev/docs](https://gidl.dev/docs) for the full, current list.
 

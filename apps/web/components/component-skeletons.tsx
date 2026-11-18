@@ -5,6 +5,7 @@ import {
   CollinsCarouselSkeleton,
   ExpandingGallerySkeleton,
   FlipCardsSkeleton,
+  NoResultsSkeleton,
   SidebarListSkeleton,
 } from "@/components/component-skeletons-live";
 import { Bar, Surface } from "@/components/skeleton-primitives";
@@ -26,6 +27,7 @@ const SKELETONS: Record<string, ComponentType> = {
   "collins-carousel": CollinsCarouselSkeleton,
   "expanding-gallery": ExpandingGallerySkeleton,
   "flip-cards": FlipCardsSkeleton,
+  "no-results": NoResultsSkeleton,
   "sidebar-list": SidebarListSkeleton,
 };
 

@@ -9,7 +9,8 @@ import {
   type MotionValue,
 } from "motion/react";
 import { PanelLeft, Plus } from "lucide-react";
-import { Bar, Surface } from "@/components/skeleton-primitives";
+import Matter from "matter-js";
+import { Bar } from "@/components/skeleton-primitives";
 import { cn } from "@/lib/utils";
 
 // Wireframe previews for the homepage grid: flat mini-cards and pill bars, all
@@ -132,8 +133,8 @@ export function AnimatedTabsSkeleton() {
           </div>
         ))}
       </div>
-      <div className="w-full overflow-hidden rounded-[18px] bg-(--sk-fill)">
-        <div className="flex flex-col gap-1.5 p-3 pb-2">
+      <div className="w-full">
+        <div className="flex flex-col gap-1.5 px-3 pt-1 pb-2.5">
           <Bar tone="soft" className="h-1 w-10" />
           <Bar className={cn("transition-[width] duration-300", panel.title)} />
           <Bar
@@ -141,9 +142,7 @@ export function AnimatedTabsSkeleton() {
             className={cn("transition-[width] duration-300", panel.line)}
           />
         </div>
-        <div className="p-1">
-          <div className="h-14 rounded-[14px] bg-(--sk-soft)" />
-        </div>
+        <div className="h-16 rounded-[14px] bg-(--sk-fill)" />
       </div>
     </div>
   );
@@ -151,78 +150,72 @@ export function AnimatedTabsSkeleton() {
 
 // --- Agentation Toolbar ---
 
-const COLLAPSED_SIZE = 36;
-const EXPANDED_TOOLBAR_WIDTH = 224;
-const TOOLBAR_EASE = "cubic-bezier(0.19,1,0.22,1)";
-
-// Pause and Close are the bright controls on the real toolbar.
+// Pause and Close are the bright controls on the real toolbar. Settings is the
+// sixth control, and opens the panel.
 const TOOLBAR_SLOTS = [
   { tone: "strong" },
   { tone: "soft" },
   { tone: "soft" },
   { tone: "soft" },
   { tone: "soft" },
-  { tone: "soft" },
+  { tone: "soft", settings: true },
   { tone: "strong", divider: true },
 ] as const;
 
-// Hover: opens the way the real toolbar does. The right edge stays put and only
-// the left edge travels, over 0.4s. The control row is centered in the growing
-// box and materializes over 0.6–0.8s, unclipped once open, and the collapsed
-// icon fades in 0.1s. The circle rests at the right so the open pill fits.
+// The settings panel's switch rows, with label lengths that vary like the real ones.
+const SETTINGS_ROWS = ["w-14", "w-10", "w-16", "w-12", "w-[52px]"];
+
+// Rest: the open toolbar, as you'd see it in use. Hover: Settings is pressed and
+// its panel rises above the toolbar, right-aligned, the way the real one opens:
+// fade, 8px rise, scale from 0.95 and unblur over 0.2s, closing in 0.1s.
 export function AgentationToolbarSkeleton() {
   const { ref, step } = useCardWalk(1);
-  const expanded = step > 0;
+  const open = step > 0;
 
   return (
-    <div ref={ref} className="flex h-9 w-56 shrink-0 justify-end">
+    <div
+      ref={ref}
+      className="relative flex h-[168px] w-56 shrink-0 flex-col justify-end"
+    >
       <div
         style={{
-          width: expanded ? EXPANDED_TOOLBAR_WIDTH : COLLAPSED_SIZE,
-          transition: `width 0.4s ${TOOLBAR_EASE}`,
+          transition: open
+            ? "opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease"
+            : "opacity 0.1s ease, transform 0.1s ease, filter 0.1s ease",
+          opacity: open ? 1 : 0,
+          transform: open
+            ? "translateY(0) scale(1)"
+            : "translateY(8px) scale(0.95)",
+          filter: open ? "blur(0)" : "blur(5px)",
+          transformOrigin: "bottom right",
         }}
-        className={cn(
-          "relative h-full rounded-full bg-(--sk-fill)",
-          !expanded && "overflow-hidden"
-        )}
+        className="absolute right-1 bottom-11 flex w-[150px] flex-col gap-2.5 rounded-2xl bg-(--sk-fill) p-3"
       >
-        {/* The collapsed icon's three lines. */}
-        <div
-          style={{ transition: `opacity 0.1s ${TOOLBAR_EASE}` }}
-          className={cn(
-            "absolute inset-0 flex items-center justify-center",
-            expanded ? "opacity-0" : "opacity-100"
-          )}
-        >
-          <div className="flex flex-col items-start gap-[3px]">
-            <Bar className="h-[3px] w-3.5" />
-            <Bar className="h-[3px] w-2.5" />
-            <Bar className="h-[3px] w-1.5" />
+        <Bar className="w-12" />
+        {SETTINGS_ROWS.map((width) => (
+          <div key={width} className="flex items-center justify-between">
+            <Bar tone="soft" className={width} />
+            <span className="h-2.5 w-5 rounded-full bg-(--sk-soft)" />
           </div>
-        </div>
-        <div
-          style={
-            {
-              transition: `filter 0.8s ${TOOLBAR_EASE}, opacity 0.8s ${TOOLBAR_EASE}, transform 0.6s ${TOOLBAR_EASE}`,
-              opacity: expanded ? 1 : 0,
-              filter: expanded ? "blur(0)" : "blur(10px)",
-              transform: expanded ? "scale(1)" : "scale(0.4)",
-            } satisfies CSSProperties
-          }
-          className="absolute inset-0 flex items-center justify-center"
-        >
-          <div className="flex shrink-0 items-center gap-1">
-            {TOOLBAR_SLOTS.map((slot, i) => (
-              <div key={i} className="flex items-center gap-1">
-                {"divider" in slot && (
-                  <span className="mx-0.5 h-2.5 w-px bg-(--sk-strong)" />
+        ))}
+      </div>
+      <div className="flex h-9 w-full items-center justify-center rounded-full bg-(--sk-fill)">
+        <div className="flex shrink-0 items-center gap-1">
+          {TOOLBAR_SLOTS.map((slot, i) => (
+            <div key={i} className="flex items-center gap-1">
+              {"divider" in slot && (
+                <span className="mx-0.5 h-2.5 w-px bg-(--sk-strong)" />
+              )}
+              <span
+                className={cn(
+                  "flex size-6 items-center justify-center rounded-full transition-colors duration-150 ease-out",
+                  "settings" in slot && open && "bg-(--sk-soft)"
                 )}
-                <span className="flex size-6 items-center justify-center">
-                  <Bar tone={slot.tone} className="w-3" />
-                </span>
-              </div>
-            ))}
-          </div>
+              >
+                <Bar tone={slot.tone} className="w-3" />
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -308,12 +301,16 @@ export function ExpandingGallerySkeleton() {
   );
 }
 
-// A stand-in for a photo. The backing is opaque because these overlap.
+// A stand-in for a photo: a flat tile, like the Expanding Gallery cards. These
+// overlap, so a ring in the card's own background keeps each edge readable.
 function ImageCard({ className }: { className?: string }) {
   return (
-    <Surface className={cn("p-1.5 [--radius-2xl:12px]", className)}>
-      <div className="flex-1 rounded-lg bg-(--sk-soft)" />
-    </Surface>
+    <div
+      className={cn(
+        "rounded-xl bg-(--sk-fill) ring-1 ring-background",
+        className
+      )}
+    />
   );
 }
 
@@ -538,7 +535,7 @@ export function SidebarListSkeleton() {
   return (
     <div
       ref={ref}
-      className="relative h-[168px] w-56 shrink-0 overflow-hidden rounded-2xl border border-border bg-(--sk-soft)"
+      className="relative h-[168px] w-56 shrink-0 overflow-hidden rounded-2xl border border-border"
     >
       <div className="absolute inset-y-1 left-1 w-[148px] rounded-xl bg-(--sk-fill)">
         <div className="flex items-center justify-end gap-1 p-1.5 text-(--sk-active)">
@@ -575,6 +572,296 @@ export function SidebarListSkeleton() {
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// --- No Results ---
+
+// The real component's physics, scaled from its 64px tiles to these 14px ones.
+// Gravity and starting speed scale with size, so the fall takes the same time.
+const NR_TILE = 14;
+const NR_SCALE = NR_TILE / 64;
+const NR_COUNT = 19;
+const NR_COLUMNS = 5;
+const NR_PITCH = NR_TILE * 0.85;
+const NR_STEP = 1000 / 60;
+const NR_MAX_LEAN = 0.7;
+const NR_LEAN_CUSHION = 0.004;
+
+function nrScatter(seed: number) {
+  const x = Math.sin(seed * 12.9898) * 43758.5453;
+  return (x - Math.floor(x)) * 2 - 1;
+}
+
+function nrStartPose(index: number, centerX: number, centerY: number) {
+  const rows = Math.ceil(NR_COUNT / NR_COLUMNS);
+  const row = Math.floor(index / NR_COLUMNS);
+  const inRow = Math.min(NR_COLUMNS, NR_COUNT - row * NR_COLUMNS);
+  const offset = (index % NR_COLUMNS) - (inRow - 1) / 2;
+  const brick = row % 2 ? NR_PITCH / 2 : 0;
+  return {
+    row,
+    offset,
+    x:
+      centerX +
+      offset * NR_PITCH -
+      brick +
+      NR_PITCH / 4 +
+      nrScatter(index + 1) * NR_TILE * 0.06,
+    y:
+      centerY +
+      (row - (rows - 1) / 2) * NR_PITCH +
+      nrScatter(index + 7) * NR_TILE * 0.06,
+    angle: nrScatter(index + 13) * 0.2,
+  };
+}
+
+const nrTransform = (x: number, y: number, angle: number) =>
+  `translate(${x - NR_TILE / 2}px, ${y - NR_TILE / 2}px) rotate(${angle}rad)`;
+
+// Hover: the cluster of art tiles drops from the suggestions and piles up on
+// the floor, on the real component's physics. At rest the card shows the empty
+// state alone, and leaving fades the pile out.
+export function NoResultsSkeleton() {
+  const { ref, step } = useCardWalk(1);
+  const floorRef = useRef<HTMLDivElement>(null);
+  const chipsRef = useRef<HTMLDivElement>(null);
+  const tileRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // The message steps aside while the tiles are thrown, as in the real one.
+  const [messageShown, setMessageShown] = useState(true);
+  const message = cn(
+    "transition-[opacity,translate] ease-out",
+    messageShown
+      ? "duration-250 opacity-100"
+      : "translate-y-1 opacity-0 duration-150"
+  );
+
+  // At rest the hidden tiles wait in the starting cluster, once the fade-out
+  // has finished, so a hover never moves them from somewhere else first.
+  useEffect(() => {
+    const box = floorRef.current;
+    const chips = chipsRef.current;
+    if (step !== 0 || !box || !chips) return;
+    const park = () =>
+      tileRefs.current.forEach((element, index) => {
+        if (!element) return;
+        const pose = nrStartPose(
+          index,
+          box.clientWidth / 2,
+          chips.offsetTop / 2 + chips.offsetHeight / 2
+        );
+        element.style.transform = nrTransform(pose.x, pose.y, pose.angle);
+      });
+    const timer = setTimeout(
+      park,
+      tileRefs.current[0]?.style.transform ? 220 : 0
+    );
+    return () => clearTimeout(timer);
+  }, [step]);
+
+  useEffect(() => {
+    const box = floorRef.current;
+    const chips = chipsRef.current;
+    if (step === 0 || !box || !chips) return;
+
+    const { Engine, Bodies, Body, Composite } = Matter;
+    const engine = Engine.create({ enableSleeping: true });
+    engine.gravity.y = 0.8 * NR_SCALE;
+
+    const width = box.clientWidth;
+    const height = box.clientHeight;
+    const centerX = width / 2;
+    const centerY = chips.offsetTop / 2 + chips.offsetHeight / 2;
+    const wall = { isStatic: true, friction: 0.6 };
+    const walls = [
+      Bodies.rectangle(width / 2, height + 25, width * 3, 50, wall),
+      Bodies.rectangle(-25, height / 2, 50, height * 4, wall),
+      Bodies.rectangle(width + 25, height / 2, 50, height * 4, wall),
+    ];
+
+    const realInertia = new Map<Matter.Body, number>();
+    const bodies = Array.from({ length: NR_COUNT }, (_, index) => {
+      const pose = nrStartPose(index, centerX, centerY);
+      const body = Bodies.rectangle(pose.x, pose.y, NR_TILE, NR_TILE, {
+        chamfer: { radius: NR_TILE * 0.1 },
+        angle: pose.angle,
+        restitution: 0.02,
+        friction: 0.1,
+        frictionStatic: 0.3,
+        frictionAir: 0.012,
+      });
+      realInertia.set(body, body.inertia);
+      Body.setInertia(body, body.inertia * 6);
+      Body.setVelocity(body, {
+        x: (pose.offset * 1.5 + nrScatter(index + 21) * 0.6) * NR_SCALE,
+        y: 4.5 * NR_SCALE * (0.55 + pose.row * 0.3),
+      });
+      Body.setAngularVelocity(body, nrScatter(index + 29) * 0.02);
+      return body;
+    });
+    Composite.add(engine.world, [...walls, ...bodies]);
+
+    const draw = () => {
+      bodies.forEach((body, index) => {
+        const element = tileRefs.current[index];
+        if (!element) return;
+        const { x, y } = body.position;
+        element.style.transform = nrTransform(x, y, body.angle);
+      });
+    };
+
+    // The real component's settling: a tile asleep at a tilt on the floor,
+    // with nothing on the side it would fall toward, is woken with its real
+    // weight and nudged back upright, or flat if it's past 57°.
+    const floor = walls[0]!;
+    const held = (body: Matter.Body) => {
+      const onFloor = Matter.Collision.collides(body, floor);
+      if (!onFloor?.collided) return true;
+      const points = onFloor.supports.filter(Boolean);
+      const contactX =
+        points.reduce((sum, point) => sum + point.x, 0) / points.length;
+      const tipsRight = body.position.x > contactX;
+      return bodies.some((other) => {
+        if (other === body) return false;
+        const hit = Matter.Collision.collides(body, other);
+        return (
+          hit?.collided &&
+          hit.supports
+            .filter(Boolean)
+            .some((point) =>
+              tipsRight
+                ? point.x > body.position.x - 2 * NR_SCALE
+                : point.x < body.position.x + 2 * NR_SCALE
+            )
+        );
+      });
+    };
+    const wakeLoose = () => {
+      const loose = bodies.filter((body) => {
+        const turn =
+          ((body.angle % (Math.PI / 2)) + Math.PI / 2) % (Math.PI / 2);
+        return (
+          body.isSleeping &&
+          Math.min(turn, Math.PI / 2 - turn) >= 0.05 &&
+          !held(body)
+        );
+      });
+      loose.forEach((body) => {
+        Matter.Sleeping.set(body, false);
+        Body.setInertia(body, realInertia.get(body) ?? body.inertia);
+        const nearCorner = Math.abs(body.angle) > Math.PI / 4 - 0.12;
+        const target =
+          Math.abs(body.angle) < 1
+            ? 0
+            : Math.round(body.angle / (Math.PI / 2)) * (Math.PI / 2);
+        Body.setAngularVelocity(
+          body,
+          Math.sign(target - body.angle) *
+            (target === 0 && nearCorner ? 0.03 : 0.01)
+        );
+      });
+      return loose.length > 0;
+    };
+    const messageBottom = chips.offsetTop + chips.offsetHeight;
+    let messageBack = false;
+    setMessageShown(false);
+    const backBy = setTimeout(() => {
+      messageBack = true;
+      setMessageShown(true);
+    }, 900);
+
+    let frame = 0;
+    let last = 0;
+    let carry = 0;
+    const tick = (now: number) => {
+      carry += Math.min(now - (last || now), 100);
+      last = now;
+      while (carry >= NR_STEP) {
+        Engine.update(engine, NR_STEP);
+        for (const body of bodies) {
+          if (
+            Math.abs(body.angle) > NR_MAX_LEAN &&
+            body.angle * body.angularVelocity > 0
+          ) {
+            Body.setAngularVelocity(
+              body,
+              body.angularVelocity - Math.sign(body.angle) * NR_LEAN_CUSHION
+            );
+          }
+        }
+        carry -= NR_STEP;
+      }
+      draw();
+      // The message comes back once every tile has fallen past it.
+      if (
+        !messageBack &&
+        bodies.every((body) => body.bounds.min.y > messageBottom)
+      ) {
+        messageBack = true;
+        setMessageShown(true);
+      }
+      const woke = wakeLoose();
+      frame =
+        !woke && bodies.every((body) => body.isSleeping)
+          ? 0
+          : requestAnimationFrame(tick);
+    };
+    // A hover that returns mid fade-out would show the tiles jump from the
+    // pile to the cluster, so they restart from transparent and fade back in.
+    tileRefs.current.forEach((element) => {
+      if (!element) return;
+      element.style.transition = "none";
+      element.style.opacity = "0";
+    });
+    draw();
+    void box.offsetHeight;
+    tileRefs.current.forEach((element) => {
+      if (!element) return;
+      element.style.transition = "";
+      element.style.opacity = "";
+    });
+    frame = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(backBy);
+      Engine.clear(engine);
+      setMessageShown(true);
+    };
+  }, [step]);
+
+  return (
+    // Runs to the panel's bottom edge, which is the floor the tiles land on.
+    <div ref={ref} className="-mb-6 h-[196px] w-52 shrink-0">
+      <div
+        ref={floorRef}
+        className="relative flex size-full flex-col items-center pt-3"
+      >
+        <Bar className={cn("w-16", message)} />
+        <Bar tone="soft" className={cn("mt-1.5 w-24", message)} />
+        <div
+          ref={chipsRef}
+          className={cn("mt-3 grid grid-cols-3 gap-1", message)}
+        >
+          {Array.from({ length: 6 }, (_, index) => (
+            <span key={index} className="h-3 w-9 rounded-full bg-(--sk-fill)" />
+          ))}
+        </div>
+        {Array.from({ length: NR_COUNT }, (_, index) => (
+          <div
+            key={index}
+            ref={(element) => {
+              tileRefs.current[index] = element;
+            }}
+            style={{ width: NR_TILE, height: NR_TILE }}
+            className={cn(
+              "absolute top-0 left-0 rounded-[3px] bg-(--sk-fill) ring-1 ring-background transition-opacity duration-200 ease-out",
+              step === 0 && "opacity-0"
+            )}
+          />
+        ))}
       </div>
     </div>
   );

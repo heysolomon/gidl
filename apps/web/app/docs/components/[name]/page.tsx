@@ -18,6 +18,12 @@ import { ArtworkCredits } from "@/components/artwork-credits";
 import { Pill } from "@/components/pill";
 import { renderDescriptionWithLinks } from "@/lib/render-markdown-links";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+
+// Development only, and loaded on demand so DialKit stays out of production pages.
+const NoResultsLab = dynamic(() =>
+  import("./no-results-lab").then((mod) => mod.NoResultsLab)
+);
 import { SITE_URL } from "@/lib/site";
 
 // "View as Markdown" and "Open in v0" should point at whatever origin is actually
@@ -141,7 +147,12 @@ export default async function ComponentPage(props: {
                   <ComponentPreview
                     className={cn("min-h-110", navItem.previewClassName)}
                   >
-                    {Live ? <Live /> : null}
+                    {process.env.NODE_ENV === "development" &&
+                    name === "no-results" ? (
+                      <NoResultsLab />
+                    ) : Live ? (
+                      <Live />
+                    ) : null}
                   </ComponentPreview>
                 </div>
               }

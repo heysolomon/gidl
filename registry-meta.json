@@ -20,5 +20,10 @@
     "published": true,
     "isNew": true,
     "previewClassName": "p-0"
+  },
+  "no-results": {
+    "published": true,
+    "isNew": true,
+    "previewClassName": "p-0"
   }
 }

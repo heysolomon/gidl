@@ -1,7 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-// The skeleton mini-card: flat, in the shared ramp from globals.css.
+// The skeleton mini-card: a flat tile in the shared ramp from globals.css, with
+// no border, like the Expanding Gallery cards.
 export function Surface({
   className,
   style,
@@ -15,7 +16,7 @@ export function Surface({
     <div
       style={style}
       className={cn(
-        "relative flex flex-col rounded-2xl border border-border bg-(--sk-fill)",
+        "relative flex flex-col rounded-2xl bg-(--sk-fill)",
         className
       )}
     >

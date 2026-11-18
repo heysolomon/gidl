@@ -4,6 +4,7 @@ import {
   CollinsCarousel,
   ExpandingGallery,
   FlipCard,
+  NoResults,
   SidebarList,
 } from "@gidl/ui";
 import type { ComponentType } from "react";
@@ -15,4 +16,5 @@ export const registryComponents: Record<string, ComponentType> = {
   "agentation-toolbar": AgentationToolbar,
   "sidebar-list": SidebarList,
   "expanding-gallery": ExpandingGallery,
+  "no-results": NoResults,
 };

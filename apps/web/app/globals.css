@@ -200,7 +200,9 @@ textarea,
     --sk-fill: var(--muted);
     --sk-soft: var(--color-neutral-200);
     --sk-strong: var(--color-neutral-300);
-    --sk-active: var(--color-neutral-400);
+    /* No darker than strong in light mode: neutral-400 read as a dark gray
+       against the rest of the system. The active item is shown by its pill. */
+    --sk-active: var(--color-neutral-300);
 }
 
 .dark .component-grid {

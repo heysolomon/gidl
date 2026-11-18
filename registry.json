@@ -141,6 +141,27 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "no-results",
+      "type": "registry:block",
+      "title": "No Results",
+      "description": "An empty state where a cluster of app icons tumbles down and piles up under real physics.",
+      "registryDependencies": [],
+      "dependencies": [
+        "matter-js",
+        "simple-icons",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "devDependencies": ["@types/matter-js"],
+      "files": [
+        {
+          "path": "packages/ui/src/registry/components/no-results.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
