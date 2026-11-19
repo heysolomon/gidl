@@ -146,7 +146,7 @@
       "name": "no-results",
       "type": "registry:block",
       "title": "No Results",
-      "description": "An empty state where a cluster of app icons tumbles down and piles up under real physics.",
+      "description": "An empty state where a cluster of app icons tumbles down and piles up under real physics. Inspired by [Mobbin](https://mobbin.com)'s no results page.",
       "registryDependencies": [],
       "dependencies": [
         "matter-js",
