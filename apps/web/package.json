@@ -26,7 +26,7 @@
     "next-themes": "^0.4.6",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "shadcn": "^4.23.0",
+    "shadcn": "^4.23.1",
     "sharp": "^0.35.4",
     "shiki": "^1.29.2",
     "tailwind-merge": "^3.6.0",
@@ -42,7 +42,7 @@
     "agentation": "^3.0.2",
     "dialkit": "^2.1.0",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.4",
+    "eslint-config-next": "^16.4.6",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3"
   }
